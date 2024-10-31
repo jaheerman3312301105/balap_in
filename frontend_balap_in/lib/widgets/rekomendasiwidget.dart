@@ -12,8 +12,8 @@ class RekomendasiWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5),
         child: Container(
-          height: 115,
-          width: 350,
+          height: MediaQuery.of(context).size.height * 0.18,
+          width: MediaQuery.of(context).size.width * 0.85,
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.circular(10),
@@ -32,7 +32,7 @@ class RekomendasiWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start, 
                 children: <Widget>[
                   Container(
-                    width: 170,
+                    width: MediaQuery.of(context).size.width * 0.415,
                     margin: const EdgeInsets.only(
                       left: 10,
                       top: 15,
@@ -47,7 +47,7 @@ class RekomendasiWidget extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    width: 170,
+                    width: MediaQuery.of(context).size.width * 0.415,
                     margin: const EdgeInsets.only(
                       left: 10,
                       top: 5,
@@ -61,7 +61,7 @@ class RekomendasiWidget extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    width: 170,
+                    width: MediaQuery.of(context).size.width * 0.415,
                     margin: const EdgeInsets.only(
                       left: 10,
                       top: 5,
@@ -90,8 +90,8 @@ class RekomendasiWidget extends StatelessWidget {
                     left: 10, 
                     right: 5
                     ),
-                  height: 100,
-                  width: 150,
+                  height: MediaQuery.of(context).size.height * 0.16,
+                  width: MediaQuery.of(context).size.width * 0.365,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     image: const DecorationImage(
