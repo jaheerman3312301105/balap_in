@@ -12,7 +12,7 @@ class Pengguna(models.Model):
 class Laporan(models.Model):
     id_laporan = models.AutoField(primary_key=True)
     id_pengguna = models.ForeignKey(Pengguna, on_delete=models.CASCADE)
-    id_peta = models.ForeignKey('Peta' , on_delete=models.CASCADE)
+    id_peta = models.ForeignKey('Peta' , on_delete=models.CASCADE, null=True)
     gambar = models.BinaryField(null=True, blank=True)
     jenis = models.CharField(
         max_length=20,

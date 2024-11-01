@@ -1,3 +1,4 @@
+from .balap_in import views
 """
 URL configuration for balap_in_project project.
 
@@ -19,4 +20,5 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('laporan/', views.laporan)
 ]
