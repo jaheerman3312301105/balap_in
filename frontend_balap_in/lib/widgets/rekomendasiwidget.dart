@@ -12,7 +12,7 @@ class RekomendasiWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5),
         child: Container(
-          height: MediaQuery.of(context).size.height * 0.18,
+          height: MediaQuery.of(context).size.height * 0.16,
           width: MediaQuery.of(context).size.width * 0.85,
           decoration: BoxDecoration(
             color: color,
@@ -90,7 +90,7 @@ class RekomendasiWidget extends StatelessWidget {
                     left: 10, 
                     right: 5
                     ),
-                  height: MediaQuery.of(context).size.height * 0.16,
+                  height: MediaQuery.of(context).size.height * 0.14,
                   width: MediaQuery.of(context).size.width * 0.365,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
