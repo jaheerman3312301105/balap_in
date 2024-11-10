@@ -1,25 +1,46 @@
-import 'package:dio/dio.dart';
+import 'dart:convert';
+import 'dart:ffi';
+import 'package:balap_in/api/api_service_laporan.dart';
 
-final dio = Dio();
-
-// Run the app like this: dart run args.dart 1 test
-void main(List arguments) async{
-  final response = await dio.get('http://127.0.0.1:8000/laporan/');  
+class Laporan {
   
-  List idLaporan = [];
-  List judulList = [];
+  final int idlaporan;
+  final String gambar;
+  final String jenis; 
+  final String judul;     
+  final String deskripsi;
+  final double persentase;
+  final String cuaca;  
+  final String status;   
+  final String tgllapor;
+  final num tingkaturgent;
 
-  for (var item in response.data['results']){
-    idLaporan.add(item['idLaporan']);
-    judulList.add(item['judul']);;
+
+  Laporan({
+    required this.idlaporan,
+    required this.gambar,
+    required this.jenis,
+    required this.judul,
+    required this.deskripsi,
+    required this.persentase,
+    required this.cuaca,
+    required this.status,
+    required this.tgllapor,
+    required this.tingkaturgent,
+  });
+
+  factory Laporan.fromJson(Map<String, dynamic> json) {
+    return Laporan(
+      idlaporan: json['id_laporan'],
+      gambar: json['gambar'],
+      jenis: json['jenis'],
+      judul: json['judul'],
+      deskripsi: json['deskripsi'],
+      persentase: json['persentase'], 
+      cuaca: json['cuaca'],
+      status: json['status'],
+      tgllapor: json['tgl_lapor'],
+      tingkaturgent: json['tingkat_urgent'],
+    );
   }
-  
-
-  List listLaporan = [
-    idLaporan,
-    judulList
-  ];
-  
-  print(listLaporan);
-
 }

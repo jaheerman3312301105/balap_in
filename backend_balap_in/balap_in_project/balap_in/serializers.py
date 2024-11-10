@@ -15,6 +15,7 @@ class LaporanSerializer(serializers.ModelSerializer):
     class Meta:
         model = Laporan
         fields = '__all__'
+        depth = 1
 
 class PetaSerializer(serializers.ModelSerializer):
     class Meta:

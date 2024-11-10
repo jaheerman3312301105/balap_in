@@ -597,7 +597,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: 6,
+                      itemCount: 1,
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {

@@ -35,9 +35,11 @@ class Laporan(models.Model):
     tingkat_urgent = models.IntegerField(
         null=True, blank=True
     )
+    
 
     class Meta:
         db_table = 'laporan'
+
 
 class Peta(models.Model):
     id_peta = models.AutoField(primary_key=True)
