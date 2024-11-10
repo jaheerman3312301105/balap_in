@@ -98,9 +98,9 @@ class HomeWidget extends StatelessWidget {
                           left: 10,
                           top: 5,
                         ),
-                        child: const Text(
-                          'Jl. Sudirman No.3, Sukajadi, Kec. Batam Kota, Kota Batam, Kepulauan Riau 29432',
-                          style: TextStyle(
+                        child: Text(
+                          laporan.peta.alamat,
+                          style: const TextStyle(
                             fontSize: 8,
                             fontFamily: "Poppins",
                           ),
@@ -118,8 +118,8 @@ class HomeWidget extends StatelessWidget {
                       width: 150,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        image: const DecorationImage(
-                          image: AssetImage('assets/images/jalan.png'),
+                        image: DecorationImage(
+                          image: MemoryImage(gambar),
                           fit: BoxFit.cover,
                         ),
                       ),

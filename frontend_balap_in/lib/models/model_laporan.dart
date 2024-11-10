@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'package:balap_in/api/api_service_laporan.dart';
+import 'model_peta.dart';
 
 class Laporan {
   
@@ -14,6 +15,7 @@ class Laporan {
   final String status;   
   final String tgllapor;
   final num tingkaturgent;
+  final Peta peta;
 
 
   Laporan({
@@ -27,6 +29,7 @@ class Laporan {
     required this.status,
     required this.tgllapor,
     required this.tingkaturgent,
+    required this.peta
   });
 
   factory Laporan.fromJson(Map<String, dynamic> json) {
@@ -41,6 +44,7 @@ class Laporan {
       status: json['status'],
       tgllapor: json['tgl_lapor'],
       tingkaturgent: json['tingkat_urgent'],
+      peta: Peta.fromJson(json['id_peta'])
     );
   }
 }
