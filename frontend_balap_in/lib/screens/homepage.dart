@@ -5,6 +5,7 @@ import 'package:balap_in/widgets/homewidget.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:filter_list/filter_list.dart';
 
+
 MapController mapController = MapController();
 
 bool showAdditionalChip = false;
@@ -601,7 +602,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            Navigator.pushNamed(context, '/isilapor');
+                            Navigator.pushNamed(context, '/isilapor',
+                            arguments: 1);
                           },
                           child: const HomeWidget(), 
                         );

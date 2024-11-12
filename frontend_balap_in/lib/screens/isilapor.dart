@@ -5,6 +5,8 @@ class IsilaporScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String idLaporan = ModalRoute.of(context)?.settings.arguments as String;
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(

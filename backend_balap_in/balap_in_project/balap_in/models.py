@@ -30,6 +30,7 @@ class Laporan(models.Model):
     status = models.CharField(
         max_length=20,
         choices=[('selesai', 'Selesai'), ('draf', 'Draf')],
+        null=True, blank=True
     )
     tgl_lapor = models.DateTimeField(auto_now=True)
     tingkat_urgent = models.IntegerField(

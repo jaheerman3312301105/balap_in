@@ -1,12 +1,17 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:balap_in/api/api_service_laporan.dart';
+import 'package:balap_in/models/model_laporan.dart';
 
 const List<String> jenis = <String>['Jalan', 'Lampu Jalan', 'Jembatan'];
 const List<String> cuaca = <String>['Hujan', 'Cerah'];
 
-String? selectedItem = 'Jalan'; 
+String? selectedJenis = 'Jalan'; 
 String? selectedCuaca = 'Hujan';
 
 double _currentSliderValue = 0;
+
 class LaporScreen extends StatefulWidget {
   const LaporScreen({super.key});
 
@@ -15,8 +20,19 @@ class LaporScreen extends StatefulWidget {
 }
 
 class _LaporScreenState extends State<LaporScreen> {
+  final TextEditingController judulController = TextEditingController();
 
   @override
+  void dispose() {
+    judulController.dispose();
+    super.dispose();
+  }
+
+  void buatLaporan() {
+    ApiServiceLaporan apiService = ApiServiceLaporan();
+    apiService.buatLaporan(judulController.text, selectedJenis!);
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -106,8 +122,9 @@ class _LaporScreenState extends State<LaporScreen> {
                           ),
                         ],
                       ),
-                      child: const TextField(
-                        decoration: InputDecoration(
+                      child: TextField(
+                        controller: judulController,
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Jalan berlubang di jalan raya piayu',
                           hintStyle: TextStyle(
@@ -166,7 +183,7 @@ class _LaporScreenState extends State<LaporScreen> {
                         width: 320,
                         height: 35,
                         child: DropdownButton<String>(
-                          value: selectedItem,
+                          value: selectedJenis,
                           items: jenis.map<DropdownMenuItem<String>>((String item) {
                             return DropdownMenuItem<String>(
                               value: item,
@@ -179,7 +196,7 @@ class _LaporScreenState extends State<LaporScreen> {
                           }).toList(),
                           onChanged: (String? item) {
                             setState(() {
-                              selectedItem = item;
+                              selectedJenis = item;
                             }
                             );
                           },
@@ -633,7 +650,9 @@ class _LaporScreenState extends State<LaporScreen> {
                       ),
                       //WIDGET KIRIM
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          buatLaporan();
+                        },
                         child: SizedBox(
                           width: 145,
                           height: 30,
