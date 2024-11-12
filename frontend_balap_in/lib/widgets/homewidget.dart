@@ -22,114 +22,125 @@ class HomeWidget extends StatelessWidget {
         } else {
           List<Laporan> laporanList = snapshot.data!;
 
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: laporanList.length,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-            final laporan = laporanList[index];
+          return SizedBox(
+            width: 350,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: laporanList.length,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+              final laporan = laporanList[index];
 
-            Uint8List gambar = base64Decode(laporan.gambar);
+              Uint8List gambar = base64Decode(laporan.gambar);
+              final int idLaporan = laporan.idlaporan;
+              String jenislaporan = '';
             
-            String jenislaporan = '';
-
-            if (laporan.jenis == 'jalan') {
-              jenislaporan = "Jalan Rusak";
-            }else if(laporan.jenis == 'lampu_jalan') {
-              jenislaporan = "Lampu Jalan Rusak";
-            }else if(laporan.jenis == 'jembatan') {
-              jenislaporan = "Jembatan Rusak";
-            }
-
-            return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Container(
-              height: 115,
-              width: 340,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 250, 204, 204),
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: const [
-                    BoxShadow(
-                    offset: Offset(1.0, 5.0),
-                    blurRadius: 5.0, 
-                    color: Colors.black26, 
+              if (laporan.jenis == 'jalan') {
+                jenislaporan = "Jalan Rusak";
+              }else if(laporan.jenis == 'lampu_jalan') {
+                jenislaporan = "Lampu Jalan Rusak";
+              }else if(laporan.jenis == 'jembatan') {
+                jenislaporan = "Jembatan Rusak";
+              }
+            
+              return InkWell(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context, 
+                    '/isilapor',
+                    arguments: idLaporan);
+                },
+                child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Container(
+                  height: 115,
+                  width: 340,
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 250, 204, 204),
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: const [
+                        BoxShadow(
+                        offset: Offset(1.0, 5.0),
+                        blurRadius: 5.0, 
+                        color: Colors.black26, 
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start, 
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Container(
-                        width: 170,
-                        margin: const EdgeInsets.only(
-                          left: 10,
-                          top: 15,
-                        ),
-                        child: Text(
-                          laporan.judul,
-                          style: const TextStyle(
-                            fontSize: 8,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.bold,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start, 
+                        children: <Widget>[
+                          Container(
+                            width: 170,
+                            margin: const EdgeInsets.only(
+                              left: 10,
+                              top: 15,
+                            ),
+                            child: Text(
+                              laporan.judul,
+                              style: const TextStyle(
+                                fontSize: 8,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      Container(
-                        width: 170,
-                        margin: const EdgeInsets.only(
-                          left: 10,
-                          top: 5,
-                        ),
-                        child: Text(
-                          jenislaporan,
-                          style: const TextStyle(
-                            fontSize: 8,
-                            fontFamily: "Poppins",
+                          Container(
+                            width: 170,
+                            margin: const EdgeInsets.only(
+                              left: 10,
+                              top: 5,
+                            ),
+                            child: Text(
+                              jenislaporan,
+                              style: const TextStyle(
+                                fontSize: 8,
+                                fontFamily: "Poppins",
+                              ),
+                            ),
                           ),
-                        ),
+                          Container(
+                            width: 170,
+                            margin: const EdgeInsets.only(
+                              left: 10,
+                              top: 5,
+                            ),
+                            child: Text(
+                              laporan.peta.alamat,
+                              style: const TextStyle(
+                                fontSize: 8,
+                                fontFamily: "Poppins",
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      Container(
-                        width: 170,
-                        margin: const EdgeInsets.only(
-                          left: 10,
-                          top: 5,
-                        ),
-                        child: Text(
-                          laporan.peta.alamat,
-                          style: const TextStyle(
-                            fontSize: 8,
-                            fontFamily: "Poppins",
+                      SizedBox(
+                        child: Container(
+                          margin: const EdgeInsets.only(
+                            left: 1, 
+                            right: 5
+                            ),
+                          height: 100,
+                          width: 150,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: DecorationImage(
+                              image: MemoryImage(gambar),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(
-                    child: Container(
-                      margin: const EdgeInsets.only(
-                        left: 1, 
-                        right: 5
-                        ),
-                      height: 100,
-                      width: 150,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        image: DecorationImage(
-                          image: MemoryImage(gambar),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                            ),
+              );
+            }
             ),
-          );
-          }
           );
         }
         

@@ -1,12 +1,15 @@
+import 'package:balap_in/api/api_service_detail.dart';
 import 'package:flutter/material.dart';
 
 class IsilaporScreen extends StatelessWidget {
-  const IsilaporScreen({super.key});
+  final int? idLaporan;
+  const IsilaporScreen({Key? key, this.idLaporan}) : super(key: key);
 
+  
   @override
   Widget build(BuildContext context) {
-    final String idLaporan = ModalRoute.of(context)?.settings.arguments as String;
-
+    final apiService = DetailApiService();
+    final int id = idLaporan ?? ModalRoute.of(context)?.settings.arguments as int;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
