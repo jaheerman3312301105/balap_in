@@ -55,7 +55,7 @@ class ApiServiceLaporan {
       print(data);
 
       final response = await dio.post(
-        'http://10.0.2.2:8000/laporan/buat',
+        '/',
         data: data,
       );
 

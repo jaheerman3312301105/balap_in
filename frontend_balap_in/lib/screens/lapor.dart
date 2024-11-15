@@ -1,8 +1,10 @@
 import 'dart:ffi';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:balap_in/api/api_service_laporan.dart';
 import 'package:balap_in/models/model_laporan.dart';
+import 'package:image_picker/image_picker.dart';
 
 const List<String> jenis = <String>['Jalan', 'Lampu Jalan', 'Jembatan'];
 const List<String> cuaca = <String>['Hujan', 'Cerah'];
@@ -19,7 +21,7 @@ class LaporScreen extends StatefulWidget {
 }
 
 class _LaporScreenState extends State<LaporScreen> {
-  
+
   final TextEditingController judulController = TextEditingController();
   final TextEditingController deskripsiController = TextEditingController();
 
@@ -440,7 +442,34 @@ class _LaporScreenState extends State<LaporScreen> {
                               )
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                showCupertinoModalPopup(context: context, 
+                                builder: (BuildContext context) {
+                                  return CupertinoActionSheet(
+                                    title: const Text('Ambil Gambar',
+                                    style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.bold
+                                    ),),
+                                    actions: <CupertinoActionSheetAction>[
+                                      CupertinoActionSheetAction(
+                                        onPressed: (){}, 
+                                        child: Text('Kamera', 
+                                        style: TextStyle(
+                                          color: Colors.black.withOpacity(0.6),
+                                          fontFamily: "Poppins"
+                                        ),)),
+                                      CupertinoActionSheetAction(
+                                        onPressed: (){}, 
+                                        child: Text('Galeri', 
+                                        style: TextStyle(
+                                          color: Colors.black.withOpacity(0.6),
+                                          fontFamily: "Poppins"
+                                        ),))
+                                    ],
+                                  );
+                                });
+                              },
                               child: SizedBox(
                               width: 150,
                               height: 100,
