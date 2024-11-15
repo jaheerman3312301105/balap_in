@@ -5,6 +5,9 @@ from rest_framework.decorators import api_view
 from .serializers import LaporanSerializer
 from .models import Laporan 
 from rest_framework import status
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 

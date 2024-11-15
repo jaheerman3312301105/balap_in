@@ -3,8 +3,8 @@ from django.db import models
 # Create your models here.
 class Pengguna(models.Model): 
     id_pengguna = models.AutoField(primary_key=True)
-    nama = models.CharField(max_length=20, null=True, blank=True)
-    alamat = models.CharField(max_length=20, null=True, blank=True)
+    nama = models.CharField(max_length=40, null=True, blank=True)
+    alamat = models.CharField(max_length=40, null=True, blank=True)
 
     class Meta :
         db_table ='pengguna'
@@ -15,21 +15,21 @@ class Laporan(models.Model):
     id_peta = models.ForeignKey('Peta' , on_delete=models.CASCADE, null=True)
     gambar = models.BinaryField(null=True, blank=True)
     jenis = models.CharField(
-        max_length=20,
+        max_length=40,
         choices=[('jalan', 'Jalan'), ('lampu_jalan', 'Lampu Jalan'), ('jembatan', 'Jembatan')],
         null=True, blank=True
     )
-    judul = models.CharField(max_length=20, null=True, blank=True)
+    judul = models.CharField(max_length=40, null=True, blank=True)
     deskripsi = models.CharField(max_length=100, null=True, blank=True)
     persentase = models.FloatField(null=True, blank=True)
     cuaca = models.CharField(
-        max_length=20,
+        max_length=40,
         choices=[('hujan', 'Hujan'), ('cerah', 'Cerah')],
         null = True, blank=True
     )
     status = models.CharField(
-        max_length=20,
-        choices=[('selesai', 'Selesai'), ('draf', 'Draf')],
+        max_length=40,
+        choices=[('selesai', 'Selesai'), ('draft', 'Draft')],
         null=True, blank=True
     )
     tgl_lapor = models.DateTimeField(auto_now=True)
@@ -88,7 +88,7 @@ class Analisis(models.Model):
         null=True, blank=True
     )
     jenis_infrastruktur = models.CharField(
-        max_length=20,
+        max_length=40,
         choices=[('jalan', 'Jalan'), ('lampu_jalan', 'Lampu Jalan'), ('jembatan', 'Jembatan')],
         null=True, blank=True
     )

@@ -118,7 +118,7 @@ class IsilaporScreen extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Text(
-                              laporan.judul,
+                              laporan.deskripsi,
                               style: const TextStyle(
                                 fontFamily: 'Poppins', 
                                 fontSize: 20,

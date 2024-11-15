@@ -9,7 +9,6 @@ const List<String> cuaca = <String>['Hujan', 'Cerah'];
 
 String? selectedJenis = 'Jalan'; 
 String? selectedCuaca = 'Hujan';
-
 double _currentSliderValue = 0;
 
 class LaporScreen extends StatefulWidget {
@@ -20,7 +19,9 @@ class LaporScreen extends StatefulWidget {
 }
 
 class _LaporScreenState extends State<LaporScreen> {
+  
   final TextEditingController judulController = TextEditingController();
+  final TextEditingController deskripsiController = TextEditingController();
 
   @override
   void dispose() {
@@ -28,9 +29,10 @@ class _LaporScreenState extends State<LaporScreen> {
     super.dispose();
   }
 
-  void buatLaporan() {
+  void buatLaporan(String status) {
+    
     ApiServiceLaporan apiService = ApiServiceLaporan();
-    apiService.buatLaporan(judulController.text, selectedJenis!);
+    apiService.buatLaporan(judulController.text, selectedJenis!, deskripsiController.text, status, _currentSliderValue, selectedCuaca);
   }
 
   Widget build(BuildContext context) {
@@ -244,14 +246,15 @@ class _LaporScreenState extends State<LaporScreen> {
                       padding: const EdgeInsets.only(
                         top: 12,
                         right: 2),
-                      child: const TextField(
-                        style: TextStyle(
+                      child: TextField(
+                        controller: deskripsiController,
+                        style: const TextStyle(
                           fontFamily: "Poppins",
                           fontSize: 12,
                         ),
                         cursorHeight: 14,
                         maxLines: 6,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Entah sudah selasa yang keberapa masih saja jalan itu rusak',
                           hintStyle: TextStyle(
@@ -614,7 +617,9 @@ class _LaporScreenState extends State<LaporScreen> {
                     children: [
                       //WIDGET DRAFT
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          buatLaporan('draft');
+                        },
                         child: SizedBox(
                           width: 145,
                           height: 30,
@@ -651,7 +656,7 @@ class _LaporScreenState extends State<LaporScreen> {
                       //WIDGET KIRIM
                       InkWell(
                         onTap: () {
-                          buatLaporan();
+                          buatLaporan('selesai');
                         },
                         child: SizedBox(
                           width: 145,
