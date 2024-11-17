@@ -30,7 +30,7 @@ class IsilaporScreen extends StatelessWidget {
               
               String formattedDate = DateFormat('dd MMMM yyyy').format(tgllaporformat);
               
-              Uint8List gambar = base64Decode(laporan.gambar);
+              Uint8List gambar = base64Decode(laporan.gambar!);
 
               return MaterialApp(
               debugShowCheckedModeBanner: false,
@@ -47,7 +47,7 @@ class IsilaporScreen extends StatelessWidget {
                         left:
                             -8.0), 
                     child: Text(
-                      laporan.judul,
+                      laporan.judul!,
                       style: const TextStyle(
                         fontFamily: 'Poppins', 
                         fontWeight: FontWeight.bold,
@@ -118,7 +118,7 @@ class IsilaporScreen extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Text(
-                              laporan.deskripsi,
+                              laporan.deskripsi!,
                               style: const TextStyle(
                                 fontFamily: 'Poppins', 
                                 fontSize: 20,
@@ -130,7 +130,7 @@ class IsilaporScreen extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Text(
-                              laporan.peta.alamat,
+                              laporan.peta!.alamat,
                               style: const TextStyle(
                                 fontFamily: 'Poppins', 
                                 fontSize: 16,

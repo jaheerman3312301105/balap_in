@@ -17,11 +17,11 @@ class HomeWidget extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator(),);
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+        } else if (snapshot.data!.length == 0) {
           return const Center(child: Text('Tidak ada laporan'),);
         } else {
           List<Laporan> laporanList = snapshot.data!;
-
+          
           return SizedBox(
             width: 350,
             child: ListView.builder(
@@ -31,7 +31,8 @@ class HomeWidget extends StatelessWidget {
               itemBuilder: (context, index) {
               final laporan = laporanList[index];
 
-              Uint8List gambar = base64Decode(laporan.gambar);
+              if (laporan.status == 'selesai') {
+                Uint8List gambar = base64Decode(laporan.gambar!);
               final int idLaporan = laporan.idlaporan;
               String jenislaporan = '';
             
@@ -79,7 +80,7 @@ class HomeWidget extends StatelessWidget {
                               top: 15,
                             ),
                             child: Text(
-                              laporan.judul,
+                              laporan.judul!,
                               style: const TextStyle(
                                 fontSize: 8,
                                 fontFamily: "Poppins",
@@ -108,7 +109,7 @@ class HomeWidget extends StatelessWidget {
                               top: 5,
                             ),
                             child: Text(
-                              laporan.peta.alamat,
+                              laporan.peta!.alamat,
                               style: const TextStyle(
                                 fontSize: 8,
                                 fontFamily: "Poppins",
@@ -139,7 +140,10 @@ class HomeWidget extends StatelessWidget {
                 ),
                 ),
               );
-            }
+              } else {
+                return SizedBox.shrink();
+              }
+            } 
             ),
           );
         }

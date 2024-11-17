@@ -1,9 +1,10 @@
-import 'dart:ffi';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:balap_in/api/api_service_laporan.dart';
-import 'package:balap_in/models/model_laporan.dart';
 import 'package:image_picker/image_picker.dart';
 
 const List<String> jenis = <String>['Jalan', 'Lampu Jalan', 'Jembatan'];
@@ -21,6 +22,7 @@ class LaporScreen extends StatefulWidget {
 }
 
 class _LaporScreenState extends State<LaporScreen> {
+  final ImagePicker picker = ImagePicker();
 
   final TextEditingController judulController = TextEditingController();
   final TextEditingController deskripsiController = TextEditingController();
@@ -31,13 +33,46 @@ class _LaporScreenState extends State<LaporScreen> {
     super.dispose();
   }
 
+  File? gambar;
+  Uint8List? gambarBlob;
+  String? gambarfix;
+
+  Future<Uint8List?> gambarBytes(File file) async{
+    return await file.readAsBytes();
+  }
+
+  Future getImageGallery() async{
+    final pickedGallery = await picker.pickImage(source: ImageSource.gallery);
+    setState(() async{
+      if (pickedGallery != null){
+        gambar = File(pickedGallery.path);
+        gambarBlob = await gambarBytes(gambar!);
+        setState(() {
+          gambarfix = base64Encode(gambarBlob!);
+        });
+      }
+    });
+  }
+  
+
+  Future getImageCamera() async{
+    final pickedCamera = await picker.pickImage(source: ImageSource.camera);
+  }
+  
+
   void buatLaporan(String status) {
     
     ApiServiceLaporan apiService = ApiServiceLaporan();
-    apiService.buatLaporan(judulController.text, selectedJenis!, deskripsiController.text, status, _currentSliderValue, selectedCuaca);
+    apiService.buatLaporan(judulController.text, selectedJenis!, deskripsiController.text, status, _currentSliderValue, selectedCuaca, gambarBlob!);
   }
 
   Widget build(BuildContext context) {
+    ImageProvider previewGambar;
+    if (gambarBlob != null) {
+      previewGambar = MemoryImage(gambarBlob!);
+    } else {
+      previewGambar = const AssetImage('assets/images/gambar.png');
+    }
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
@@ -453,14 +488,18 @@ class _LaporScreenState extends State<LaporScreen> {
                                     ),),
                                     actions: <CupertinoActionSheetAction>[
                                       CupertinoActionSheetAction(
-                                        onPressed: (){}, 
+                                        onPressed: (){
+                                         getImageCamera();
+                                        }, 
                                         child: Text('Kamera', 
                                         style: TextStyle(
                                           color: Colors.black.withOpacity(0.6),
                                           fontFamily: "Poppins"
                                         ),)),
                                       CupertinoActionSheetAction(
-                                        onPressed: (){}, 
+                                        onPressed: (){
+                                          getImageGallery();
+                                        }, 
                                         child: Text('Galeri', 
                                         style: TextStyle(
                                           color: Colors.black.withOpacity(0.6),
@@ -485,17 +524,17 @@ class _LaporScreenState extends State<LaporScreen> {
                                     ),
                                   ],
                                 ),
-                                child: const Column(
+                                child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SizedBox(
                                       width: 85,
                                       height: 70,
                                       child: Image(
-                                        image: AssetImage('assets/images/gambar.png'),
+                                        image: previewGambar,
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       child: Text(
                                         'Ambil gambar dari kamera atau galeri',
                                         style: TextStyle(

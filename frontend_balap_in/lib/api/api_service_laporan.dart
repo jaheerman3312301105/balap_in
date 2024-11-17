@@ -1,8 +1,7 @@
-import 'package:balap_in/screens/lapor.dart';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import '../models/model_laporan.dart';  
-
-
 
 class ApiServiceLaporan {
   final dio = Dio();
@@ -21,7 +20,7 @@ class ApiServiceLaporan {
     }
   }
 
-  Future<void> buatLaporan(String judul, jenis, deskripsi, status, persentase, cuaca) async {
+  Future<void> buatLaporan(String judul, jenis, deskripsi, status, persentase, cuaca, gambarBlob) async {
     if (jenis == 'Jalan') {
       jenis = 'jalan';
     } else if (jenis == 'Lampu Jalan') {
@@ -39,24 +38,27 @@ class ApiServiceLaporan {
     }
 
     try {
-      final data = {
-        "gambar": null,
-        "jenis": jenis,
-        "judul": judul,
-        "deskripsi": deskripsi,
-        "persentase": persentase,
-        "cuaca": cuaca,
-        "status": status,
-        "tingkat_urgent": null,
-        "id_pengguna": null,
-        "id_peta": null,
-    };
+       FormData data = FormData.fromMap({
+      "gambar": MultipartFile.fromBytes(gambarBlob, filename: 'image.png'), 
+      "jenis": jenis,
+      "judul": judul,
+      "deskripsi": deskripsi,
+      "persentase": persentase,
+      "cuaca": cuaca,
+      "status": status,
+      "tingkat_urgent": null,
+      "id_pengguna": null,
+      "id_peta": null,
+    });
 
-      print(data);
+      print('Panjang gambar: ${gambarBlob.length}');
 
       final response = await dio.post(
-        '/',
+        'http://10.0.2.2:8000/laporan/buat',
         data: data,
+        options: Options(
+          headers: {"Content-Type": "multipart/form-data"}
+        )
       );
 
       if (response.statusCode == 201) {

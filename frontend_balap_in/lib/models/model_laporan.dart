@@ -3,16 +3,16 @@ import 'model_peta.dart';
 class Laporan {
   
   final int idlaporan;
-  final String gambar;
-  final String jenis; 
-  final String judul;     
-  final String deskripsi;
-  final double persentase;
-  final String cuaca;  
+  final String? gambar;
+  final String? jenis; 
+  final String? judul;     
+  final String? deskripsi;
+  final double? persentase;
+  final String? cuaca;  
   final String status;   
   final String tgllapor;
-  final num tingkaturgent;
-  final Peta peta;
+  final num? tingkaturgent;
+  final Peta? peta;
 
 
   Laporan({

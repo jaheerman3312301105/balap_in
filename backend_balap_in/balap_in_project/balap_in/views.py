@@ -6,6 +6,8 @@ from .serializers import LaporanSerializer
 from .models import Laporan 
 from rest_framework import status
 import logging
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.decorators import api_view, parser_classes
 
 logger = logging.getLogger(__name__)
 
@@ -20,14 +22,30 @@ def getLaporan(request):
     else:
         print('NOT ALLOWED')
 
-@api_view(['POST'])   
+@api_view(['POST'])  
+@parser_classes([MultiPartParser, FormParser])  
 def createLaporan(request):
     if request.method == 'POST':
-        serializer = LaporanSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        gambar_file = request.FILES.get('gambar')  
+        
+        if gambar_file:
+            gambar_biner = gambar_file.read()  
+            
+            laporan = Laporan(
+                gambar=gambar_biner, 
+                jenis=request.data.get('jenis'),
+                judul=request.data.get('judul'),
+                deskripsi=request.data.get('deskripsi'),
+                persentase=request.data.get('persentase'),
+                cuaca=request.data.get('cuaca'),
+                status=request.data.get('status'),
+                
+            )
+            
+            laporan.save()
+            return Response({"message": "Laporan berhasil dibuat"}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "Gambar tidak ditemukan"}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def detailLaporan(request, id_laporan):
