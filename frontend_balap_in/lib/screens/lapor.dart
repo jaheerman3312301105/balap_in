@@ -57,6 +57,15 @@ class _LaporScreenState extends State<LaporScreen> {
 
   Future getImageCamera() async{
     final pickedCamera = await picker.pickImage(source: ImageSource.camera);
+    setState(() async{
+      if (pickedCamera != null){
+        gambar = File(pickedCamera.path);
+        gambarBlob = await gambarBytes(gambar!);
+        setState(() {
+          gambarfix = base64Encode(gambarBlob!);
+        });
+      }
+    });
   }
   
 

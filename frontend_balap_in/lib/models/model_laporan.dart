@@ -41,7 +41,7 @@ class Laporan {
       status: json['status'],
       tgllapor: json['tgl_lapor'],
       tingkaturgent: json['tingkat_urgent'],
-      peta: Peta.fromJson(json['id_peta'])
+      peta: json['id_peta'] != null ? Peta.fromJson(json['id_peta']) : null,
     );
   }
 }
