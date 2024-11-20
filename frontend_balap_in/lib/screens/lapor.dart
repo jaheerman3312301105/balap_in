@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:balap_in/widgets/pickermap.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -30,9 +31,10 @@ class _LaporScreenState extends State<LaporScreen> {
   @override
   void dispose() {
     judulController.dispose();
+    deskripsiController.dispose();
     super.dispose();
   }
-
+  
   File? gambar;
   Uint8List? gambarBlob;
   String? gambarfix;
@@ -54,6 +56,7 @@ class _LaporScreenState extends State<LaporScreen> {
     });
   }
   
+  
 
   Future getImageCamera() async{
     final pickedCamera = await picker.pickImage(source: ImageSource.camera);
@@ -67,7 +70,7 @@ class _LaporScreenState extends State<LaporScreen> {
       }
     });
   }
-  
+ 
 
   void buatLaporan(String status) {
     
@@ -564,69 +567,7 @@ class _LaporScreenState extends State<LaporScreen> {
                       const SizedBox(width: 50),
         
                        //KODE WIDGET LOKASI MANUAL
-                      SizedBox(
-                        width: 150,
-                        height: 130,
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              width: 100,
-                              height: 30,
-                              child: Center(
-                                child: Text(
-                                      'Lokasi',
-                                      style: TextStyle(
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10,
-                                      ),
-                                    ),
-                              )
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: SizedBox(
-                              width: 150,
-                              height: 100,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: const Color.fromARGB(255, 230, 228, 228),
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.2),
-                                      blurRadius: 4,
-                                      offset: const Offset(1, 5),
-                                    ),
-                                  ],
-                                ),
-                                child: const Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 85,
-                                      height: 70,
-                                      child: Image(
-                                        image: AssetImage('assets/images/petainput.png'),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      child: Text(
-                                        'Atur Lokasi',
-                                        style: TextStyle(
-                                          fontFamily: "Poppins",
-                                          fontSize: 6,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      const WidgetMapPicker()
                     ],
                   ),
                   ),
@@ -702,7 +643,7 @@ class _LaporScreenState extends State<LaporScreen> {
                           height: 30,
                           child: Container(
                             decoration: BoxDecoration(
-                                    color: const Color.fromARGB(113, 15, 15, 15),
+                                    color: const Color.fromARGB(110, 109, 109, 109),
                                     borderRadius: BorderRadius.circular(5),
                                     boxShadow: [
                                       BoxShadow(

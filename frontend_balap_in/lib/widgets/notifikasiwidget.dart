@@ -105,7 +105,7 @@ class _WidgetNotificationState extends State<WidgetNotification> {
                             ),
                           ),
                         ),
-
+                        
                         Padding(
                           padding: const EdgeInsets.only(
                             top: 1
