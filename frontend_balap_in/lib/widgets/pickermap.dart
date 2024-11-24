@@ -1,21 +1,42 @@
+import 'package:balap_in/api/api_service_mappicker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class WidgetMapPicker extends StatefulWidget {
-  const WidgetMapPicker({super.key});
+  final Function(GeoPoint) onLocationPicked;
+  const WidgetMapPicker({
+    Key? key,
+    required this.onLocationPicked,
+  }) : super(key: key);
+
 
   @override
-  _WidgetMapPickerState createState() => _WidgetMapPickerState();
+  WidgetMapPickerState createState() => WidgetMapPickerState();
 }
 
-class _WidgetMapPickerState extends State<WidgetMapPicker> {
+  ApiServiceMappicker getGeo = ApiServiceMappicker();
+  
+class WidgetMapPickerState extends State<WidgetMapPicker> {
 
+  GeoPoint? pickedLocation;
+  
     PickerMapController controllerMap = PickerMapController(
-      initPosition: GeoPoint(
-        latitude: 1.10329, 
-        longitude: 104.03512)
+      // initPosition: GeoPoint(
+      //   latitude: 1.10329, 
+      //   longitude: 104.03512),
+      
+      initMapWithUserPosition: const UserTrackingOption(
+        enableTracking: true,
+        unFollowUser: true
+      ),
     );
- 
+
+    @override
+    void dispose() {
+      controllerMap.dispose();
+      super.dispose();
+    }
+
     Future<void> mapPicker() async{
       showDialog(
         barrierDismissible: true,
@@ -86,9 +107,15 @@ class _WidgetMapPickerState extends State<WidgetMapPicker> {
                               ),
                             ),
                             InkWell(
-                              onTap: () {
+                              onTap: () async {
+                                final geoPoint = await controllerMap.selectAdvancedPositionPicker();
+                                pickedLocation = geoPoint;
+                                widget.onLocationPicked(geoPoint); 
                                 setState(() {
-                                  
+                                  // print(pickedLocation);
+                                  if (pickedLocation != null) {
+                                    Navigator.pop(context);
+                                  }
                                 });
                               },
                               child: Container(
@@ -123,7 +150,7 @@ class _WidgetMapPickerState extends State<WidgetMapPicker> {
                   zoomOption: ZoomOption(
                     initZoom: 15,
                     stepZoom: 11
-                    )
+                    ),
                   ),
                ),
             )
@@ -183,7 +210,7 @@ class _WidgetMapPickerState extends State<WidgetMapPicker> {
                                     ),
                                     SizedBox(
                                       child: Text(
-                                        'Atur Lokasi',
+                                        'Alamat',
                                         style: TextStyle(
                                           fontFamily: "Poppins",
                                           fontSize: 6,

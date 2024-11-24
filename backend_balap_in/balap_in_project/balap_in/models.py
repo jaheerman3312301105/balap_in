@@ -12,7 +12,7 @@ class Pengguna(models.Model):
 class Laporan(models.Model):
     id_laporan = models.AutoField(primary_key=True)
     id_pengguna = models.ForeignKey(Pengguna, on_delete=models.CASCADE)
-    id_peta = models.ForeignKey('Peta' , on_delete=models.CASCADE, null=True)
+    id_peta = models.OneToOneField('Peta' , on_delete=models.CASCADE, related_name='peta',null=True, blank=True)
     gambar = models.BinaryField(null=True, blank=True)
     jenis = models.CharField(
         max_length=40,
@@ -44,7 +44,7 @@ class Laporan(models.Model):
 
 class Peta(models.Model):
     id_peta = models.AutoField(primary_key=True)
-    id_laporan = models.ForeignKey(Laporan, on_delete=models.CASCADE)
+    id_laporan = models.OneToOneField(Laporan, on_delete=models.CASCADE, related_name='laporan', null=True, blank=True)
     alamat = models.CharField(
         max_length=255,
         null=True, blank=True

@@ -1,3 +1,4 @@
+import 'package:balap_in/api/api_service_mappicker.dart';
 import 'package:dio/dio.dart';
 import '../models/model_laporan.dart';  
 
@@ -18,7 +19,9 @@ class ApiServiceLaporan {
     }
   }
 
-  Future<void> buatLaporan(String judul, jenis, deskripsi, status, persentase, cuaca, gambarBlob) async {
+  Future<void> buatLaporan(String judul, jenis, deskripsi, status, persentase, cuaca, gambarBlob, pickedLocation) async {
+
+    
     if (jenis == 'Jalan') {
       jenis = 'jalan';
     } else if (jenis == 'Lampu Jalan') {
@@ -34,7 +37,10 @@ class ApiServiceLaporan {
     } else if (cuaca == 'Hujan') {
       cuaca = 'hujan';
     }
-
+  
+    ApiServiceMappicker apiMap = ApiServiceMappicker();
+    Map locationData = await apiMap.buatPeta(pickedLocation);
+    
     try {
        FormData data = FormData.fromMap({
       "gambar": MultipartFile.fromBytes(gambarBlob, filename: 'image.png'), 
@@ -46,8 +52,13 @@ class ApiServiceLaporan {
       "status": status,
       "tingkat_urgent": null,
       "id_pengguna": null,
-      "id_peta": null,
+      "alamat": locationData['alamat'],
+      "jalan": locationData['jalan'],
+      "latitude": locationData['latitude'],
+      "longitude": locationData['longitude'],
     });
+
+      print(data.fields);
 
       print('Panjang gambar: ${gambarBlob.length}');
 

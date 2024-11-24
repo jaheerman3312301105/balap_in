@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:balap_in/api/api_service_mappicker.dart';
 import 'package:balap_in/widgets/pickermap.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:balap_in/api/api_service_laporan.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:image_picker/image_picker.dart';
 
 const List<String> jenis = <String>['Jalan', 'Lampu Jalan', 'Jembatan'];
@@ -17,14 +19,14 @@ double _currentSliderValue = 0;
 
 class LaporScreen extends StatefulWidget {
   const LaporScreen({super.key});
-
+  
   @override
   _LaporScreenState createState() => _LaporScreenState();
 }
 
 class _LaporScreenState extends State<LaporScreen> {
   final ImagePicker picker = ImagePicker();
-
+  final GlobalKey<WidgetMapPickerState> mapPickerKey = GlobalKey();
   final TextEditingController judulController = TextEditingController();
   final TextEditingController deskripsiController = TextEditingController();
 
@@ -38,6 +40,7 @@ class _LaporScreenState extends State<LaporScreen> {
   File? gambar;
   Uint8List? gambarBlob;
   String? gambarfix;
+  GeoPoint? pickedLocation;
 
   Future<Uint8List?> gambarBytes(File file) async{
     return await file.readAsBytes();
@@ -56,7 +59,11 @@ class _LaporScreenState extends State<LaporScreen> {
     });
   }
   
-  
+  void handleLocationPicked(GeoPoint location) {
+    setState(() {
+      pickedLocation = location;
+    });
+  }
 
   Future getImageCamera() async{
     final pickedCamera = await picker.pickImage(source: ImageSource.camera);
@@ -75,7 +82,7 @@ class _LaporScreenState extends State<LaporScreen> {
   void buatLaporan(String status) {
     
     ApiServiceLaporan apiService = ApiServiceLaporan();
-    apiService.buatLaporan(judulController.text, selectedJenis!, deskripsiController.text, status, _currentSliderValue, selectedCuaca, gambarBlob!);
+    apiService.buatLaporan(judulController.text, selectedJenis!, deskripsiController.text, status, _currentSliderValue, selectedCuaca, gambarBlob!, pickedLocation!);
   }
 
   Widget build(BuildContext context) {
@@ -567,7 +574,9 @@ class _LaporScreenState extends State<LaporScreen> {
                       const SizedBox(width: 50),
         
                        //KODE WIDGET LOKASI MANUAL
-                      const WidgetMapPicker()
+                      WidgetMapPicker(
+                        onLocationPicked: handleLocationPicked,
+                      )
                     ],
                   ),
                   ),

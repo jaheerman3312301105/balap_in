@@ -1,3 +1,4 @@
+import 'package:balap_in/widgets/dynamicmap.dart';
 import 'package:flutter/material.dart';
 import 'package:balap_in/widgets/homewidget.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
@@ -87,38 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
       body: Column(
         children: <Widget>[
-          Container(
-            height: 150,
-            width: 410,
-            margin: const EdgeInsets.only(
-              top: 10,
-              bottom: 20,
-            ),
-            decoration: const BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(-4.0, 5.0),
-                  blurRadius: 5.0,
-                )
-              ],
-            ),
-            child: OSMViewer(
-                controller: SimpleMapController(
-                  initPosition: GeoPoint(
-                    latitude: 1.118512,
-                    longitude: 104.048477,
-                  ),
-                  markerHome: const MarkerIcon(
-                    icon: Icon(Icons.home),
-                  ),
-                ),
-                zoomOption: const ZoomOption(
-                  initZoom: 11,
-                  minZoomLevel: 10,
-                ),
-              ),
-            ),
+          //WIDGET MAP 
+          const Dynamicmap(),
 
           Expanded(
             child: SingleChildScrollView(

@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from .serializers import LaporanSerializer
 from .models import Laporan 
+from .models import Peta
 from rest_framework import status
 import logging
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -31,21 +32,34 @@ def createLaporan(request):
         if gambar_file:
             gambar_biner = gambar_file.read()  
             
-            laporan = Laporan(
-                gambar=gambar_biner, 
-                jenis=request.data.get('jenis'),
-                judul=request.data.get('judul'),
-                deskripsi=request.data.get('deskripsi'),
-                persentase=request.data.get('persentase'),
-                cuaca=request.data.get('cuaca'),
-                status=request.data.get('status'),
-                
-            )
+            try:
+                peta = Peta.objects.create(
+                    alamat=request.data.get('alamat'),
+                    jalan=request.data.get('jalan'),
+                    latitude=request.data.get('latitude'),
+                    longitude=request.data.get('longitude'),
+                )
+                 
+                laporan = Laporan.objects.create(
+                    gambar=gambar_biner, 
+                    jenis=request.data.get('jenis'),
+                    judul=request.data.get('judul'),
+                    deskripsi=request.data.get('deskripsi'),
+                    persentase=request.data.get('persentase'),
+                    cuaca=request.data.get('cuaca'),
+                    status=request.data.get('status'),
+                )
             
-            laporan.save()
+                peta.id_laporan = laporan
+                laporan.id_peta = peta
+                peta.save()
+
+            except Exception as e:
+                logger.error(f"Error:{e}")
+            
             return Response({"message": "Laporan berhasil dibuat"}, status=status.HTTP_201_CREATED)
-        else:
-            return Response({"error": "Gambar tidak ditemukan"}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({"error": "Gambar tidak ditemukan"}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def detailLaporan(request, id_laporan):
