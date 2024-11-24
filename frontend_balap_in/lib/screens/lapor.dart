@@ -41,6 +41,7 @@ class _LaporScreenState extends State<LaporScreen> {
   Uint8List? gambarBlob;
   String? gambarfix;
   GeoPoint? pickedLocation;
+  String? lokasiAlamat;
 
   Future<Uint8List?> gambarBytes(File file) async{
     return await file.readAsBytes();
@@ -59,11 +60,19 @@ class _LaporScreenState extends State<LaporScreen> {
     });
   }
   
-  void handleLocationPicked(GeoPoint location) {
+  void handleLocationPicked(GeoPoint location) async {
     setState(() {
       pickedLocation = location;
     });
+
+    ApiServiceMappicker apiMap = ApiServiceMappicker();
+    Map locationData = await apiMap.buatPeta(pickedLocation);
+
+    setState(() {
+      lokasiAlamat = locationData['alamat'];
+    }); 
   }
+
 
   Future getImageCamera() async{
     final pickedCamera = await picker.pickImage(source: ImageSource.camera);
@@ -86,6 +95,13 @@ class _LaporScreenState extends State<LaporScreen> {
   }
 
   Widget build(BuildContext context) {
+
+    if (lokasiAlamat == null) {
+      lokasiAlamat = 'Pilih Lokasi';
+    } else {
+      lokasiAlamat = lokasiAlamat;
+    }
+    
     ImageProvider previewGambar;
     if (gambarBlob != null) {
       previewGambar = MemoryImage(gambarBlob!);
@@ -615,12 +631,12 @@ class _LaporScreenState extends State<LaporScreen> {
                           ),
                         ],
                       ),
-                      child: const TextField(
+                      child: TextField(
                         readOnly: true,
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Jl. Sudirman No.3, Sukajadi, Kec. Batam Kota, Kota Batam, Kepulauan Riau 29432',
-                          hintStyle: TextStyle(
+                          hintText: '$lokasiAlamat',
+                          hintStyle: const TextStyle(
                             fontFamily: "Poppins",
                             fontSize: 10,
                           ),
