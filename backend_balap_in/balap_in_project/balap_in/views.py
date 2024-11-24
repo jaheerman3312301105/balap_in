@@ -53,6 +53,7 @@ def createLaporan(request):
                 peta.id_laporan = laporan
                 laporan.id_peta = peta
                 peta.save()
+                laporan.save()
 
             except Exception as e:
                 logger.error(f"Error:{e}")
