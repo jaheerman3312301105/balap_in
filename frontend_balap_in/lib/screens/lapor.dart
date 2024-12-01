@@ -47,6 +47,83 @@ class _LaporScreenState extends State<LaporScreen> {
     return await file.readAsBytes();
   }
 
+  Future getAutoLoc() async {
+    PickerMapController controllerMapAuto = PickerMapController(
+      initMapWithUserPosition: const UserTrackingOption(
+        enableTracking: true
+      )
+    );
+
+    showDialog(
+      barrierDismissible: false,
+      context: context, 
+      builder: (BuildContext context){        
+        Future.delayed(const Duration(seconds: 1),() async{
+        if(Navigator.of(context).canPop()) {;
+          Future.delayed(const Duration(seconds:  3),() async {
+            final geoPoint = await controllerMapAuto.selectAdvancedPositionPicker();
+            pickedLocation = geoPoint;
+            ApiServiceMappicker apiMap = ApiServiceMappicker();
+            Map locationData = await apiMap.buatPeta(pickedLocation);
+
+            setState(() {
+              lokasiAlamat = locationData['alamat'];
+            }); 
+            Navigator.of(context).pop();
+          });
+        }
+        });
+        
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20)
+          ),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: MediaQuery.of(context).size.height * 0.085,
+            child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Stack(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.1,
+                        height: MediaQuery.of(context).size.height * 0.1,
+                        child: CustomPickerLocation(
+                          showDefaultMarkerPickWidget: true,
+                          controller: controllerMapAuto,
+                          pickerConfig: const CustomPickerLocationConfig(
+                            zoomOption: ZoomOption(
+                              initZoom: 15,
+                              stepZoom: 11
+                              )
+                            ),
+                          ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 1,
+                        height: MediaQuery.of(context).size.height * 1,
+                        color: Colors.white,
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('LOKASI TELAH DIPILIH SECARA OTOMATIS',
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.bold
+                            ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ]
+                  )
+            )
+          ),
+        );
+      });
+    
+  }
+
   Future getImageGallery() async{
     final pickedGallery = await picker.pickImage(source: ImageSource.gallery);
     setState(() async{
@@ -82,6 +159,7 @@ class _LaporScreenState extends State<LaporScreen> {
         gambarBlob = await gambarBytes(gambar!);
         setState(() {
           gambarfix = base64Encode(gambarBlob!);
+          getAutoLoc();
         });
       }
     });
@@ -662,6 +740,7 @@ class _LaporScreenState extends State<LaporScreen> {
                       InkWell(
                         onTap: () {
                           buatLaporan('draft');
+                          // buatLaporan('draft');
                         },
                         child: SizedBox(
                           width: 145,
