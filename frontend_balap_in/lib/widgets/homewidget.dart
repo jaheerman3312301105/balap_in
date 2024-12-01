@@ -27,6 +27,7 @@ class HomeWidget extends StatelessWidget {
           return SizedBox(
             width: 350,
             child: ListView.builder(
+              padding: EdgeInsets.zero,
               shrinkWrap: true,
               itemCount: laporanList.length,
               physics: const NeverScrollableScrollPhysics(),
