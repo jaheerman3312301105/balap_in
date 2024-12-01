@@ -5,9 +5,28 @@ import '../models/model_laporan.dart';
 class ApiServiceLaporan {
   final dio = Dio();
 
-  Future<List<Laporan>>fetchLaporan() async {
+  Future<List<Laporan>>fetchLaporan(selectedChipAnalisisIndex) async {
+     String period;
+
+    switch (selectedChipAnalisisIndex) {
+      case 0:
+        period = 'last_week';
+        break;
+      case 1:
+        period = 'last_month';
+        break;
+      case 2:
+        period = 'last_year';
+        break;
+      case 3:
+        period = 'all';
+        break;
+      default:
+        period = 'all';
+    }
+    
     try {
-      Response response = await dio.get('http://10.0.2.2:8000/laporan/');
+      Response response = await dio.get('http://10.0.2.2:8000/laporan/?period=$period&status=selesai');
       if (response.statusCode == 200) {
         List data = response.data;
         return data.map((json) => Laporan.fromJson(json)).toList();

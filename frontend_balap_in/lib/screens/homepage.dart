@@ -1,3 +1,4 @@
+import 'package:balap_in/api/api_service_laporan.dart';
 import 'package:balap_in/widgets/dynamicmap.dart';
 import 'package:flutter/material.dart';
 import 'package:balap_in/widgets/homewidget.dart';
@@ -19,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 } 
   
 class _HomeScreenState extends State<HomeScreen> {
+  final TextEditingController searchController = TextEditingController();
   
   
   @override
@@ -113,19 +115,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ],
                         ),
-                        child: const SizedBox(
+                        child: SizedBox(
                         width: 340,
                         height: 45,
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: TextField(
-                            style: TextStyle(
+                            controller: searchController,
+                            style: const TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 11
                             ),
                             cursorColor: Colors.black,
                             cursorHeight: 20,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
                               border: OutlineInputBorder(
@@ -479,7 +482,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
 
                     //TAMPILAN ANALISIS
-                    const SizedBox(
+                    FutureBuilder(
+                      future: ApiServiceLaporan().fetchLaporan(selectedChipAnalisisIndex), 
+                      builder: (context, snapshot) {
+                        List laporanList = snapshot.data!;
+
+                        return SizedBox(
                         height: 50,
                         width: 250,
                         child: Row(
@@ -491,7 +499,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Jumlah Laporan',
                                     style: TextStyle(
                                       fontFamily: "Poppins",
@@ -500,8 +508,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   Text(
-                                    '1609',
-                                    style: TextStyle(
+                                    laporanList.length.toString(),
+                                    style: const TextStyle(
                                       fontFamily: "Poppins",
                                       fontWeight: FontWeight.bold,
                                       fontSize: 15,
@@ -510,7 +518,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ],
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                               height: 40,
                               child: Column(
@@ -525,7 +533,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ],
                               ),
                             ),
-                            SizedBox(
+                           const SizedBox(
                               width: 120,
                               height: 40,
                               child: Column(
@@ -558,10 +566,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ],
                         ),
+                      );
+                      }
                       ),
                     
                     //LIST LAPORAN PALING BAWAH
-                    const HomeWidget()
+                    HomeWidget(selectedChipAnalisisIndex: selectedChipAnalisisIndex,)
 
                   ],
                 ),
@@ -573,17 +583,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-class Analisis {
-  final String? periode;
-  final String? hasil;
-  Analisis({this.periode, this.hasil});
-}
-
-List<Analisis> userList = [
-  Analisis(periode: "Sebulan terakhir", hasil: ""),
-  Analisis(periode: "Duabulan terakhir ", hasil: ""),
-  Analisis(periode: "Tigabulan terakhir ", hasil: ""),
-  Analisis(periode: "Setahun terakhir ", hasil: ""),
-];
-

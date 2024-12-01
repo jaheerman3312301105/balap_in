@@ -9,19 +9,53 @@ from rest_framework import status
 import logging
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.decorators import api_view, parser_classes
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+from rest_framework import status
+from datetime import timedelta, datetime
+from django.utils.timezone import now
+from django.db.models import Q
 
 logger = logging.getLogger(__name__)
-
 # Create your views here.
-
 @api_view(['GET'])
 def getLaporan(request):
+
     if request.method == 'GET':
-        laporan = Laporan.objects.all()
+        
+        period = request.query_params.get('period', 'all') 
+        status_filter = request.query_params.get('status', None)
+        search_query = request.query_params.get('search', '')
+
+        laporan = Laporan.objects.all().select_related('id_peta')
+
+        current_time = now()
+        if period == 'last_week':
+            start_date = current_time - timedelta(weeks=1)
+            laporan = laporan.filter(tgl_lapor__gte=start_date)
+        elif period == 'last_month':
+            start_date = current_time - timedelta(days=30)
+            laporan = laporan.filter(tgl_lapor__gte=start_date)
+        elif period == 'last_year':
+            start_date = current_time - timedelta(days=365)
+            laporan = laporan.filter(tgl_lapor__gte=start_date)
+
+        if status:
+            laporan = laporan.filter(status=status_filter)
+
+        if search_query:
+            laporan = laporan.filter(
+                Q(judul__icontains=search_query) |
+                Q(jenis__icontains=search_query) |
+                Q(deskripsi__icontains=search_query) |
+                Q(id_peta__alamat__icontains=search_query)
+            )
+
         serializer = LaporanSerializer(laporan, many=True)
         return Response(serializer.data)
+
     else:
-        print('NOT ALLOWED')
+        return Response({'Error': 'Method tidak diizinkan'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @api_view(['POST'])  
 @parser_classes([MultiPartParser, FormParser])  
