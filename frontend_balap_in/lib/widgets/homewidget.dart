@@ -8,13 +8,14 @@ import 'package:balap_in/models/model_laporan.dart';
 
 class HomeWidget extends StatelessWidget {
   final int selectedChipAnalisisIndex;
-  HomeWidget({Key? key, required this.selectedChipAnalisisIndex}) : super(key: key);
+  final String searchController;
+  HomeWidget({Key? key, required this.selectedChipAnalisisIndex, required this.searchController}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
     final apiService = ApiServiceLaporan();
     return FutureBuilder<List<Laporan>>(
-      future: apiService.fetchLaporan(selectedChipAnalisisIndex), 
+      future: apiService.fetchLaporan(selectedChipAnalisisIndex, searchController), 
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator(),);

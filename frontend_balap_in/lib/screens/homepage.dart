@@ -3,6 +3,7 @@ import 'package:balap_in/widgets/dynamicmap.dart';
 import 'package:flutter/material.dart';
 import 'package:balap_in/widgets/homewidget.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+import 'package:balap_in/models/model_laporan.dart';
 
 
 MapController mapController = MapController();
@@ -22,7 +23,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController searchController = TextEditingController();
   
-  
+  @override
+  void dispose() {
+    searchController.dispose();// TODO: implement dispose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,24 +134,30 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             cursorColor: Colors.black,
                             cursorHeight: 20,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
-                              border: OutlineInputBorder(
+                              border: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(9)
                                 ),
                               borderSide: BorderSide.none
                               ),
                               hintText: 'Cari Laporan',
-                              hintStyle: TextStyle(
+                              hintStyle: const TextStyle(
                                 fontFamily: "Poppins",
                                 fontSize: 11,
                               ),
-                              suffixIcon: Icon(
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  setState((){
+                                    searchController;
+                                  });
+                                },
+                                child: const Icon(
                                 color: Colors.black,
                                 Icons.search,
-                              ),
+                                ),)
                             ),
                           ),
                         ),
@@ -483,9 +495,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     //TAMPILAN ANALISIS
                     FutureBuilder(
-                      future: ApiServiceLaporan().fetchLaporan(selectedChipAnalisisIndex), 
+                      future: ApiServiceLaporan().fetchLaporan(selectedChipAnalisisIndex, searchController.text), 
                       builder: (context, snapshot) {
-                        List laporanList = snapshot.data!;
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator(),);
+                        } else {
+                          List<Laporan> laporanList = snapshot.data!;
 
                         return SizedBox(
                         height: 50,
@@ -568,10 +583,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       );
                       }
-                      ),
+                    }
+                    ),
                     
                     //LIST LAPORAN PALING BAWAH
-                    HomeWidget(selectedChipAnalisisIndex: selectedChipAnalisisIndex,)
+                    HomeWidget(selectedChipAnalisisIndex: selectedChipAnalisisIndex, searchController: searchController.text)
 
                   ],
                 ),

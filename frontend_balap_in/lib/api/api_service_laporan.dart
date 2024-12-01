@@ -1,11 +1,12 @@
 import 'package:balap_in/api/api_service_mappicker.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import '../models/model_laporan.dart';  
 
 class ApiServiceLaporan {
   final dio = Dio();
 
-  Future<List<Laporan>>fetchLaporan(selectedChipAnalisisIndex) async {
+  Future<List<Laporan>>fetchLaporan(selectedChipAnalisisIndex, searchController) async {
      String period;
 
     switch (selectedChipAnalisisIndex) {
@@ -26,7 +27,7 @@ class ApiServiceLaporan {
     }
     
     try {
-      Response response = await dio.get('http://10.0.2.2:8000/laporan/?period=$period&status=selesai');
+      Response response = await dio.get('http://10.0.2.2:8000/laporan/?period=$period&status=selesai&search=$searchController');
       if (response.statusCode == 200) {
         List data = response.data;
         return data.map((json) => Laporan.fromJson(json)).toList();
