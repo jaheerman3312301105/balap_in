@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class Dynamicmap extends StatefulWidget {
@@ -103,7 +104,13 @@ class _FullDynamicMapState extends State<FullDynamicMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.white,
+          statusBarIconBrightness: Brightness.dark
+        ),
+        backgroundColor: Colors.transparent,
         titleSpacing: 0,
         leading: IconButton(
           onPressed: () {
@@ -136,16 +143,38 @@ class _FullDynamicMapState extends State<FullDynamicMap> {
           ),
         ),
       ),
-      body: OSMFlutter(
-        controller: controller, 
-        osmOption: const OSMOption(
-                  showZoomController: true,
-                  zoomOption: ZoomOption(
-                    initZoom: 11,
-                    minZoomLevel: 16
-                  )
-                  )
-                ),
+      body: Stack(
+        children: [
+          Positioned(
+            top: -40,
+            left: -75,
+            child: Container(
+                      width: 250,
+                      height: 250,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFF7E0E0),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+
+          Padding(
+            padding: EdgeInsets.only(
+               top: MediaQuery.of(context).size.height * 0.097
+              ),
+            child: OSMFlutter(
+            controller: controller, 
+            osmOption: const OSMOption(
+                      showZoomController: true,
+                      zoomOption: ZoomOption(
+                        initZoom: 11,
+                        minZoomLevel: 16
+                      )
+                      )
+                    ),
+          ),
+        ]
+      ),
     );
   }
 
