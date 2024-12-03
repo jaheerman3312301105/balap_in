@@ -17,6 +17,9 @@ class LaporanSerializer(serializers.ModelSerializer):
         fields = '__all__'
         depth = 1
 
+    def get_dominant_jenis():
+        return Laporan.get_dominant_jenis()
+
 class PetaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Peta

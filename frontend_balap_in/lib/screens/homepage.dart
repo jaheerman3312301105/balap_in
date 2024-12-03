@@ -522,14 +522,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
         
                       //TAMPILAN ANALISIS
-                      FutureBuilder(
+                      FutureBuilder<LaporanResponse>(
                         future: ApiServiceLaporan().fetchLaporan(selectedChipAnalisisIndex, searchController.text), 
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
                           return const Center(child: CircularProgressIndicator(),);
                           } else {
-                            List<Laporan> laporanList = snapshot.data!;
-        
+                          LaporanResponse laporanList = snapshot.data!;
+
+                          String? dominant;
+
+                          if (laporanList.dominantjenis == 'jalan') {
+                            dominant = 'Jalan Rusak';
+                          } else if (laporanList.dominantjenis == 'lampu_jalan') {
+                            dominant = 'Lampu Jalan';
+                          } else if (laporanList.dominantjenis == 'jembatan') {
+                            dominant = 'Jembatan Rusak';
+                          } else {
+                            dominant = 'Tidak ada';
+                          }
+
                           return SizedBox(
                           height: 50,
                           width: 250,
@@ -551,7 +563,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ),
                                     Text(
-                                      laporanList.length.toString(),
+                                      laporanList.laporan!.length.toString(),
                                       style: const TextStyle(
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.bold,
@@ -576,13 +588,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                               ),
-                             const SizedBox(
+                             SizedBox(
                                 width: 120,
                                 height: 40,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Keluhan Dominan',
                                       style: TextStyle(
                                         fontFamily: "Poppins",
@@ -590,18 +602,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                         fontSize: 7,
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 3,
                                     ),
                                     Text(
-                                      'Jalan Berlubang',
-                                      style: TextStyle(
+                                      dominant,
+                                      style: const TextStyle(
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.bold,
                                         fontSize: 10,
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 3,
                                     ),
                                   ],

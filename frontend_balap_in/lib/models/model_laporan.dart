@@ -1,5 +1,23 @@
 import 'model_peta.dart';
 
+class LaporanResponse {
+  final List<Laporan>? laporan;
+  final String? dominantjenis;
+
+  LaporanResponse({
+    this.laporan,
+    this.dominantjenis
+  });
+
+  factory LaporanResponse.fromJson(Map<String, dynamic> json) {
+    return LaporanResponse(
+      laporan:  (json['laporan'] as List)
+          .map((item) => Laporan.fromJson(item))
+          .toList(), 
+      dominantjenis: json['dominant_jenis'],);
+  }
+}
+
 class Laporan {
   
   final int idlaporan;

@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Count
 
 # Create your models here.
 class Pengguna(models.Model): 
@@ -37,6 +38,15 @@ class Laporan(models.Model):
         null=True, blank=True
     )
     
+    def get_dominant_jenis():
+        dominant = (
+            Laporan.objects.values('jenis')
+            .annotate(total=Count('jenis'))
+            .order_by('-total')
+            .first()
+        )
+
+        return dominant['jenis'] if dominant else None
 
     class Meta:
         db_table = 'laporan'

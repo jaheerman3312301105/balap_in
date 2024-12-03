@@ -14,15 +14,15 @@ class HomeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final apiService = ApiServiceLaporan();
-    return FutureBuilder<List<Laporan>>(
+    return FutureBuilder<LaporanResponse>(
       future: apiService.fetchLaporan(selectedChipAnalisisIndex, searchController), 
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator(),);
-        } else if (snapshot.data!.length == 0) {
+        } else if (snapshot.data!.laporan!.length == 0) {
           return const Center(child: Text('Tidak ada laporan'),);
         } else {
-          List<Laporan> laporanList = snapshot.data!;
+          List<Laporan> laporanList = snapshot.data!.laporan!;
           
           return SizedBox(
             width: 350,

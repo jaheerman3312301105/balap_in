@@ -21,14 +21,14 @@ class WidgetMapPickerState extends State<WidgetMapPicker> {
   GeoPoint? pickedLocation;
   
     PickerMapController controllerMap = PickerMapController(
-      // initPosition: GeoPoint(
-      //   latitude: 1.10329, 
-      //   longitude: 104.03512),
+      initPosition: GeoPoint(
+        latitude: 1.10329, 
+        longitude: 104.03512),
       
-      initMapWithUserPosition: const UserTrackingOption(
-        enableTracking: true,
-        unFollowUser: true
-      ),
+      // initMapWithUserPosition: const UserTrackingOption(
+      //   enableTracking: true,
+      //   unFollowUser: true
+      // ),
     );
 
     @override

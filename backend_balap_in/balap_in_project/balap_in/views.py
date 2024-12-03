@@ -50,9 +50,14 @@ def getLaporan(request):
                 Q(deskripsi__icontains=search_query) |
                 Q(id_peta__alamat__icontains=search_query)
             )
+        
+        dominant_jenis = Laporan.get_dominant_jenis()
 
         serializer = LaporanSerializer(laporan, many=True)
-        return Response(serializer.data)
+        return Response({
+            "laporan" : serializer.data,
+            "dominant_jenis" : dominant_jenis
+            })
 
     else:
         return Response({'Error': 'Method tidak diizinkan'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
