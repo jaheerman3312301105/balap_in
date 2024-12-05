@@ -1,18 +1,20 @@
 from django.db import models
 from django.db.models import Count
+import uuid
 
 # Create your models here.
 class Pengguna(models.Model): 
     id_pengguna = models.AutoField(primary_key=True)
     nama = models.CharField(max_length=40, null=True, blank=True)
     alamat = models.CharField(max_length=40, null=True, blank=True)
-
+    token = models.CharField(max_length=100, default=uuid.uuid4)
+    tgl_pengguna = models.DateTimeField(auto_now= True)
     class Meta :
         db_table ='pengguna'
 
 class Laporan(models.Model):
     id_laporan = models.AutoField(primary_key=True)
-    id_pengguna = models.ForeignKey(Pengguna, on_delete=models.CASCADE)
+    id_pengguna = models.ForeignKey(Pengguna, on_delete=models.CASCADE, null=True, blank=True)
     id_peta = models.OneToOneField('Peta' , on_delete=models.CASCADE, related_name='peta',null=True, blank=True)
     gambar = models.BinaryField(null=True, blank=True)
     jenis = models.CharField(

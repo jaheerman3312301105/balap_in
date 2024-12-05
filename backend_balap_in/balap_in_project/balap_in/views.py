@@ -5,6 +5,8 @@ from rest_framework.decorators import api_view
 from .serializers import LaporanSerializer
 from .models import Laporan 
 from .models import Peta
+from .models import Pengguna
+import uuid
 from rest_framework import status
 import logging
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -18,6 +20,26 @@ from django.db.models import Q
 
 logger = logging.getLogger(__name__)
 # Create your views here.
+
+@api_view(['POST'])
+def createPengguna(request):
+    if request.method == 'POST':
+        try:
+            token = str(uuid.uuid4())
+
+            pengguna = Pengguna.objects.create(
+                nama = request.data.get('nama'),
+                alamat = request.data.get('alamat'),
+                token = token
+            )
+
+            pengguna.save()
+            return Response({'Berhasil mendaftarkan pengguna'}, status=status.HTTP_201_CREATED)
+        except :
+            return Response({'Gagal mendaftarkan pengguna'}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({'Error': 'Method tidak diizinkan'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
 @api_view(['GET'])
 def getLaporan(request):
 

@@ -1,3 +1,5 @@
+import 'package:balap_in/models/model_pengguna.dart';
+
 import 'model_peta.dart';
 
 class LaporanResponse {
@@ -31,6 +33,7 @@ class Laporan {
   final String tgllapor;
   final num? tingkaturgent;
   final Peta? peta;
+  final Pengguna? pengguna;
 
 
   Laporan({
@@ -44,7 +47,8 @@ class Laporan {
     required this.status,
     required this.tgllapor,
     required this.tingkaturgent,
-    required this.peta
+    required this.peta,
+    required this.pengguna
   });
 
   factory Laporan.fromJson(Map<String, dynamic> json) {
@@ -60,6 +64,7 @@ class Laporan {
       tgllapor: json['tgl_lapor'],
       tingkaturgent: json['tingkat_urgent'],
       peta: json['id_peta'] != null ? Peta.fromJson(json['id_peta']) : null,
+      pengguna: json['id_pengguna'] != null ? Pengguna.fromJson(json['id_pengguna']) : null,
     );
   }
 }
