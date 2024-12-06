@@ -1,10 +1,16 @@
 import 'package:balap_in/api/api_service_mappicker.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/model_laporan.dart';  
 
 class ApiServiceLaporan {
   final dio = Dio();
+
+  Future<String?> getToken() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('user_token');
+  }
 
   Future<LaporanResponse> fetchLaporan(selectedChipAnalisisIndex, searchController) async {
      String period;
@@ -40,7 +46,7 @@ class ApiServiceLaporan {
   }
 
   Future<void> buatLaporan(String judul, jenis, deskripsi, status, persentase, cuaca, gambarBlob, pickedLocation) async {
-
+    String? token = await getToken();
     
     if (jenis == 'Jalan') {
       jenis = 'jalan';
@@ -76,6 +82,7 @@ class ApiServiceLaporan {
       "jalan": locationData['jalan'],
       "latitude": locationData['latitude'],
       "longitude": locationData['longitude'],
+      "token" : token,
     });
 
       print(data.fields);

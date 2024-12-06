@@ -1,3 +1,4 @@
+import 'package:balap_in/api/api_service_pengguna.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -11,11 +12,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    ApiServicePengguna().initToken();
     _navigateToHome();
   }
 
   _navigateToHome() async {
-    
     await Future.delayed(const Duration(seconds: 3), () {});
     Navigator.pushReplacementNamed(context, '/home'); 
   }

@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from .serializers import LaporanSerializer
+from .serializers import PenggunaSerializer
 from .models import Laporan 
 from .models import Peta
 from .models import Pengguna
@@ -28,17 +29,30 @@ def createPengguna(request):
             token = str(uuid.uuid4())
 
             pengguna = Pengguna.objects.create(
-                nama = request.data.get('nama'),
-                alamat = request.data.get('alamat'),
+                nama = request.data.get('nama', 'Pengguna'),
+                alamat = request.data.get('alamat', 'Batam'),
                 token = token
             )
 
             pengguna.save()
-            return Response({'Berhasil mendaftarkan pengguna'}, status=status.HTTP_201_CREATED)
+            return Response({'token' : token}, status=status.HTTP_201_CREATED)
         except :
             return Response({'Gagal mendaftarkan pengguna'}, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({'Error': 'Method tidak diizinkan'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+@api_view(['POST'])
+def authPengguna(request):
+    token = request.data.get('token')
+    if token:
+        try:
+            pengguna = Pengguna.objects.get(token=token)
+            serializer = PenggunaSerializer(pengguna)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response({'Anda tidak memiliki akses ini'}, status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        return Response({'message': 'Token tidak diberikan'}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def getLaporan(request):
@@ -89,11 +103,12 @@ def getLaporan(request):
 def createLaporan(request):
     if request.method == 'POST':
         gambar_file = request.FILES.get('gambar')  
-        
+        token = request.data.get('token')
         if gambar_file:
             gambar_biner = gambar_file.read()  
             
             try:
+                pengguna = Pengguna.objects.get(token=token)
                 peta = Peta.objects.create(
                     alamat=request.data.get('alamat'),
                     jalan=request.data.get('jalan'),
@@ -109,6 +124,7 @@ def createLaporan(request):
                     persentase=request.data.get('persentase'),
                     cuaca=request.data.get('cuaca'),
                     status=request.data.get('status'),
+                    id_pengguna=pengguna
                 )
             
                 peta.id_laporan = laporan

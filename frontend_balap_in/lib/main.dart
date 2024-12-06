@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'screens/homepage.dart';
 import 'screens/tutorial.dart';
 import 'screens/lapor.dart'; 
-import 'screens/rekomendasi.dart'; // Import file HomeScreen
+import 'screens/rekomendasi.dart'; 
 
 void main() => runApp(const MyApp());
 
