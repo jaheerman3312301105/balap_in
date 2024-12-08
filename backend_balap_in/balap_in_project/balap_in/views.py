@@ -18,6 +18,7 @@ from rest_framework import status
 from datetime import timedelta, datetime
 from django.utils.timezone import now
 from django.db.models import Q
+from .management.commands.clustering import clustering
 
 logger = logging.getLogger(__name__)
 # Create your views here.
@@ -131,6 +132,9 @@ def createLaporan(request):
                 laporan.id_peta = peta
                 peta.save()
                 laporan.save()
+
+                if Response(status=status.HTTP_201_CREATED):
+                    clustering()
 
             except Exception as e:
                 logger.error(f"Error:{e}")

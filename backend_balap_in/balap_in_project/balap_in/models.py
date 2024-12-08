@@ -39,6 +39,9 @@ class Laporan(models.Model):
     tingkat_urgent = models.IntegerField(
         null=True, blank=True
     )
+    cluster = models.IntegerField(
+        null=True, blank=True
+    )
     
     def get_dominant_jenis():
         dominant = (
