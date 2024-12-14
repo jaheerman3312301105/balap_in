@@ -5,8 +5,6 @@ import uuid
 # Create your models here.
 class Pengguna(models.Model): 
     id_pengguna = models.AutoField(primary_key=True)
-    nama = models.CharField(max_length=40, null=True, blank=True)
-    alamat = models.CharField(max_length=40, null=True, blank=True)
     token = models.CharField(max_length=100, default=uuid.uuid4)
     tgl_pengguna = models.DateTimeField(auto_now= True)
     class Meta :
@@ -92,7 +90,7 @@ class Rekomendasi(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['id_laporan_id', 'id_peta_id'], name='unique_laporan_peta')
         ]
-        
+
     def __str__(self):
         return f"Laporan ID: {self.id_laporan_id}, Peta ID: {self.id_peta_id}"
 

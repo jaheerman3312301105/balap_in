@@ -30,8 +30,6 @@ def createPengguna(request):
             token = str(uuid.uuid4())
 
             pengguna = Pengguna.objects.create(
-                nama = request.data.get('nama', 'Pengguna'),
-                alamat = request.data.get('alamat', 'Batam'),
                 token = token
             )
 
