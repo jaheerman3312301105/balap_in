@@ -89,6 +89,12 @@ class Rekomendasi(models.Model):
 
     class Meta:
         db_table = 'rekomendasi'
+        constraints = [
+            models.UniqueConstraint(fields=['id_laporan_id', 'id_peta_id'], name='unique_laporan_peta')
+        ]
+        
+    def __str__(self):
+        return f"Laporan ID: {self.id_laporan_id}, Peta ID: {self.id_peta_id}"
 
 class Analisis(models.Model):
     id_analisis = models.AutoField(primary_key=True)
