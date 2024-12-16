@@ -60,8 +60,7 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
             ),
           ),
 
-          SingleChildScrollView(
-          child: Column(
+         ListView(
             children: <Widget>[
               Center(
                 child: Column(
@@ -225,7 +224,6 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
         
             ],
           ),
-        ),
         ]
       )
         
