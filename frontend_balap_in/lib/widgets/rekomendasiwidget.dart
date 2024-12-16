@@ -2,6 +2,7 @@ import 'package:balap_in/api/api_service_rekomendasi.dart';
 import 'package:balap_in/models/model_rekomendasi.dart';
 import 'package:balap_in/screens/lapor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class RekomendasiWidget extends StatelessWidget {
 
@@ -49,101 +50,125 @@ class RekomendasiWidget extends StatelessWidget {
               }else if(rekomendasi.laporan!.jenis == 'jembatan') {
                 jenisconvert = "Jembatan Rusak";
               }
+              
+              final idrekomendasi = rekomendasi.idrekomendasi;
 
               return Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.16,
-                  width: MediaQuery.of(context).size.width * 0.85,
-                  decoration: BoxDecoration(
-                    color: colorRekomendasis,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: const [
-                        BoxShadow(
-                        offset: Offset(1.0, 5.0),
-                        blurRadius: 5.0, 
-                        color: Colors.black26, 
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start, 
-                        children: <Widget>[
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.415,
-                            margin: const EdgeInsets.only(
-                              left: 10,
-                              top: 15,
-                            ),
-                            child: Text(
-                              rekomendasi.peta!.alamat,
-                              style: const TextStyle(
-                                fontSize: 8,
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.bold,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context, '/isirekomendasi',
+                      arguments: idrekomendasi
+                    );
+                  },
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.16,
+                    width: MediaQuery.of(context).size.width * 0.85,
+                    decoration: BoxDecoration(
+                      color: colorRekomendasis,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: const [
+                          BoxShadow(
+                          offset: Offset(1.0, 5.0),
+                          blurRadius: 5.0, 
+                          color: Colors.black26, 
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start, 
+                          children: <Widget>[
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.415,
+                              margin: const EdgeInsets.only(
+                                left: 10,
+                                top: 15,
                               ),
-                            ),
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.415,
-                            margin: const EdgeInsets.only(
-                              left: 10,
-                              top: 5,
-                            ),
-                            child: Text(
-                              jenisconvert,
-                              style: const TextStyle(
-                                fontSize: 8,
-                                fontFamily: "Poppins",
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.415,
-                            margin: const EdgeInsets.only(
-                              left: 10,
-                              top: 5,
-                            ),
-                            child: Row(
-                              children: [
-                                const Image(
-                                  image: AssetImage('assets/images/warningshield.png')
+                              child: Text(
+                                rekomendasi.peta!.alamat,
+                                style: const TextStyle(
+                                  fontSize: 8,
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                const SizedBox(width: 2,),
-                                Text(
-                                  '${rekomendasi.jumlahlaporan} Report',
-                                  style: const TextStyle(
-                                    fontSize: 8,
-                                    fontFamily: "Poppins",
+                              ),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.415,
+                              margin: const EdgeInsets.only(
+                                left: 10,
+                                top: 5,
+                              ),
+                              child: Text(
+                                jenisconvert,
+                                style: const TextStyle(
+                                  fontSize: 8,
+                                  fontFamily: "Poppins",
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.415,
+                              margin: const EdgeInsets.only(
+                                left: 10,
+                                top: 5,
+                              ),
+                              child: Row(
+                                children: [
+                                  const Image(
+                                    image: AssetImage('assets/images/warningshield.png')
                                   ),
+                                  const SizedBox(width: 2,),
+                                  Text(
+                                    '${rekomendasi.jumlahlaporan} Report',
+                                    style: const TextStyle(
+                                      fontSize: 8,
+                                      fontFamily: "Poppins",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          child: Container(
+                            margin: const EdgeInsets.only(
+                              left: 1, 
+                              right: 1
+                              ),
+                            height: MediaQuery.of(context).size.height * 0.14,
+                            width: MediaQuery.of(context).size.width * 0.375,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10)
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: OSMViewer(
+                                zoomOption: const ZoomOption(
+                                  initZoom: 14,
+                                  minZoomLevel: 10
                                 ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        child: Container(
-                          margin: const EdgeInsets.only(
-                            left: 10, 
-                            right: 5
-                            ),
-                          height: MediaQuery.of(context).size.height * 0.14,
-                          width: MediaQuery.of(context).size.width * 0.365,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: const DecorationImage(
-                              image: AssetImage('assets/images/peta.png'),
-                              fit: BoxFit.cover,
+                                controller: SimpleMapController(
+                                  initPosition: GeoPoint(
+                                    latitude: rekomendasi.peta!.latitude, 
+                                    longitude: rekomendasi.peta!.longitude), 
+                                  markerHome: const MarkerIcon(
+                                    icon: Icon(Icons.location_on,
+                                    color: Colors.red,),
+                                  ),
+                                  )
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
