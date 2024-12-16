@@ -179,7 +179,10 @@ class _LaporScreenState extends State<LaporScreen> {
       gambarBlob!,
       pickedLocation!,
     ).then((response) {
-      // Handle response if needed
+      // Navigasi kembali ke halaman utama setelah pengiriman berhasil
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      _showSuccessDialog(context, 'Laporan berhasil dikirim.'); // Tampilkan dialog sukses
+      resetForm(); // Reset form setelah mengirim laporan
     }).catchError((error) {
       _showErrorDialog(context, 'Terjadi kesalahan saat mengirim laporan: $error');
     });
@@ -228,36 +231,35 @@ class _LaporScreenState extends State<LaporScreen> {
   }
 
   void _showSuccessDialog(BuildContext context, String message) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Sukses'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min, // Mengatur ukuran minimum kolom
-          children: [
-            AnimatedRotation(
-              turns: 1, // Rotasi penuh
-              duration: const Duration(seconds: 1), // Durasi animasi
-              child: const Icon(Icons.check_circle, color: Colors.green, size: 60), // Tanda centang hijau
-            ),
-            const SizedBox(height: 10), // Jarak antara ikon dan teks
-            Text(message, textAlign: TextAlign.center), // Pesan sukses
-          ],
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // Menutup dialog sukses
-            },
-            child: const Text('OK'),
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Sukses'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min, // Mengatur ukuran minimum kolom
+            children: [
+              AnimatedRotation(
+                turns: 1, // Rotasi penuh
+                duration: const Duration(seconds: 1), // Durasi animasi
+                child: const Icon(Icons.check_circle, color: Colors.green, size: 60), // Tanda centang hijau
+              ),
+              const SizedBox(height: 10), // Jarak antara ikon dan teks
+              Text(message, textAlign: TextAlign.center), // Pesan sukses
+            ],
           ),
-        ],
-      );
-    },
-  );
-}
-
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Menutup dialog sukses
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void _showKirimAlertDialog(BuildContext context) {
     showDialog(
