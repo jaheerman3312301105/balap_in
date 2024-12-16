@@ -51,7 +51,17 @@ class RekomendasiWidget extends StatelessWidget {
                 jenisconvert = "Jembatan Rusak";
               }
               
-              final idrekomendasi = rekomendasi.idrekomendasi;
+              final idRekomendasi = rekomendasi.idrekomendasi;
+
+              Color colorMarkerConvert = Colors.transparent;
+
+              if (rekomendasi.statusurgent! == 'tinggi') {
+                colorMarkerConvert = Colors.red;
+              } else if (rekomendasi.statusurgent! == 'sedang') {
+                colorMarkerConvert = Colors.yellow;
+              } else if (rekomendasi.statusurgent! == 'rendah') {
+                colorMarkerConvert = Colors.green;
+              }
 
               return Center(
               child: Padding(
@@ -60,7 +70,7 @@ class RekomendasiWidget extends StatelessWidget {
                   onTap: () {
                     Navigator.pushNamed(
                       context, '/isirekomendasi',
-                      arguments: idrekomendasi
+                      arguments: idRekomendasi
                     );
                   },
                   child: Container(
@@ -158,9 +168,17 @@ class RekomendasiWidget extends StatelessWidget {
                                   initPosition: GeoPoint(
                                     latitude: rekomendasi.peta!.latitude, 
                                     longitude: rekomendasi.peta!.longitude), 
-                                  markerHome: const MarkerIcon(
+                                  markerHome: MarkerIcon(
                                     icon: Icon(Icons.location_on,
-                                    color: Colors.red,),
+                                    size: MediaQuery.of(context).size.width * 0.068,
+                                    shadows: const <Shadow>[
+                                      Shadow(
+                                        color: Colors.black,
+                                        offset:Offset(4.0, 4.0),
+                                        blurRadius: 4,
+                                      )
+                                    ],
+                                    color: colorMarkerConvert),
                                   ),
                                   )
                               ),

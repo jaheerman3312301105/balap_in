@@ -160,3 +160,12 @@ def rekomendasi(request):
         return Response(serializer.data)
     except Laporan.DoesNotExist:
         print("Rekomendasi tidak ditemukan")
+
+@api_view(['GET'])
+def detailrekomendasi(request, id_rekomendasi):
+    try:
+        rekomendasi = Rekomendasi.objects.get(id_rekomendasi=id_rekomendasi)
+        serializer = RekomendasiSerializer(rekomendasi)
+        return Response(serializer.data)
+    except Rekomendasi.DoesNotExist:
+        print('Tidak ada detail Rekomendasi')
