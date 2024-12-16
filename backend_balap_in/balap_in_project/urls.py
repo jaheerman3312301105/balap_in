@@ -27,6 +27,7 @@ urlpatterns = [
     path('laporan/', views.getLaporan),
     path('laporan/buat', views.createLaporan),
     path('laporan/<int:id_laporan>/', views.detailLaporan, name='detailLaporan'),
+    path('rekomendasi/', views.rekomendasi),
 ] 
 
 if settings.DEBUG:

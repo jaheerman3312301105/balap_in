@@ -29,6 +29,7 @@ class RekomendasiSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rekomendasi
         fields = '__all__'
+        depth = 1
 
 class AnalisisSerializer(serializers.ModelSerializer):
     class Meta:

@@ -4,9 +4,11 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from .serializers import LaporanSerializer
 from .serializers import PenggunaSerializer
+from .serializers import RekomendasiSerializer
 from .models import Laporan 
 from .models import Peta
 from .models import Pengguna
+from .models import Rekomendasi
 import uuid
 from rest_framework import status
 import logging
@@ -149,3 +151,12 @@ def detailLaporan(request, id_laporan):
         return Response(serializer.data)
     except Laporan.DoesNotExist:
         print("Laporan tidak ditemukan")
+
+@api_view(['GET'])
+def rekomendasi(request):
+    try:
+        rekomendasi= Rekomendasi.objects.all()
+        serializer = RekomendasiSerializer(rekomendasi, many=True)
+        return Response(serializer.data)
+    except Laporan.DoesNotExist:
+        print("Rekomendasi tidak ditemukan")
