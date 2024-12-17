@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:balap_in/api/api_service_mappicker.dart';
+import 'package:balap_in/models/model_rekomendasi.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -104,6 +107,27 @@ class ApiServiceLaporan {
       }
     } catch (e) {
       print('Error: $e');
+    }
+  }
+
+  Future<List<Laporan>> getClusterLaporan(cluster) async{
+
+    try{
+      Response response = await dio.get('http://10.0.2.2:8000/laporan/cluster/$cluster/');
+
+      if (response.statusCode == 200) {
+         List<dynamic> responseData = response.data;
+          List<Laporan> laporanList = responseData
+            .map((dynamic item) => Laporan.fromJson(item))
+            .toList();
+            print(laporanList);
+            return laporanList;
+      } else {
+        throw Exception('Error get cluster');
+      }
+
+    } catch(e) {
+      throw Exception('Error cluster laporan: $e');
     }
   }
   

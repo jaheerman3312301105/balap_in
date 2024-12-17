@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:balap_in/api/api_service_laporan.dart';
 import 'package:balap_in/api/api_service_rekomendasi.dart';
 import 'package:balap_in/models/model_rekomendasi.dart';
 import 'package:balap_in/screens/lapor.dart';
@@ -28,9 +32,10 @@ class _IsiRekomendasiScreenState extends State<IsiRekomendasiScreen> {
             child: Text('Tidak ada detail Rekomendasi'),
           );
         } else {
-
-        final datarekomendasi = snapshot.data!;
         
+        final datarekomendasi = snapshot.data!;
+        final cluster = datarekomendasi.laporan!.cluster!;
+
         String? jenisconvert;
 
         jenisconvert = datarekomendasi.laporan!.jenis;
@@ -167,30 +172,46 @@ class _IsiRekomendasiScreenState extends State<IsiRekomendasiScreen> {
                         top: 12,
                         bottom: 12
                         ),
-                      child: SizedBox(
-                      width: 380,
-                      child: Wrap(
-                        spacing: 9.0,
-                        runSpacing: 12.0, 
-                        children: List.generate(20, (index) {
-                          return InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(context, '/isilapor');
-                            },
-                            child: const SizedBox(
-                              width: 185,
-                              height: 110,
-                              child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: Image(
-                                  image: AssetImage('assets/images/jalanrusak.jpg') 
-                                  ),
+                      child: FutureBuilder(
+                        future: ApiServiceLaporan().getClusterLaporan(cluster),
+                        builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(child: CircularProgressIndicator(),);
+                        } else if(!snapshot.hasData || snapshot.data == null) {
+                          return const Center(child: Text('Tidak ada data tersedia'));
+                        } else {
+                        final datacluster = snapshot.data!;
+
+                        return SizedBox(
+                        width: 380,
+                        child: Wrap(
+                          spacing: 9.0,
+                          runSpacing: 12.0, 
+                          children: List.generate(datacluster.length, (index) {
+                            
+                            Uint8List gambar = base64Decode(datacluster[index].gambar!);
+                            
+                            return InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(context, '/isilapor', arguments: datacluster[index].idlaporan);
+                              },
+                              child: SizedBox(
+                                width: 185,
+                                height: 110,
+                                child: FittedBox(
+                                  fit: BoxFit.fill,
+                                  child: Image(
+                                    image: MemoryImage(gambar) 
+                                    ),
+                                ),
                               ),
-                            ),
-                          );
-                        }),
+                            );
+                          }),
+                        ),
+                       );
+                       }
+                       }
                       ),
-                    ),
                     )
             
             

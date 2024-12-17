@@ -4,7 +4,7 @@ class Rekomendasi {
   final int idrekomendasi;
   final String? statusurgent;
   final int? jumlahlaporan;
-  final Laporan? laporan; 
+  final LaporanRekomendasi? laporan; 
   final Peta? peta;
 
   Rekomendasi({
@@ -20,13 +20,13 @@ class Rekomendasi {
       idrekomendasi: json['id_rekomendasi'],
       statusurgent: json['status_urgent'],
       jumlahlaporan: json['jumlah_laporan'],
-      laporan: json['id_laporan'] != null ? Laporan.fromJson(json['id_laporan']) : null,
+      laporan: json['id_laporan'] != null ? LaporanRekomendasi.fromJson(json['id_laporan']) : null,
       peta: json['id_peta'] != null ? Peta.fromJson(json['id_peta']) : null,
     );
   }
 }
 
-class Laporan {
+class LaporanRekomendasi {
   final int idlaporan;
   final String? gambar;
   final String? jenis;
@@ -41,7 +41,7 @@ class Laporan {
   final int? idpengguna;
   final int? idpeta;
 
-  Laporan({
+  LaporanRekomendasi({
     required this.idlaporan,
     this.gambar,
     this.jenis,
@@ -57,8 +57,8 @@ class Laporan {
     this.idpeta,
   });
 
-  factory Laporan.fromJson(Map<String, dynamic> json) {
-    return Laporan(
+  factory LaporanRekomendasi.fromJson(Map<String, dynamic> json) {
+    return LaporanRekomendasi(
       idlaporan: json['id_laporan'],
       gambar: json['gambar'],
       jenis: json['jenis'],

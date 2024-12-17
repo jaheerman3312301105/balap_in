@@ -33,9 +33,7 @@ class IsilaporScreen extends StatelessWidget {
               
               Uint8List gambar = base64Decode(laporan.gambar!);
 
-              return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              home: Scaffold(
+              return Scaffold(
                 extendBodyBehindAppBar: true,
                 appBar: AppBar(
                 systemOverlayStyle: const SystemUiOverlayStyle(
@@ -46,7 +44,7 @@ class IsilaporScreen extends StatelessWidget {
                 titleSpacing: 0,
                 leading: IconButton(
                   onPressed: () {
-                    Navigator.of(context).popUntil((route) => route.isFirst);
+                    Navigator.of(context).pop();
                   }, 
                   icon: const Icon(Icons.keyboard_arrow_left),
                   color: const Color.fromRGBO(5, 5, 5, 0.612),
@@ -117,12 +115,12 @@ class IsilaporScreen extends StatelessWidget {
                               child: ClipRRect(
                                 borderRadius:
                                     BorderRadius.circular(8), 
-                                child: Image(
-                                  image: MemoryImage(
-                                    gambar
-                                  ),
-                                  fit: BoxFit.cover,
-                                  )
+                                child: Image.memory(
+                                    gambar,
+                                    fit: BoxFit.cover,
+                                    cacheHeight: 400,
+                                    cacheWidth: 400,
+                                ),
                               ),
                             ),
                             const SizedBox(height: 16),
@@ -165,8 +163,7 @@ class IsilaporScreen extends StatelessWidget {
                       ),
                   ]
                 ),
-              ),
-            );
+              );
             }
 
         }

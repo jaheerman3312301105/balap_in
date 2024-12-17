@@ -169,3 +169,12 @@ def detailrekomendasi(request, id_rekomendasi):
         return Response(serializer.data)
     except Rekomendasi.DoesNotExist:
         print('Tidak ada detail Rekomendasi')
+
+@api_view(['GET'])
+def getclusteroflaporan(request, cluster):
+    try:
+        clusterlaporan = Laporan.objects.filter(cluster=cluster)
+        serializer = LaporanSerializer(clusterlaporan, many=True)
+        return Response(serializer.data)
+    except Laporan.DoesNotExist:
+        print('Tidak ada cluster laporan')
