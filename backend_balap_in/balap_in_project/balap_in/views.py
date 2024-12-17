@@ -153,9 +153,15 @@ def detailLaporan(request, id_laporan):
         print("Laporan tidak ditemukan")
 
 @api_view(['GET'])
-def rekomendasi(request):
-    try:
-        rekomendasi= Rekomendasi.objects.all()
+def rekomendasi(request, order):
+    try:  
+
+        if order == 'asc':
+            rekomendasi = Rekomendasi.objects.all().order_by('tingkat_urgent')
+        else:
+            rekomendasi = Rekomendasi.objects.all().order_by('-tingkat_urgent')
+        
+        
         serializer = RekomendasiSerializer(rekomendasi, many=True)
         return Response(serializer.data)
     except Laporan.DoesNotExist:

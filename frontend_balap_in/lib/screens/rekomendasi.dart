@@ -214,7 +214,7 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
                     //WIDGET REKOMENDASI START
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.87,
-                      child: const RekomendasiWidget()
+                      child: RekomendasiWidget(order: selectedChipUrutkanIndex)
                     )
                     //WIDGET REKOMENDASI END 
                   ],

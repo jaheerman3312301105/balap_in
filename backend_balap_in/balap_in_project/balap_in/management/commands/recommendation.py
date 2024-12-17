@@ -16,7 +16,6 @@ def recommendation():
             `persentase`,
             `cuaca`,
             `status`,
-            `tingkat_urgent`,
             `cluster`
         FROM
             `laporan`
@@ -89,46 +88,41 @@ def recommendation():
     distance_to_anti_ideal = np.sqrt(np.sum((weighted_matrix - anti_ideal_solution)**2, axis=1))
 
     # Step 5: Calculate similarity to ideal solution (TOPSIS score)
-    # If only one cluster exists, set priority to 'tinggi'
     if len(data) == 1:
-        topsis_score = np.array([1.0])  # Automatically set priority to 'tinggi' if only one cluster
+        topsis_score = np.array([1.0])
     else:
         topsis_score = distance_to_anti_ideal / (distance_to_ideal + distance_to_anti_ideal)
 
-    # Step 6: Assign priority based on TOPSIS score
+    # Step 6: Assign priority and add TOPSIS score
     priority_labels = ["tinggi", "sedang", "rendah"]
     if len(data) == 1:
-        data['Priority'] = priority_labels[0]  # Assign 'tinggi' for the single cluster
+        data['Priority'] = priority_labels[0]
     else:
-        data['Priority'] = pd.qcut(topsis_score, q=3, labels=priority_labels[::-1])  # Assign priorities based on score
+        data['Priority'] = pd.qcut(topsis_score, q=3, labels=priority_labels[::-1])
 
-    # Show the final dataframe with Priority
-    final_df = data[['cluster', 'NumReports', 'Priority']]
+    data['TOPSIS_Score'] = topsis_score  # Simpan TOPSIS score ke kolom baru
 
-    # Print the final prioritized reports
+    # Show the final dataframe
+    final_df = data[['cluster', 'NumReports', 'Priority', 'TOPSIS_Score']]
     print(final_df)
 
-    # Now you can insert the results into the 'rekomendasi' table
+    # Insert the results into the 'rekomendasi' table
     with engine.connect() as conn:
         trans = conn.begin()
         try:
             for _, row in final_df.iterrows():
-                getidLaporan = text(
-                    """
+                getidLaporan = text("""
                     SELECT `id_laporan` 
                     FROM `laporan` 
                     WHERE cluster = :cluster
                     LIMIT 1
-                    """
-                )
-                getidPeta = text(
-                    """
+                """)
+                getidPeta = text("""
                     SELECT `id_peta_id` 
                     FROM `laporan` 
                     WHERE cluster = :cluster
                     LIMIT 1
-                    """
-                )
+                """)
 
                 idget_laporan = conn.execute(getidLaporan, {'cluster': row['cluster']}).fetchone()
                 idget_peta = conn.execute(getidPeta, {'cluster': row['cluster']}).fetchone()
@@ -137,31 +131,34 @@ def recommendation():
                     id_laporan = idget_laporan[0]
                     id_peta = idget_peta[0]
 
-                    upsert_query = text(
-                        """
+                    upsert_query = text("""
                         INSERT INTO `rekomendasi` (
                             `status_urgent`, 
                             `jumlah_laporan`, 
                             `id_laporan_id`, 
-                            `id_peta_id`) 
+                            `id_peta_id`, 
+                            `tingkat_urgent`) 
                         VALUES (
                             :status_urgent,
                             :jumlah_laporan,
                             :id_laporan,
-                            :id_peta) 
+                            :id_peta,
+                            :tingkat_urgent
+                        ) 
                         ON DUPLICATE KEY UPDATE
                             `status_urgent` = VALUES(`status_urgent`),
                             `jumlah_laporan` = VALUES(`jumlah_laporan`),
                             `id_laporan_id` = VALUES(`id_laporan_id`),
-                            `id_peta_id` = VALUES(`id_peta_id`);
-                        """
-                    )
+                            `id_peta_id` = VALUES(`id_peta_id`),
+                            `tingkat_urgent` = VALUES(`tingkat_urgent`);
+                    """)
 
                     conn.execute(upsert_query, {
                         'status_urgent': row['Priority'],
                         'jumlah_laporan': row['NumReports'],
                         'id_laporan': id_laporan,
-                        'id_peta': id_peta
+                        'id_peta': id_peta,
+                        'tingkat_urgent': row['TOPSIS_Score']  # Tambahkan nilai TOPSIS score
                     })
 
             trans.commit()

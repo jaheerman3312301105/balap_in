@@ -27,7 +27,7 @@ urlpatterns = [
     path('laporan/', views.getLaporan),
     path('laporan/buat', views.createLaporan),
     path('laporan/<int:id_laporan>/', views.detailLaporan, name='detailLaporan'),
-    path('rekomendasi/', views.rekomendasi),
+    path('rekomendasi/<str:order>/', views.rekomendasi),
     path('rekomendasi/<int:id_rekomendasi>/', views.detailrekomendasi, name='detailrekomendasi'),
     path("laporan/cluster/<int:cluster>/", views.getclusteroflaporan, name='clusterlaporan')
 ] 
