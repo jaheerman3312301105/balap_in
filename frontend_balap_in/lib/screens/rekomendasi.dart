@@ -60,8 +60,7 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
             ),
           ),
 
-          SingleChildScrollView(
-          child: Column(
+         ListView(
             children: <Widget>[
               Center(
                 child: Column(
@@ -215,29 +214,7 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
                     //WIDGET REKOMENDASI START
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.87,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: 6,
-                        itemBuilder: (context, index) {
-                          List<Color> colors = [
-                              const Color.fromARGB(255, 253, 36, 36),
-                              const Color.fromARGB(255, 253, 36, 36),
-                              const Color.fromARGB(255, 249, 253, 36),
-                              const Color.fromARGB(255, 249, 253, 36),
-                              const Color.fromARGB(255, 36, 253, 36),
-                              const Color.fromARGB(255, 36, 253, 36),
-                            ];
-                              
-                            Color bgColor = colors[index % colors.length];
-                          return InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(context, '/isirekomendasi');
-                            },
-                            child: RekomendasiWidget(color: bgColor), 
-                          );
-                        },
-                        ),
+                      child: const RekomendasiWidget()
                     )
                     //WIDGET REKOMENDASI END 
                   ],
@@ -247,7 +224,6 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
         
             ],
           ),
-        ),
         ]
       )
         

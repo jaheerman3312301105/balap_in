@@ -4,9 +4,11 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from .serializers import LaporanSerializer
 from .serializers import PenggunaSerializer
+from .serializers import RekomendasiSerializer
 from .models import Laporan 
 from .models import Peta
 from .models import Pengguna
+from .models import Rekomendasi
 import uuid
 from rest_framework import status
 import logging
@@ -30,8 +32,6 @@ def createPengguna(request):
             token = str(uuid.uuid4())
 
             pengguna = Pengguna.objects.create(
-                nama = request.data.get('nama', 'Pengguna'),
-                alamat = request.data.get('alamat', 'Batam'),
                 token = token
             )
 
@@ -151,3 +151,30 @@ def detailLaporan(request, id_laporan):
         return Response(serializer.data)
     except Laporan.DoesNotExist:
         print("Laporan tidak ditemukan")
+
+@api_view(['GET'])
+def rekomendasi(request):
+    try:
+        rekomendasi= Rekomendasi.objects.all()
+        serializer = RekomendasiSerializer(rekomendasi, many=True)
+        return Response(serializer.data)
+    except Laporan.DoesNotExist:
+        print("Rekomendasi tidak ditemukan")
+
+@api_view(['GET'])
+def detailrekomendasi(request, id_rekomendasi):
+    try:
+        rekomendasi = Rekomendasi.objects.get(id_rekomendasi=id_rekomendasi)
+        serializer = RekomendasiSerializer(rekomendasi)
+        return Response(serializer.data)
+    except Rekomendasi.DoesNotExist:
+        print('Tidak ada detail Rekomendasi')
+
+@api_view(['GET'])
+def getclusteroflaporan(request, cluster):
+    try:
+        clusterlaporan = Laporan.objects.filter(cluster=cluster)
+        serializer = LaporanSerializer(clusterlaporan, many=True)
+        return Response(serializer.data)
+    except Laporan.DoesNotExist:
+        print('Tidak ada cluster laporan')

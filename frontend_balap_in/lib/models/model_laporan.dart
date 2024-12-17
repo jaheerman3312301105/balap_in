@@ -34,6 +34,7 @@ class Laporan {
   final num? tingkaturgent;
   final Peta? peta;
   final Pengguna? pengguna;
+  final int? cluster;
 
 
   Laporan({
@@ -48,7 +49,8 @@ class Laporan {
     required this.tgllapor,
     required this.tingkaturgent,
     required this.peta,
-    required this.pengguna
+    required this.pengguna,
+    required this.cluster
   });
 
   factory Laporan.fromJson(Map<String, dynamic> json) {
@@ -65,6 +67,7 @@ class Laporan {
       tingkaturgent: json['tingkat_urgent'],
       peta: json['id_peta'] != null ? Peta.fromJson(json['id_peta']) : null,
       pengguna: json['id_pengguna'] != null ? Pengguna.fromJson(json['id_pengguna']) : null,
+      cluster: json['cluster'],
     );
   }
 }
