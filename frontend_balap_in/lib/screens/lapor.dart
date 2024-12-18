@@ -228,7 +228,7 @@ class _LaporScreenState extends State<LaporScreen> {
   }
 
   void _showSuccessDialog(BuildContext context, String message) {
-  showDialog(
+  showDialog( 
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
@@ -257,7 +257,6 @@ class _LaporScreenState extends State<LaporScreen> {
     },
   );
 }
-
 
   void _showKirimAlertDialog(BuildContext context) {
     showDialog(

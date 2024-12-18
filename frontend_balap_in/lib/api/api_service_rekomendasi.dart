@@ -6,9 +6,9 @@ import 'package:balap_in/models/model_rekomendasi.dart';
 class ApiServiceRekomendasi {
   final Dio _dio = Dio();
 
-  Future<List<Rekomendasi>> fetchRekomendasi() async {
+  Future<List<Rekomendasi>> fetchRekomendasi(order) async {
     try {
-      Response response = await _dio.get('http://10.0.2.2:8000/rekomendasi/');
+      Response response = await _dio.get('http://10.0.2.2:8000/rekomendasi/$order');
 
       if (response.statusCode == 200) {
         final data = response.data as List;

@@ -1,19 +1,29 @@
 import 'package:balap_in/api/api_service_rekomendasi.dart';
 import 'package:balap_in/models/model_rekomendasi.dart';
 import 'package:balap_in/screens/lapor.dart';
+import 'package:balap_in/screens/rekomendasi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class RekomendasiWidget extends StatelessWidget {
-
-  const RekomendasiWidget({super.key});
+  final int? order;
+  const RekomendasiWidget({Key? key, required this.order}) : super(key: key);
 
   
   @override
   Widget build(BuildContext context) {
+     
+     String? setOrder; 
+
+     if (order == 0) {
+      setOrder = 'desc';
+     } else if (order == 1) {
+      setOrder = 'asc';
+     }
+
     final apiService = ApiServiceRekomendasi();
     return FutureBuilder <List<Rekomendasi>>(
-      future: apiService.fetchRekomendasi(),
+      future: apiService.fetchRekomendasi(setOrder),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator(),);

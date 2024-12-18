@@ -34,9 +34,6 @@ class Laporan(models.Model):
         null=True, blank=True
     )
     tgl_lapor = models.DateTimeField(auto_now=True)
-    tingkat_urgent = models.IntegerField(
-        null=True, blank=True
-    )
     cluster = models.IntegerField(
         null=True, blank=True
     )
@@ -79,6 +76,9 @@ class Rekomendasi(models.Model):
     status_urgent = models.CharField(
         max_length=10,
         choices=[('tinggi', 'Tinggi'), ('sedang', 'Sedang'), ('rendah', 'Rendah'), ('belum', 'Belum')],
+        null=True, blank=True
+    )
+    tingkat_urgent = models.FloatField(
         null=True, blank=True
     )
     jumlah_laporan = models.IntegerField(
