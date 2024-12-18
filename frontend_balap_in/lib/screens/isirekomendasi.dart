@@ -26,7 +26,12 @@ class _IsiRekomendasiScreenState extends State<IsiRekomendasiScreen> {
       future: apiService.fetchDetailRekomendasi(idrekomendasi),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator(),);
+          return const Scaffold(
+            backgroundColor: Colors.white,
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         } else if (!snapshot.hasData) {
           return const Center(
             child: Text('Tidak ada detail Rekomendasi'),

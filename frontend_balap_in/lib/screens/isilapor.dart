@@ -21,7 +21,12 @@ class IsilaporScreen extends StatelessWidget {
       future: apiService.fetchLaporan(id), 
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator(),);
+          return const Scaffold(
+            backgroundColor: Colors.white,
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         } else if (!snapshot.hasData) {
           return const Center(child: Text('Detail laporan tidak ada'),);
         } else {
