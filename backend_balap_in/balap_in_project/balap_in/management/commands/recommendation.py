@@ -88,10 +88,30 @@ def recommendation():
     distance_to_anti_ideal = np.sqrt(np.sum((weighted_matrix - anti_ideal_solution)**2, axis=1))
 
     # Step 5: Calculate similarity to ideal solution (TOPSIS score)
+    # Step 5: Calculate similarity to ideal solution (TOPSIS score)
     if len(data) == 1:
         topsis_score = np.array([1.0])
     else:
         topsis_score = distance_to_anti_ideal / (distance_to_ideal + distance_to_anti_ideal)
+
+    # Membuat DataFrame sementara untuk menangani nilai yang sama
+    temp_df = pd.DataFrame({'original_score': topsis_score})
+    temp_df['adjusted_score'] = temp_df['original_score'].copy()
+
+    # Mencari nilai yang duplikat dan menambahkan offset
+    for score in temp_df['original_score'].unique():
+        # Mendapatkan indeks dimana nilai sama
+        mask = temp_df['original_score'] == score
+        count = mask.sum()
+        
+        if count > 1:
+            # Jika ada duplikat, tambahkan offset yang semakin meningkat
+            indices = temp_df[mask].index
+            for i, idx in enumerate(indices):
+                temp_df.loc[idx, 'adjusted_score'] = score + (i * 0.00000001)
+
+    # Menggunakan nilai yang sudah disesuaikan
+    topsis_score = temp_df['adjusted_score'].values
 
     # Step 6: Assign priority and add TOPSIS score
     priority_labels = ["tinggi", "sedang", "rendah"]
@@ -100,7 +120,7 @@ def recommendation():
     else:
         data['Priority'] = pd.qcut(topsis_score, q=3, labels=priority_labels[::-1])
 
-    data['TOPSIS_Score'] = topsis_score  # Simpan TOPSIS score ke kolom baru
+    data['TOPSIS_Score'] = topsis_score  # Simpan TOPSIS score yang sudah disesuaikan
 
     # Show the final dataframe
     final_df = data[['cluster', 'NumReports', 'Priority', 'TOPSIS_Score']]

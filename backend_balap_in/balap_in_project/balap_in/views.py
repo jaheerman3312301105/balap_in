@@ -5,10 +5,12 @@ from rest_framework.decorators import api_view
 from .serializers import LaporanSerializer
 from .serializers import PenggunaSerializer
 from .serializers import RekomendasiSerializer
+from .serializers import Analisis
 from .models import Laporan 
 from .models import Peta
 from .models import Pengguna
 from .models import Rekomendasi
+from .models import Analisis
 import uuid
 from rest_framework import status
 import logging
@@ -184,3 +186,5 @@ def getclusteroflaporan(request, cluster):
         return Response(serializer.data)
     except Laporan.DoesNotExist:
         print('Tidak ada cluster laporan')
+
+
