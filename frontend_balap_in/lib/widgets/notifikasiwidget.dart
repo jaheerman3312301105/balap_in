@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:elegant_notification/elegant_notification.dart';
 
 class WidgetNotification extends StatefulWidget {
   final Color colorWidget;

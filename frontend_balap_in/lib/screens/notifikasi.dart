@@ -1,6 +1,15 @@
 import 'package:balap_in/widgets/notifikasiwidget.dart';
 import 'package:flutter/material.dart';
+import 'package:elegant_notification/elegant_notification.dart';
 
+void showElegantNotification(BuildContext context, String title, String description) {
+  ElegantNotification.info(
+    title: Text(title),
+    description: Text(description),
+    animationDuration: const Duration(seconds: 1),
+    toastDuration: const Duration(seconds: 3),
+  ).show(context);
+}
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -81,6 +90,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   return InkWell(
                    onTap: () {
                      Navigator.pushNamed(context, '/isirekomendasi');
+                     showElegantNotification(
+                      context,
+                      Perubahan Status Jalan',
+                      'Status jalan Bandara Hang Nadim telah diperbarui menjadi prioritas tinggi.',
+                      );
                    },
                    child: WidgetNotification(colorWidget: bgColor),
                   );
