@@ -80,7 +80,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           Color bgColor = colors[index % colors.length];
                   return InkWell(
                    onTap: () {
-                     Navigator.pushNamed(context, '/isirekomendasi');
+                     Navigator.pushNamed(context, '/testnotifikasi');
                    },
                    child: WidgetNotification(colorWidget: bgColor),
                   );

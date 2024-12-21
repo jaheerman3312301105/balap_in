@@ -2,7 +2,8 @@ import pandas as pd
 from sklearn.cluster import DBSCAN
 from geopy.distance import geodesic
 from sqlalchemy import create_engine, text
-from .recommendation import recommendation
+from .recommendation import recommendations
+
 
 def clustering():
     db_user = 'root'
@@ -79,7 +80,7 @@ def clustering():
                 })
             trans.commit()  
             print("Hasil clustering telah disimpan ke tabel laporan.")
-            recommendation()
+            recommendations()
         except Exception as e:
             trans.rollback()  
             print(f"Terjadi kesalahan: {e}")

@@ -118,7 +118,6 @@ class Analisis(models.Model):
 class Notifikasi(models.Model):
     id_notifikasi = models.AutoField(primary_key=True)
     id_rekomendasi = models.ForeignKey(Rekomendasi, on_delete=models.CASCADE)
-    id_analisis = models.ForeignKey(Analisis, on_delete=models.CASCADE)
     pesan = models.CharField(
         max_length=255,
         null=False,

@@ -23,6 +23,7 @@ from datetime import timedelta, datetime
 from django.utils.timezone import now
 from django.db.models import Q
 from .management.commands.clustering import clustering
+from .management.commands.recommendation import recommendations
 
 logger = logging.getLogger(__name__)
 # Create your views here.
@@ -187,4 +188,16 @@ def getclusteroflaporan(request, cluster):
     except Laporan.DoesNotExist:
         print('Tidak ada cluster laporan')
 
+@api_view(['GET'])
+def recommend(request):
+    try:
+        pesan = recommendations()
 
+        if not pesan:
+            return Response({"message": "Tidak ada notifikasi baru."}, status=status.HTTP_200_OK)
+        
+        return Response({"message": pesan}, status=status.HTTP_200_OK)
+    
+    except Exception as e:
+        logger.error(f"Error saat memanggil fungsi recommendations: {e}")
+        return Response({"message": "Terjadi kesalahan saat memproses rekomendasi."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

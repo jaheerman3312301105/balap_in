@@ -1,8 +1,11 @@
 import numpy as np
 import pandas as pd
 from sqlalchemy import create_engine, text
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 
-def recommendation():
+def recommendations():
     db_user = 'root'
     db_password = ''
     db_host = 'localhost'
@@ -88,7 +91,6 @@ def recommendation():
     distance_to_anti_ideal = np.sqrt(np.sum((weighted_matrix - anti_ideal_solution)**2, axis=1))
 
     # Step 5: Calculate similarity to ideal solution (TOPSIS score)
-    # Step 5: Calculate similarity to ideal solution (TOPSIS score)
     if len(data) == 1:
         topsis_score = np.array([1.0])
     else:
@@ -126,11 +128,21 @@ def recommendation():
     final_df = data[['cluster', 'NumReports', 'Priority', 'TOPSIS_Score']]
     print(final_df)
 
-    # Insert the results into the 'rekomendasi' table
     with engine.connect() as conn:
         trans = conn.begin()
         try:
             for _, row in final_df.iterrows():
+                get_previous_status = text("""
+                    SELECT r.status_urgent 
+                    FROM rekomendasi r
+                    JOIN laporan l ON r.id_laporan_id = l.id_laporan
+                    WHERE l.cluster = :cluster
+                    LIMIT 1
+                """)
+                
+                previous_status_result = conn.execute(get_previous_status, {'cluster': row['cluster']}).fetchone()
+                previous_status = previous_status_result[0] if previous_status_result else None
+
                 getidLaporan = text("""
                     SELECT `id_laporan` 
                     FROM `laporan` 
@@ -138,9 +150,10 @@ def recommendation():
                     LIMIT 1
                 """)
                 getidPeta = text("""
-                    SELECT `id_peta_id` 
-                    FROM `laporan` 
-                    WHERE cluster = :cluster
+                    SELECT p.id_peta, p.jalan
+                    FROM `peta` p
+                    JOIN laporan l ON l.id_laporan = p.id_laporan_id
+                    WHERE l.cluster = :cluster
                     LIMIT 1
                 """)
 
@@ -150,6 +163,7 @@ def recommendation():
                 if idget_laporan and idget_peta:
                     id_laporan = idget_laporan[0]
                     id_peta = idget_peta[0]
+                    lokasi = idget_peta[1]  
 
                     upsert_query = text("""
                         INSERT INTO `rekomendasi` (
@@ -170,16 +184,47 @@ def recommendation():
                             `jumlah_laporan` = VALUES(`jumlah_laporan`),
                             `id_laporan_id` = VALUES(`id_laporan_id`),
                             `id_peta_id` = VALUES(`id_peta_id`),
-                            `tingkat_urgent` = VALUES(`tingkat_urgent`);
+                            `tingkat_urgent` = VALUES(`tingkat_urgent`)
+                        RETURNING id_rekomendasi;
                     """)
 
-                    conn.execute(upsert_query, {
+                    result = conn.execute(upsert_query, {
                         'status_urgent': row['Priority'],
                         'jumlah_laporan': row['NumReports'],
                         'id_laporan': id_laporan,
                         'id_peta': id_peta,
-                        'tingkat_urgent': row['TOPSIS_Score']  # Tambahkan nilai TOPSIS score
+                        'tingkat_urgent': row['TOPSIS_Score']
                     })
+                    
+                    rekomendasi_result = result.fetchone()
+                    if rekomendasi_result:
+                        id_rekomendasi = rekomendasi_result[0]
+
+                        if (previous_status in ["sedang", "rendah"]) and row['Priority'] == "tinggi":
+                            insert_notification = text("""
+                                INSERT INTO notifikasi (
+                                    id_rekomendasi_id,
+                                    pesan,
+                                    tgl_notif
+                                ) VALUES (
+                                    :id_rekomendasi,
+                                    :pesan,
+                                    NOW()
+                                )
+                            """)
+
+                            notification_message = f"Prioritas {lokasi} dari {previous_status} Menjadi Tinggi!"
+                            
+                            result = conn.execute(insert_notification, {
+                                'id_rekomendasi': id_rekomendasi,
+                                'pesan': notification_message
+                            })
+
+                            if result.rowcount > 0:  
+                                trans.commit()
+                                return (notification_message)
+                            else:
+                                return ("Gagal menambahkan notifikasi.")
 
             trans.commit()
 
