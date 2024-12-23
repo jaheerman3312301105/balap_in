@@ -6,6 +6,7 @@ import 'package:balap_in/models/model_laporan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:get_time_ago/get_time_ago.dart';
 
 class IsilaporScreen extends StatelessWidget {
   final int? idLaporan;
@@ -35,7 +36,9 @@ class IsilaporScreen extends StatelessWidget {
               final tgllaporformat = DateTime.parse(laporan.tgllapor);
               
               String formattedDate = DateFormat('dd MMMM yyyy').format(tgllaporformat);
-              
+              GetTimeAgo.setDefaultLocale('id');
+              final waktu = DateTime.parse(laporan.tgllapor).toLocal();
+              final tgllapor = GetTimeAgo.parse(waktu);
               Uint8List gambar = base64Decode(laporan.gambar!);
 
               return Scaffold(
@@ -155,7 +158,7 @@ class IsilaporScreen extends StatelessWidget {
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 16.0),
                               child: Text(
-                                "Dilaporkan: $formattedDate",
+                                "Dilaporkan: $formattedDate (${tgllapor})",
                                 style: const TextStyle(
                                   fontFamily: 'Poppins', 
                                   fontSize: 14,

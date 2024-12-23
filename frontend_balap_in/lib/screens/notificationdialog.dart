@@ -1,52 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:dio/dio.dart';
-import 'dart:async';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
-class TestNotification extends StatefulWidget {
-  const TestNotification({super.key});
+class WebSocketNotification extends StatefulWidget {
+  const WebSocketNotification({super.key});
 
   @override
-  State<TestNotification> createState() => _TestNotificationState();
+  State<WebSocketNotification> createState() => _WebSocketNotificationState();
 }
 
-class _TestNotificationState extends State<TestNotification> {
+class _WebSocketNotificationState extends State<WebSocketNotification> {
+  // Koneksi WebSocket
+  late WebSocketChannel channel;
 
-  // Fungsi untuk mengambil pesan dari API dan menampilkan notifikasi
-  static Future<void> createNewNotification() async {
-    try {
-      // Inisialisasi Dio untuk melakukan request ke API
-      Dio dio = Dio();
-      String url = 'http://10.0.2.2:8000/notifikasi/pesan/'; // Gantilah dengan URL API yang sesuai
+  @override
+  void initState() {
+    super.initState();
 
-      // Melakukan GET request
-      Response response = await dio.get(url);
+    // Membuka koneksi WebSocket
+    channel = WebSocketChannel.connect(
+      Uri.parse('ws://10.0.2.2:8000/ws/notifications/'), 
+    );
 
-      if (response.statusCode == 200) {
-        String message = response.data['message']; // Ambil pesan dari respons
+    // Mendengarkan pesan dari WebSocket
+    channel.stream.listen((message) {
+      // Trigger notifikasi ketika pesan diterima
+      createNotification(message);
+    });
+  }
 
-        // Memeriksa apakah izin notifikasi sudah diberikan
-        bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
-        if (!isAllowed) return;
+  // Fungsi untuk menampilkan notifikasi
+  void createNotification(String message) {
+    AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: 10,
+        channelKey: 'basic_channel',
+        actionType: ActionType.Default,
+        title: 'Perubahan Status',
+        body: message, // Pesan yang diterima dari WebSocket
+        roundedLargeIcon: true,
+        largeIcon: 'resource://drawable/small_ic_launcher',
+      ),
+    );
+  }
 
-        // Menampilkan notifikasi dengan pesan yang diterima dari API
-        AwesomeNotifications().createNotification(
-          content: NotificationContent(
-            id: 10,
-            channelKey: 'basic_channel',
-            actionType: ActionType.Default,
-            title: 'Perubahan Status',
-            body: message, // Gunakan pesan dari API
-            roundedLargeIcon: true,
-            largeIcon: 'resource://drawable/small_ic_launcher',
-          ),
-        );
-      } else {
-        print("Gagal mendapatkan pesan rekomendasi: ${response.statusCode}");
-      }
-    } catch (e) {
-      print("Terjadi kesalahan saat mengambil data dari API: $e");
-    }
+  @override
+  void dispose() {
+    // Pastikan untuk menutup koneksi WebSocket saat widget dibuang
+    channel.sink.close();
+    super.dispose();
   }
 
   @override
@@ -58,7 +60,8 @@ class _TestNotificationState extends State<TestNotification> {
           hoverColor: Colors.purple,
           backgroundColor: Colors.red,
           onPressed: () {
-            createNewNotification(); // Memanggil fungsi untuk menampilkan notifikasi
+            // Fungsi untuk memicu notifikasi secara manual (bisa dihilangkan jika tidak diperlukan)
+            createNotification('Pesan Uji'); 
           },
           child: Icon(Icons.notifications),
         ),

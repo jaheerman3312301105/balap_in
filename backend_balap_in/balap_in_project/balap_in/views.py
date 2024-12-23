@@ -5,12 +5,14 @@ from rest_framework.decorators import api_view
 from .serializers import LaporanSerializer
 from .serializers import PenggunaSerializer
 from .serializers import RekomendasiSerializer
-from .serializers import Analisis
+from .serializers import AnalisisSerializer
+from .serializers import NotifikasiSerializer
 from .models import Laporan 
 from .models import Peta
 from .models import Pengguna
 from .models import Rekomendasi
 from .models import Analisis
+from .models import Notifikasi
 import uuid
 from rest_framework import status
 import logging
@@ -189,15 +191,10 @@ def getclusteroflaporan(request, cluster):
         print('Tidak ada cluster laporan')
 
 @api_view(['GET'])
-def recommend(request):
+def getNotifikasi(request):
     try:
-        pesan = recommendations()
-
-        if not pesan:
-            return Response({"message": "Tidak ada notifikasi baru."}, status=status.HTTP_200_OK)
-        
-        return Response({"message": pesan}, status=status.HTTP_200_OK)
-    
-    except Exception as e:
-        logger.error(f"Error saat memanggil fungsi recommendations: {e}")
-        return Response({"message": "Terjadi kesalahan saat memproses rekomendasi."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        notifikasi = Notifikasi.objects.all()
+        serializer = NotifikasiSerializer(notifikasi, many=True)
+        return Response(serializer.data)
+    except Notifikasi.DoesNotExist:
+        print('Tidak ada Notifikasi')

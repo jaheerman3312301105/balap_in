@@ -19,6 +19,12 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.urls import re_path
+from .consumer import NotificationConsumer
+
+websocket_urlpatterns = [
+    re_path(r"ws/notifications/", NotificationConsumer.as_asgi()),
+]
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,7 +36,7 @@ urlpatterns = [
     path('rekomendasi/<int:id_rekomendasi>/', views.detailrekomendasi, name='detailrekomendasi'),
     path('rekomendasi/<str:order>/', views.rekomendasi, name='orderrekomendasi'),
     path("laporan/cluster/<int:cluster>/", views.getclusteroflaporan, name='clusterlaporan'),
-    path('notifikasi/pesan/', views.recommend, name='recommend')
+    path('notifikasi/', views.getNotifikasi, name='notifikasi'),
 ] 
 
 if settings.DEBUG:

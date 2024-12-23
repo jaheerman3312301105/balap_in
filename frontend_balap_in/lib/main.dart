@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
         '/rekomendasi':(context) => const RecommendationsScreen(),
         '/isirekomendasi':(context) => const IsiRekomendasiScreen(),
         '/notifikasi':(context) => const NotificationsScreen(),
-        '/testnotifikasi' : (context) => const TestNotification(),
+        '/testnotifikasi' : (context) => const WebSocketNotification(),
       },
     );
   }

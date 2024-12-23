@@ -4,6 +4,8 @@ from sqlalchemy import create_engine, text
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 def recommendations():
     db_user = 'root'
@@ -220,14 +222,23 @@ def recommendations():
                                 'pesan': notification_message
                             })
 
-                            if result.rowcount > 0:  
-                                trans.commit()
-                                return (notification_message)
-                            else:
-                                return ("Gagal menambahkan notifikasi.")
-
+                            if result.rowcount > 0:
+                                try:
+                                    channel_layer = get_channel_layer()
+                                    async_to_sync(channel_layer.group_send)(
+                                        "notifications",  
+                                        {
+                                            "type": "send_notification",  
+                                            "message": notification_message,
+                                        }
+                                    )
+                                    print("WebSocket notification sent successfully.")
+                                except Exception as ws_error:
+                                    print(f"Kesalahan WebSocket: {ws_error}")
+                                    
             trans.commit()
 
         except Exception as e:
             trans.rollback()
             print(f"Terjadi kesalahan: {e}")
+

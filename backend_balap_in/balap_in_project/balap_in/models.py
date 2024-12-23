@@ -1,12 +1,15 @@
 from django.db import models
 from django.db.models import Count
 import uuid
+from django.utils import timezone
+
+now = timezone.now()
 
 # Create your models here.
 class Pengguna(models.Model): 
     id_pengguna = models.AutoField(primary_key=True)
     token = models.CharField(max_length=100, default=uuid.uuid4)
-    tgl_pengguna = models.DateTimeField(auto_now= True)
+    tgl_pengguna = models.DateTimeField(default=now)
     class Meta :
         db_table ='pengguna'
 
@@ -33,7 +36,7 @@ class Laporan(models.Model):
         choices=[('selesai', 'Selesai'), ('draft', 'Draft')],
         null=True, blank=True
     )
-    tgl_lapor = models.DateTimeField(auto_now=True)
+    tgl_lapor = models.DateTimeField(default=now)
     cluster = models.IntegerField(
         null=True, blank=True
     )
@@ -98,7 +101,7 @@ class Analisis(models.Model):
     id_analisis = models.AutoField(primary_key=True)
     id_rekomendasi = models.ForeignKey(Rekomendasi, on_delete=models.CASCADE)
     tgl_analisis = models.DateTimeField(
-        auto_now=True
+        default=now
     )
     jumlah_urgen = models.IntegerField(
         null=True, blank=True
@@ -122,7 +125,7 @@ class Notifikasi(models.Model):
         max_length=255,
         null=False,
     )
-    tgl_notif = models.DateTimeField(auto_now=True)
+    tgl_notif = models.DateTimeField(default=now)
 
     class Meta:
         db_table = 'notifikasi'

@@ -1,7 +1,5 @@
 import 'package:balap_in/api/api_service_rekomendasi.dart';
 import 'package:balap_in/models/model_rekomendasi.dart';
-import 'package:balap_in/screens/lapor.dart';
-import 'package:balap_in/screens/rekomendasi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
@@ -40,7 +38,7 @@ class RekomendasiWidget extends StatelessWidget {
               final rekomendasi = rekomendasiList[index];
               final colorRekomendasi = rekomendasi.statusurgent;
 
-              Color colorRekomendasis = Color.fromARGB(255, 250, 204, 204);
+              Color colorRekomendasis = const Color.fromARGB(255, 250, 204, 204);
 
               if (colorRekomendasi == 'tinggi') {
                 colorRekomendasis = const Color.fromARGB(255, 253, 36, 36);

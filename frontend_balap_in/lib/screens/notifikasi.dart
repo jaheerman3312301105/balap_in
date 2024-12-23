@@ -65,27 +65,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           Center(
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.87,
-              child: ListView.builder(
-                itemCount: 6,
-                itemBuilder: (context, index) {
-                  List<Color> colors = [
-                            const Color.fromARGB(255, 253, 36, 36),
-                            const Color.fromARGB(255, 36, 253, 36),
-                            const Color.fromARGB(255, 249, 253, 36),
-                            const Color.fromARGB(255, 249, 253, 36),
-                            const Color.fromARGB(255, 253, 36, 36),
-                            const Color.fromARGB(255, 36, 253, 36),
-                          ];
-        
-                          Color bgColor = colors[index % colors.length];
-                  return InkWell(
-                   onTap: () {
-                     Navigator.pushNamed(context, '/testnotifikasi');
-                   },
-                   child: WidgetNotification(colorWidget: bgColor),
-                  );
-                }
-                ),
+              child: ListView(
+                children: const [
+                  WidgetNotification()
+                ],
+              )
             )
           )
         ],

@@ -40,4 +40,5 @@ class NotifikasiSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notifikasi
         fields = '__all__'
+        depth = 2
 

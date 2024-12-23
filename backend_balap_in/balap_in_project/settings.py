@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -89,7 +90,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'balap_in_project.wsgi.application'
-
+ASGI_APPLICATION = 'balap_in_project.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -105,6 +106,16 @@ DATABASES = {
  
     }
 }
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
+
 
 
 # Password validation
@@ -131,11 +142,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Jakarta'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 CORS_ALLOW_ALL_ORIGINS = True
 
