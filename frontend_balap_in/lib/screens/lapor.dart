@@ -162,9 +162,15 @@ class _LaporScreenState extends State<LaporScreen> {
     }
   }
 
-  void buatLaporan(String status) {
+  // void buatLaporan(String status) {
+  //   if (judulController.text.isEmpty || deskripsiController.text.isEmpty || pickedLocation == null || gambarBlob == null) {
+  //     _showErrorDialog(context, 'Semua field harus diisi sebelum mengirim laporan.');
+  //     return;
+  //   }
+
+    void buatLaporan(String status) {
     if (judulController.text.isEmpty || deskripsiController.text.isEmpty || pickedLocation == null || gambarBlob == null) {
-      _showErrorDialog(context, 'Semua field harus diisi sebelum mengirim laporan.');
+      _showErrorDialog(context, 'Tidak ada data yang harus disimpan, silahkan isi beberapa field.');
       return;
     }
 
@@ -865,9 +871,16 @@ class _LaporScreenState extends State<LaporScreen> {
                             children: [
                               // WIDGET DRAFT
                               InkWell(
-                                onTap: () {
-                                  _showDraftAlertDialog(context);
-                                },
+        onTap: () {
+          // Periksa apakah ada field yang kosong
+          if (judulController.text.isEmpty || deskripsiController.text.isEmpty || pickedLocation == null || gambarBlob == null) {
+            // Tampilkan pesan kesalahan jika ada field yang kosong
+            _showErrorDialog(context, 'Tidak ada data yang harus disimpan, silahkan isi beberapa field.');
+          } else {
+            // Tampilkan dialog konfirmasi jika semua field terisi
+            _showDraftAlertDialog(context);
+          }
+        },
                                 child: SizedBox(
                                   width: 145,
                                   height: 30,
