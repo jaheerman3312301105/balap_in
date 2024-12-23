@@ -193,7 +193,7 @@ def getclusteroflaporan(request, cluster):
 @api_view(['GET'])
 def getNotifikasi(request):
     try:
-        notifikasi = Notifikasi.objects.all()
+        notifikasi = Notifikasi.objects.all().order_by('-tgl_notif')
         serializer = NotifikasiSerializer(notifikasi, many=True)
         return Response(serializer.data)
     except Notifikasi.DoesNotExist:
