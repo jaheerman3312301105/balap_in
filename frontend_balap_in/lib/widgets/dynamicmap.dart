@@ -1,4 +1,5 @@
 import 'package:balap_in/api/api_service_rekomendasi.dart';
+import 'package:balap_in/screens/lapor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
@@ -21,10 +22,6 @@ class _DynamicmapState extends State<Dynamicmap> {
       // )
       initPosition: GeoPoint(latitude: 1.10230, longitude: 104.03881),
     );
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await addInitialMarker();
-    });
   }
 
   Future<void> addInitialMarker() async {
@@ -167,10 +164,6 @@ class _FullDynamicMapState extends State<FullDynamicMap> {
       // )
       initPosition: GeoPoint(latitude: 1.10230, longitude: 104.03881),
     );
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await addInitialMarker();
-    });
   }
 
   Future<void> addInitialMarker() async {

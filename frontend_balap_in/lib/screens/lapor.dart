@@ -421,7 +421,9 @@ class _LaporScreenState extends State<LaporScreen> {
                                 ),
                               ],
                             ),
-                            child: TextField(
+                            child: TextFormField(
+                              maxLines: 1,
+                              maxLength: 30,
                               controller: judulController,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
@@ -538,14 +540,15 @@ class _LaporScreenState extends State<LaporScreen> {
                               ],
                             ),
                             padding: const EdgeInsets.only(top: 12, right: 2),
-                            child: TextField(
+                            child: TextFormField(
+                              maxLines: 3,
+                              maxLength: 80,
                               controller: deskripsiController,
                               style: const TextStyle(
                                 fontFamily: "Poppins",
                                 fontSize: 12,
                               ),
                               cursorHeight: 14,
-                              maxLines: 6,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Entah sudah selasa yang keberapa masih saja jalan itu rusak',
