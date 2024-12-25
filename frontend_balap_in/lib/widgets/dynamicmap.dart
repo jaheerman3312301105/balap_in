@@ -107,9 +107,9 @@ class _DynamicmapState extends State<Dynamicmap> {
                   osmOption: const OSMOption(
                     showZoomController: true,
                     zoomOption: ZoomOption(
-                      initZoom: 11,
-                      minZoomLevel: 15,
-                      maxZoomLevel: 19
+                        initZoom: 15,
+                        minZoomLevel: 9,
+                        maxZoomLevel: 19,
                     )
                   ),
                   onMapIsReady: (isReady) async {
@@ -292,8 +292,8 @@ class _FullDynamicMapState extends State<FullDynamicMap> {
             osmOption: const OSMOption(
                       showZoomController: true,
                       zoomOption: ZoomOption(
-                        initZoom: 11,
-                        minZoomLevel: 15,
+                        initZoom: 15,
+                        minZoomLevel: 9,
                         maxZoomLevel: 19,
                       )
                       ),
