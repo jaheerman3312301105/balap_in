@@ -108,7 +108,8 @@ class _DynamicmapState extends State<Dynamicmap> {
                     showZoomController: true,
                     zoomOption: ZoomOption(
                       initZoom: 11,
-                      minZoomLevel: 16
+                      minZoomLevel: 15,
+                      maxZoomLevel: 19
                     )
                   ),
                   onMapIsReady: (isReady) async {
@@ -292,7 +293,8 @@ class _FullDynamicMapState extends State<FullDynamicMap> {
                       showZoomController: true,
                       zoomOption: ZoomOption(
                         initZoom: 11,
-                        minZoomLevel: 16
+                        minZoomLevel: 15,
+                        maxZoomLevel: 19,
                       )
                       ),
             onMapIsReady: (isReady) async {
