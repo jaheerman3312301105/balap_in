@@ -1,3 +1,4 @@
+import 'package:balap_in/api/api_service_rekomendasi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
@@ -10,12 +11,76 @@ class Dynamicmap extends StatefulWidget {
 }
 
 class _DynamicmapState extends State<Dynamicmap> {
+  late MapController controller;
+  @override
+  void initState() {
+    super.initState();
+    controller = MapController(
+      // initMapWithUserPosition: const UserTrackingOption(
+      //   enableTracking: true
+      // )
+      initPosition: GeoPoint(latitude: 1.10230, longitude: 104.03881),
+    );
 
-  MapController controller = MapController.withUserPosition(
-    trackUserLocation: const UserTrackingOption(
-      enableTracking: true,
-    ),
-  );
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await addInitialMarker();
+    });
+  }
+
+  Future<void> addInitialMarker() async {
+    ApiServiceRekomendasi apiService = ApiServiceRekomendasi();
+    
+    try {
+      await controller.removeMarkers([]);
+      final apiServiceList = await apiService.fetchRekomendasiBiasa();
+    
+      for (var item in apiServiceList) {
+        double latitude = item.peta!.latitude;
+        double longitude = item.peta!.longitude;
+        String status = item.statusurgent!;
+
+        Color colorRekomendasi = Colors.transparent;
+        print('Adding marker at ($latitude, $longitude) with status: $status');
+        
+        if (status == 'tinggi') {
+          colorRekomendasi = const Color.fromARGB(255, 253, 36, 36);
+        } else if (status == 'sedang') {
+          colorRekomendasi = const Color.fromARGB(255, 249, 253, 36);
+        } else if (status == 'rendah') {
+          colorRekomendasi = const Color.fromARGB(255, 36, 253, 36);
+        }
+        
+        await controller.addMarker(
+        GeoPoint(
+          latitude: latitude, 
+          longitude: longitude
+        ),
+          markerIcon: MarkerIcon(
+            icon: Icon(
+              shadows: const <Shadow>[
+                Shadow(
+                  color: Colors.black,
+                  offset:Offset(4.0, 4.0),
+                  blurRadius: 4,
+                )
+              ],
+              Icons.location_on,
+              color: colorRekomendasi,
+              size: 40,
+            ),
+          ),
+          angle: 2,
+          iconAnchor: IconAnchor(
+            anchor: Anchor.center
+          )
+        );
+      }
+      
+    } catch (e) {
+      print('Gagal mendapatkan API: $e');
+    }
+  }
+    
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +111,10 @@ class _DynamicmapState extends State<Dynamicmap> {
                       initZoom: 11,
                       minZoomLevel: 16
                     )
-                  )),
+                  ),
+                  onMapIsReady: (isReady) async {
+                  await addInitialMarker();
+                  },),
                   
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -89,17 +157,73 @@ class FullDynamicMap extends StatefulWidget {
 }
 
 class _FullDynamicMapState extends State<FullDynamicMap> {
+  late MapController controller;
+  @override
+  void initState() {
+    super.initState();
+    controller = MapController(
+      // initMapWithUserPosition: const UserTrackingOption(
+      //   enableTracking: true
+      // )
+      initPosition: GeoPoint(latitude: 1.10230, longitude: 104.03881),
+    );
 
-  MapController controller = MapController.withUserPosition(
-    trackUserLocation: const UserTrackingOption(
-      enableTracking: true
-    ),
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await addInitialMarker();
+    });
+  }
 
-    // initPosition: GeoPoint(
-    //   latitude: 1.118512, 
-    //   longitude: 104.048477,
-    //   )
-  );
+  Future<void> addInitialMarker() async {
+    ApiServiceRekomendasi apiService = ApiServiceRekomendasi();
+    
+    try {
+      final apiServiceList = await apiService.fetchRekomendasiBiasa();
+    
+      for (var item in apiServiceList) {
+        double latitude = item.peta!.latitude;
+        double longitude = item.peta!.longitude;
+        String status = item.statusurgent!;
+
+        Color colorRekomendasi = Colors.transparent;
+        if (status == 'tinggi') {
+          colorRekomendasi = const Color.fromARGB(255, 253, 36, 36);
+        } else if (status == 'sedang') {
+          colorRekomendasi = const Color.fromARGB(255, 249, 253, 36);
+        } else if (status == 'rendah') {
+          colorRekomendasi = const Color.fromARGB(255, 36, 253, 36);
+        }
+        
+        await controller.addMarker(
+        GeoPoint(
+          latitude: latitude, 
+          longitude: longitude
+        ),
+          markerIcon: MarkerIcon(
+            icon: Icon(
+              shadows: const <Shadow>[
+                Shadow(
+                  color: Colors.black,
+                  offset:Offset(4.0, 4.0),
+                  blurRadius: 4,
+                )
+              ],
+              Icons.location_on,
+              color: colorRekomendasi,
+              size: 40,
+            ),
+          ),
+          angle: 2,
+          iconAnchor: IconAnchor(
+            anchor: Anchor.center
+          )
+        );
+      }
+      
+    } catch (e) {
+      print('Gagal mendapatkan API: $e');
+    }
+  }
+  
   
   @override
   Widget build(BuildContext context) {
@@ -170,7 +294,10 @@ class _FullDynamicMapState extends State<FullDynamicMap> {
                         initZoom: 11,
                         minZoomLevel: 16
                       )
-                      )
+                      ),
+            onMapIsReady: (isReady) async {
+              await addInitialMarker();
+            },
                     ),
           ),
         ]

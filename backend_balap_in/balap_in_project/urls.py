@@ -37,6 +37,7 @@ urlpatterns = [
     path('rekomendasi/<str:order>/', views.rekomendasi, name='orderrekomendasi'),
     path("laporan/cluster/<int:cluster>/", views.getclusteroflaporan, name='clusterlaporan'),
     path('notifikasi/', views.getNotifikasi, name='notifikasi'),
+    path('rekomendasibiasa/', views.rekomendasibiasa),
 ] 
 
 if settings.DEBUG:

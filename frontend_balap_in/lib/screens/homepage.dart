@@ -3,11 +3,9 @@ import 'package:balap_in/widgets/dynamicmap.dart';
 import 'package:flutter/material.dart';
 import 'package:balap_in/widgets/homewidget.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:balap_in/models/model_laporan.dart';
 
 
-MapController mapController = MapController();
 
 bool showAdditionalChip = false;
 bool filterSelected = false;

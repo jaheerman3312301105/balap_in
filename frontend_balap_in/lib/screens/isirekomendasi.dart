@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:balap_in/api/api_service_laporan.dart';
 import 'package:balap_in/api/api_service_rekomendasi.dart';
 import 'package:balap_in/models/model_rekomendasi.dart';
-import 'package:balap_in/screens/lapor.dart';
 import 'package:flutter/material.dart';
 
 class IsiRekomendasiScreen extends StatefulWidget {
@@ -113,7 +112,7 @@ class _IsiRekomendasiScreenState extends State<IsiRekomendasiScreen> {
                     child: SizedBox(
                       width: 380,
                       height: 20,
-                      child: Text('Kategori: ${jenisconvert}',
+                      child: Text('Kategori: $jenisconvert',
                       style: const TextStyle(
                         fontFamily: "Poppins",
                         fontSize: 9
