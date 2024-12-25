@@ -40,8 +40,7 @@ class _DynamicmapState extends State<Dynamicmap> {
         String status = item.statusurgent!;
 
         Color colorRekomendasi = Colors.transparent;
-        print('Adding marker at ($latitude, $longitude) with status: $status');
-        
+
         if (status == 'tinggi') {
           colorRekomendasi = const Color.fromARGB(255, 253, 36, 36);
         } else if (status == 'sedang') {
@@ -177,6 +176,7 @@ class _FullDynamicMapState extends State<FullDynamicMap> {
     ApiServiceRekomendasi apiService = ApiServiceRekomendasi();
     
     try {
+      await controller.removeMarkers([]);
       final apiServiceList = await apiService.fetchRekomendasiBiasa();
     
       for (var item in apiServiceList) {
