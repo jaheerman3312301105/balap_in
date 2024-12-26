@@ -2,14 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:balap_in/api/api_service_mappicker.dart';
+import 'package:balap_in/controller/controller_draft.dart';
 import 'package:balap_in/widgets/pickermap.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:balap_in/api/api_service_laporan.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const List<String> jenis = <String>['Jalan', 'Lampu Jalan', 'Jembatan'];
 const List<String> cuaca = <String>['Hujan', 'Cerah'];
@@ -162,11 +163,12 @@ class _LaporScreenState extends State<LaporScreen> {
     }
   }
 
-  void buatLaporan(String status) {
+
+  void buatLaporan(String status) async {
     print(status);
     if (status == 'selesai') {
         if (judulController.text.isEmpty || deskripsiController.text.isEmpty || pickedLocation == null || gambarBlob == null) {
-        _showErrorDialog(context, 'Semua field harus diisi sebelum mengirim laporan.');
+        _showErrorDialog(context, "Semua field wajib diisi sebelum menyimpan laporan. Mohon lengkapi data terlebih dahulu.");
         return;
       } else {
         ApiServiceLaporan apiService = ApiServiceLaporan();
@@ -190,9 +192,16 @@ class _LaporScreenState extends State<LaporScreen> {
       }
     }
     else if(status == 'draft') {
-      Navigator.of(context).pop(); 
-      _showSuccessDialog(context, 'Laporan berhasil disimpan.');
-      resetForm();
+      try {
+      final draft = await ControllerDraft().draftLaporan(judulController,  deskripsiController);
+      if (draft != null) {
+        Navigator.of(context).pop();
+        _showSuccessDialog(context, draft.toString());
+      }
+      } catch (e) {
+        Navigator.of(context).pop();
+        _showErrorDialog(context, e.toString());
+      }
     } else {
       print('Error operasi tidak diketahui');
     }
@@ -299,7 +308,7 @@ class _LaporScreenState extends State<LaporScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Error'),
+          title: const Text('Gagal'),
           content: Text(message),
           actions: <Widget>[
             TextButton(
