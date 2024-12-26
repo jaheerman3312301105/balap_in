@@ -163,29 +163,39 @@ class _LaporScreenState extends State<LaporScreen> {
   }
 
   void buatLaporan(String status) {
-    if (judulController.text.isEmpty || deskripsiController.text.isEmpty || pickedLocation == null || gambarBlob == null) {
-      _showErrorDialog(context, 'Semua field harus diisi sebelum mengirim laporan.');
-      return;
+    print(status);
+    if (status == 'selesai') {
+        if (judulController.text.isEmpty || deskripsiController.text.isEmpty || pickedLocation == null || gambarBlob == null) {
+        _showErrorDialog(context, 'Semua field harus diisi sebelum mengirim laporan.');
+        return;
+      } else {
+        ApiServiceLaporan apiService = ApiServiceLaporan();
+        apiService.buatLaporan(
+        judulController.text,
+        selectedJenis!,
+        deskripsiController.text,
+        status,
+        _currentSliderValue,
+        selectedCuaca,
+        gambarBlob!,
+        pickedLocation!,
+      ).then((response) {
+        // Navigasi kembali ke halaman utama setelah pengiriman berhasil
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        _showSuccessDialog(context, 'Laporan berhasil dikirim.'); // Tampilkan dialog sukses
+        resetForm(); // Reset form setelah mengirim laporan
+      }).catchError((error) {
+        _showErrorDialog(context, 'Terjadi kesalahan saat mengirim laporan: $error');
+      });
+      }
     }
-
-    ApiServiceLaporan apiService = ApiServiceLaporan();
-    apiService.buatLaporan(
-      judulController.text,
-      selectedJenis!,
-      deskripsiController.text,
-      status,
-      _currentSliderValue,
-      selectedCuaca,
-      gambarBlob!,
-      pickedLocation!,
-    ).then((response) {
-      // Navigasi kembali ke halaman utama setelah pengiriman berhasil
-      Navigator.of(context).popUntil((route) => route.isFirst);
-      _showSuccessDialog(context, 'Laporan berhasil dikirim.'); // Tampilkan dialog sukses
-      resetForm(); // Reset form setelah mengirim laporan
-    }).catchError((error) {
-      _showErrorDialog(context, 'Terjadi kesalahan saat mengirim laporan: $error');
-    });
+    else if(status == 'draft') {
+      Navigator.of(context).pop(); 
+      _showSuccessDialog(context, 'Laporan berhasil disimpan.');
+      resetForm();
+    } else {
+      print('Error operasi tidak diketahui');
+    }
   }
 
   void resetForm() {
@@ -217,10 +227,7 @@ class _LaporScreenState extends State<LaporScreen> {
             ),
             TextButton(
               onPressed: () {
-                buatLaporan('draft');
-                _showSuccessDialog(context, 'Laporan berhasil disimpan.');
-                Navigator.of(context).pop(); // Menutup dialog konfirmasi
-                resetForm(); // Reset form setelah menyimpan draft
+                buatLaporan('draft'); // Reset form setelah menyimpan draft
               },
               child: const Text('Ya'),
             ),
@@ -277,10 +284,7 @@ class _LaporScreenState extends State<LaporScreen> {
             ),
             TextButton(
               onPressed: () {
-                buatLaporan('selesai'); // Mengirim laporan
-                Navigator.of(context).pop(); // Menutup dialog konfirmasi
-                _showSuccessDialog(context, 'Laporan berhasil dikirim.'); // Menampilkan dialog sukses
-                resetForm(); // Reset form setelah mengirim laporan
+                buatLaporan('selesai'); // Mengirim laporan 
               },
               child: const Text('Kirim'),
             ),
@@ -300,7 +304,7 @@ class _LaporScreenState extends State<LaporScreen> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Menutup dialog
+                Navigator.of(context).popUntil(ModalRoute.withName('/lapor'));// Menutup dialog
               },
               child: const Text('OK'),
             ),
@@ -423,7 +427,7 @@ class _LaporScreenState extends State<LaporScreen> {
                             ),
                             child: TextFormField(
                               maxLines: 1,
-                              maxLength: 30,
+                              maxLength: 40,
                               controller: judulController,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,

@@ -1,5 +1,4 @@
 import 'package:balap_in/api/api_service_rekomendasi.dart';
-import 'package:balap_in/screens/lapor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
@@ -53,6 +52,8 @@ class _DynamicmapState extends State<Dynamicmap> {
         ),
           markerIcon: MarkerIcon(
             icon: Icon(
+              size: 40,
+              color: colorRekomendasi,
               shadows: const <Shadow>[
                 Shadow(
                   color: Colors.black,
@@ -61,8 +62,6 @@ class _DynamicmapState extends State<Dynamicmap> {
                 )
               ],
               Icons.location_on,
-              color: colorRekomendasi,
-              size: 40,
             ),
           ),
           angle: 2,
