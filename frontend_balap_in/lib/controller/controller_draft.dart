@@ -8,9 +8,10 @@ class ControllerDraft {
     String selectedCuaca, 
     currentSliderValue, 
     pickedLocationaLat, 
-    pickedLocationLong
+    pickedLocationLong,
+    gambarfix
   ) async {
-    if (judulController.text.isNotEmpty || selectedJenis != 'Jalan' || deskripsiController.text.isNotEmpty || selectedCuaca != 'Hujan' || currentSliderValue != 0.0 || pickedLocationaLat != null || pickedLocationLong != null) {
+    if (judulController.text.isNotEmpty || selectedJenis != 'Jalan' || deskripsiController.text.isNotEmpty || selectedCuaca != 'Hujan' || currentSliderValue != 0.0 || pickedLocationaLat != null || pickedLocationLong != null || gambarfix != null) {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
 
       if (judulController.text.isNotEmpty) {
@@ -58,6 +59,13 @@ class ControllerDraft {
         final longitude = prefs.getDouble('longitude');
         print('latitude : $latitude');
         print('longitude : $longitude');
+      }
+
+      if (gambarfix != null) {
+        await prefs.remove('gambar');
+        await prefs.setString('gambar', gambarfix);
+        final gambar = prefs.getString('gambar');
+        print('gambar : $gambar');
       }
       
       return 'Laporan berhasil disimpan';

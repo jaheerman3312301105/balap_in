@@ -72,6 +72,21 @@ void _loadDraft() async {
       GeoPoint location = GeoPoint(latitude: latitude, longitude: longitude);
       handleLocationPicked(location);
     }
+
+    String? gambardraft = draft['gambar']; 
+
+    if (gambardraft != null) {
+      setState(() {
+        gambarfix = gambardraft;
+
+        try {
+          gambarBlob = base64Decode(gambardraft);
+        } catch (e) {
+          print('Error decoding image: $e');
+          gambarBlob = null;
+        }
+      });
+    }
   });
 }
 
@@ -203,6 +218,7 @@ void _loadDraft() async {
         await prefs.remove('persentase');
         await prefs.remove('latitude');
         await prefs.remove('longitude');
+        await prefs.remove('gambar');
   }
 
 
@@ -236,7 +252,7 @@ void _loadDraft() async {
     }
     else if(status == 'draft') {
       try {
-      final draft = await ControllerDraft().draftLaporan(judulController, selectedJenis! ,deskripsiController, selectedCuaca!, _currentSliderValue, pickedLocation?.latitude ?? 0.0, pickedLocation?.longitude ?? 0.0);
+      final draft = await ControllerDraft().draftLaporan(judulController, selectedJenis! ,deskripsiController, selectedCuaca!, _currentSliderValue, pickedLocation?.latitude ?? 0.0, pickedLocation?.longitude ?? 0.0, gambarfix ?? null);
       if (draft != null) {
         Navigator.of(context).pop();
         _showSuccessDialog(context, draft.toString());

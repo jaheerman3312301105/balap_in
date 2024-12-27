@@ -49,11 +49,13 @@ class ControllerAmbildraft {
     final double? longitude = prefs.getDouble('longitude');
     GeoPoint? pickedLocation;
 
+    final String? getgambar = prefs.getString('gambar');
+
     if (latitude != null && longitude != null) {
       pickedLocation = GeoPoint(latitude: latitude, longitude: longitude);
     }
 
-    bool hasDraftData = getjudul != null || getdeskripsi != null || getjenis != null || getcuaca != null || (getpersentase != null && getpersentase != 0.0) || pickedLocation != null;
+    bool hasDraftData = getjudul != null || getdeskripsi != null || getjenis != null || getcuaca != null || (getpersentase != null && getpersentase != 0.0) || pickedLocation != null || getgambar != null;
 
     if (hasDraftData) {
       bool loadDraft = await showambildraftdialog(context);
@@ -65,7 +67,8 @@ class ControllerAmbildraft {
           'cuaca': getcuaca,
           'persentase': getpersentase,
           'latitude': latitude,
-          'longitude': longitude
+          'longitude': longitude,
+          'gambar': getgambar,
         };
       } else {
         await prefs.remove('judul');
@@ -75,6 +78,7 @@ class ControllerAmbildraft {
         await prefs.remove('persentase');
         await prefs.remove('latitude');  
         await prefs.remove('longitude');  
+        await prefs.remove('gambar'); 
       }
     }
 
@@ -86,21 +90,7 @@ class ControllerAmbildraft {
       'persentase': 0.0,
       'latitude': null,
       'longitude': null,
+      'gambar': null,
     };
-  }
-
-  Future<void> simpanDraft(String judul, String deskripsi, String jenis, String cuaca, double persentase, GeoPoint? location) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    
-    await prefs.setString('judul', judul);
-    await prefs.setString('deskripsi', deskripsi);
-    await prefs.setString('jenis', jenis);
-    await prefs.setString('cuaca', cuaca);
-    await prefs.setDouble('persentase', persentase);
-    
-    if (location != null) {
-      await prefs.setDouble('latitude', location.latitude);
-      await prefs.setDouble('longitude', location.longitude);
-    }
   }
 }
