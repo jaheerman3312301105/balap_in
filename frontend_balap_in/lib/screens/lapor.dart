@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:balap_in/api/api_service_mappicker.dart';
+import 'package:balap_in/controller/controller_ambildraft.dart';
 import 'package:balap_in/controller/controller_draft.dart';
 import 'package:balap_in/widgets/pickermap.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,10 +40,32 @@ class _LaporScreenState extends State<LaporScreen> {
   String? lokasiAlamat;
 
   @override
+  void initState() {
+    super.initState();
+    _loadDraft();
+  }
+
+  @override
   void dispose() {
     judulController.dispose();
     deskripsiController.dispose();
+    selectedCuaca = 'Hujan';
+    selectedJenis = 'Jalan';
+    _currentSliderValue = 0.0;
+    pickedLocation = pickedLocation;
     super.dispose();
+  }
+
+  void _loadDraft() async {
+    final draft = await ControllerAmbildraft().ambilDraft(context);
+    setState(() {
+      judulController.text = draft['judul'] ?? '';
+      deskripsiController.text = draft['deskripsi'] ?? '';
+      selectedJenis = jenis.contains(draft['jenis']) ? draft['jenis'] : 'Jalan';
+      selectedCuaca = cuaca.contains(draft['cuaca']) ? draft['cuaca'] : 'Hujan';
+      _currentSliderValue = draft['persentase'] ?? 0.0;
+    });
+
   }
 
   Future<Uint8List?> gambarBytes(File file) async {
@@ -163,6 +186,15 @@ class _LaporScreenState extends State<LaporScreen> {
     }
   }
 
+  Future hapusDraftAfterKirim() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance(); 
+        await prefs.remove('judul');
+        await prefs.remove('deskripsi');
+        await prefs.remove('jenis');
+        await prefs.remove('cuaca');
+        await prefs.remove('persentase');
+  }
+
 
   void buatLaporan(String status) async {
     print(status);
@@ -185,6 +217,7 @@ class _LaporScreenState extends State<LaporScreen> {
         // Navigasi kembali ke halaman utama setelah pengiriman berhasil
         Navigator.of(context).popUntil((route) => route.isFirst);
         _showSuccessDialog(context, 'Laporan berhasil dikirim.'); // Tampilkan dialog sukses
+        hapusDraftAfterKirim();
         resetForm(); // Reset form setelah mengirim laporan
       }).catchError((error) {
         _showErrorDialog(context, 'Terjadi kesalahan saat mengirim laporan: $error');
@@ -193,7 +226,7 @@ class _LaporScreenState extends State<LaporScreen> {
     }
     else if(status == 'draft') {
       try {
-      final draft = await ControllerDraft().draftLaporan(judulController,  deskripsiController);
+      final draft = await ControllerDraft().draftLaporan(judulController, selectedJenis! ,deskripsiController, selectedCuaca!, _currentSliderValue);
       if (draft != null) {
         Navigator.of(context).pop();
         _showSuccessDialog(context, draft.toString());
