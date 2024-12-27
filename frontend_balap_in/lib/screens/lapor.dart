@@ -56,17 +56,25 @@ class _LaporScreenState extends State<LaporScreen> {
     super.dispose();
   }
 
-  void _loadDraft() async {
-    final draft = await ControllerAmbildraft().ambilDraft(context);
-    setState(() {
-      judulController.text = draft['judul'] ?? '';
-      deskripsiController.text = draft['deskripsi'] ?? '';
-      selectedJenis = jenis.contains(draft['jenis']) ? draft['jenis'] : 'Jalan';
-      selectedCuaca = cuaca.contains(draft['cuaca']) ? draft['cuaca'] : 'Hujan';
-      _currentSliderValue = draft['persentase'] ?? 0.0;
-    });
+void _loadDraft() async {
+  final draft = await ControllerAmbildraft().ambilDraft(context);
+  setState(() {
+    judulController.text = draft['judul'] ?? '';
+    deskripsiController.text = draft['deskripsi'] ?? '';
+    selectedJenis = jenis.contains(draft['jenis']) ? draft['jenis'] : 'Jalan';
+    selectedCuaca = cuaca.contains(draft['cuaca']) ? draft['cuaca'] : 'Hujan';
+    _currentSliderValue = draft['persentase'] ?? 0.0;
+    
+    double? latitude = draft['latitude'];
+    double? longitude = draft['longitude'];
+    
+    if (latitude != null && longitude != null) {
+      GeoPoint location = GeoPoint(latitude: latitude, longitude: longitude);
+      handleLocationPicked(location);
+    }
+  });
+}
 
-  }
 
   Future<Uint8List?> gambarBytes(File file) async {
     return await file.readAsBytes();
@@ -193,6 +201,8 @@ class _LaporScreenState extends State<LaporScreen> {
         await prefs.remove('jenis');
         await prefs.remove('cuaca');
         await prefs.remove('persentase');
+        await prefs.remove('latitude');
+        await prefs.remove('longitude');
   }
 
 
@@ -226,7 +236,7 @@ class _LaporScreenState extends State<LaporScreen> {
     }
     else if(status == 'draft') {
       try {
-      final draft = await ControllerDraft().draftLaporan(judulController, selectedJenis! ,deskripsiController, selectedCuaca!, _currentSliderValue);
+      final draft = await ControllerDraft().draftLaporan(judulController, selectedJenis! ,deskripsiController, selectedCuaca!, _currentSliderValue, pickedLocation?.latitude ?? 0.0, pickedLocation?.longitude ?? 0.0);
       if (draft != null) {
         Navigator.of(context).pop();
         _showSuccessDialog(context, draft.toString());
