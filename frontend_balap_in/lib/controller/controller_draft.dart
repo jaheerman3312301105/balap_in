@@ -11,7 +11,7 @@ class ControllerDraft {
     pickedLocationLong,
     gambarfix
   ) async {
-    if (judulController.text.isNotEmpty || selectedJenis != 'Jalan' || deskripsiController.text.isNotEmpty || selectedCuaca != 'Hujan' || currentSliderValue != 0.0 || pickedLocationaLat != null || pickedLocationLong != null || gambarfix != null) {
+    if (judulController.text.isNotEmpty || selectedJenis != 'Jalan' || deskripsiController.text.isNotEmpty || selectedCuaca != 'Hujan' || currentSliderValue != 0.0 || pickedLocationaLat != 0.0 || pickedLocationLong != 0.0 || gambarfix != null) {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
 
       if (judulController.text.isNotEmpty) {
@@ -39,7 +39,7 @@ class ControllerDraft {
         await prefs.setDouble('persentase', currentSliderValue);
       }
 
-      if (pickedLocationaLat != null && pickedLocationLong != null && pickedLocationaLat != 0.0 && pickedLocationLong != 0.0) {
+      if (pickedLocationaLat != 0.0 && pickedLocationLong != 0.0) {
         await prefs.remove('latitude');
         await prefs.remove('longitude');
         await prefs.setDouble('latitude', pickedLocationaLat);
