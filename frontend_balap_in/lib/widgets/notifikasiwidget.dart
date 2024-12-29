@@ -1,5 +1,6 @@
 import 'package:balap_in/api/api_service_notifikasi.dart';
 import 'package:balap_in/models/model_notifikasi.dart';
+import 'package:balap_in/shimmer/shimmernotification.dart';
 import 'package:flutter/material.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 
@@ -15,12 +16,11 @@ class _WidgetNotificationState extends State<WidgetNotification> {
   @override
   Widget build(BuildContext context) {
     final apiService = ApiServiceNotifikasi();
-
     return FutureBuilder <List<Notifikasi>>(
       future: apiService.fetchNotifikasi(), 
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator(),);
+          return const Shimmernotification();
         } else if (snapshot.data!.length == 0) {
           return const Center(child: Text('Tidak ada Notifikasi terbaru'),);
         } else {
@@ -35,7 +35,6 @@ class _WidgetNotificationState extends State<WidgetNotification> {
               GetTimeAgo.setDefaultLocale('id');
               final waktu = DateTime.parse(notifikasi.tglnotif!).toLocal();
               final tgllapor = GetTimeAgo.parse(waktu);
-
 
               return Center(
                 child: Padding(

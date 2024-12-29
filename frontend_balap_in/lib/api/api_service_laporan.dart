@@ -1,6 +1,7 @@
 
 
 import 'package:balap_in/api/api_service_mappicker.dart';
+import 'package:balap_in/api/host.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/model_laporan.dart';  
@@ -34,7 +35,7 @@ class ApiServiceLaporan {
     }
     
     try {
-      Response response = await dio.get('http://10.0.2.2:8000/laporan/?period=$period&status=selesai&search=$searchController');
+      Response response = await dio.get('$host/laporan/?period=$period&status=selesai&search=$searchController');
       if (response.statusCode == 200) {
         Map<String, dynamic> data = response.data;
         return LaporanResponse.fromJson(data);
@@ -91,7 +92,7 @@ class ApiServiceLaporan {
       print('Panjang gambar: ${gambarBlob.length}');
 
       final response = await dio.post(
-        'http://10.0.2.2:8000/laporan/buat',
+        '$host/laporan/buat',
         data: data,
         options: Options(
           headers: {"Content-Type": "multipart/form-data"}
@@ -111,7 +112,7 @@ class ApiServiceLaporan {
   Future<List<Laporan>> getClusterLaporan(cluster) async{
 
     try{
-      Response response = await dio.get('http://10.0.2.2:8000/laporan/cluster/$cluster/');
+      Response response = await dio.get('$host/laporan/cluster/$cluster/');
 
       if (response.statusCode == 200) {
          List<dynamic> responseData = response.data;

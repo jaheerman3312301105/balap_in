@@ -1,5 +1,6 @@
 import 'package:balap_in/api/api_service_rekomendasi.dart';
 import 'package:balap_in/models/model_rekomendasi.dart';
+import 'package:balap_in/shimmer/shimmerrecommendation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
@@ -24,7 +25,7 @@ class RekomendasiWidget extends StatelessWidget {
       future: apiService.fetchRekomendasi(setOrder),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator(),);
+          return const Shimmerrecommendation();
         } else if (snapshot.data!.length == 0) {
           return const Center(child: Text('Tidak ada rekomendasi'),);
         } else {

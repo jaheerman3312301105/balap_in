@@ -46,6 +46,7 @@ dependencies:
   awesome_notifications: ^0.10.0
   web_socket_channel: ^3.0.1
   get_time_ago: ^2.1.1
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

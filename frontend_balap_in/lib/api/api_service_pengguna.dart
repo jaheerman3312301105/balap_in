@@ -1,3 +1,4 @@
+import 'package:balap_in/api/host.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,7 +23,7 @@ class ApiServicePengguna {
 
   Future<void> authPengguna(String token) async{
     try {
-      Response response = await dio.post('http://10.0.2.2:8000/authpengguna',
+      Response response = await dio.post('$host/authpengguna',
         data: {'token' : token}
       );
 
@@ -42,7 +43,7 @@ class ApiServicePengguna {
 
   Future<void> buatPengguna() async {
     try {
-      Response response = await dio.post('http://10.0.2.2:8000/buatpengguna');
+      Response response = await dio.post('$host/buatpengguna');
       print(response.data);
 
       if (response.statusCode == 201) {

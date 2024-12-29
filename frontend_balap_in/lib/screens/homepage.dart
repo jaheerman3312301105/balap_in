@@ -1,4 +1,5 @@
 import 'package:balap_in/api/api_service_laporan.dart';
+import 'package:balap_in/shimmer/shimmerhomepage.dart';
 import 'package:balap_in/widgets/dynamicmap.dart';
 import 'package:flutter/material.dart';
 import 'package:balap_in/widgets/homewidget.dart';
@@ -518,13 +519,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               ],
                             ),
                       ),
-        
+                      
                       //TAMPILAN ANALISIS
                       FutureBuilder<LaporanResponse>(
                         future: ApiServiceLaporan().fetchLaporan(selectedChipAnalisisIndex, searchController.text), 
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator(),);
+                            return const Shimmerhomepage();
                           } else {
                           LaporanResponse laporanList = snapshot.data!;
 

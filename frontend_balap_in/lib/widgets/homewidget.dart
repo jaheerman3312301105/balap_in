@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:balap_in/shimmer/shimmerhomewidget.dart';
 import 'package:flutter/material.dart';
 import 'package:balap_in/api/api_service_laporan.dart';
 import 'package:balap_in/models/model_laporan.dart';
@@ -17,7 +18,7 @@ class HomeWidget extends StatelessWidget {
       future: apiService.fetchLaporan(selectedChipAnalisisIndex, searchController), 
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator(),);
+          return const Shimmerhomewidget();
         } else if (snapshot.data!.laporan!.length == 0) {
           return const Center(child: Text('Tidak ada laporan'),);
         } else {

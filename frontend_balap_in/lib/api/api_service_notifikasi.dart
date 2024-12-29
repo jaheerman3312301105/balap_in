@@ -1,3 +1,4 @@
+import 'package:balap_in/api/host.dart';
 import 'package:dio/dio.dart';
 import 'package:balap_in/models/model_notifikasi.dart';
 
@@ -6,7 +7,7 @@ class ApiServiceNotifikasi {
 
   Future<List<Notifikasi>> fetchNotifikasi() async {
     try{
-      Response response = await _dio.get('http://10.0.2.2:8000/notifikasi/');
+      Response response = await _dio.get('$host/notifikasi/');
 
       if (response.statusCode == 200) {
         final data = response.data as List;

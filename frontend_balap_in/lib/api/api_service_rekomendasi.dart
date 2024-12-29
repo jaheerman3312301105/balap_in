@@ -2,13 +2,14 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:balap_in/models/model_rekomendasi.dart';
+import 'host.dart';
 
 class ApiServiceRekomendasi {
   final Dio _dio = Dio();
   
   Future<List<Rekomendasi>> fetchRekomendasiBiasa() async {
     try {
-      Response response = await _dio.get('http://10.0.2.2:8000/rekomendasibiasa/');
+      Response response = await _dio.get('$host/rekomendasibiasa/');
 
       if(response.statusCode == 200) {
         final data = response.data as List;
