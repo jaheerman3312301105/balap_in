@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:balap_in/api/api_service_detail.dart';
 import 'package:balap_in/models/model_laporan.dart';
+import 'package:balap_in/shimmer/shimmerisilapor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -22,12 +23,7 @@ class IsilaporScreen extends StatelessWidget {
       future: apiService.fetchLaporan(id), 
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(
-            backgroundColor: Colors.white,
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return const Shimmerisilapor();
         } else if (!snapshot.hasData) {
           return const Center(child: Text('Detail laporan tidak ada'),);
         } else {

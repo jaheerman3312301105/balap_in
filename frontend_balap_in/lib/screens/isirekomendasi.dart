@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:balap_in/api/api_service_laporan.dart';
 import 'package:balap_in/api/api_service_rekomendasi.dart';
 import 'package:balap_in/models/model_rekomendasi.dart';
+import 'package:balap_in/shimmer/shimmerisirekomendasi.dart';
 import 'package:flutter/material.dart';
 
 class IsiRekomendasiScreen extends StatefulWidget {
@@ -25,12 +26,7 @@ class _IsiRekomendasiScreenState extends State<IsiRekomendasiScreen> {
       future: apiService.fetchDetailRekomendasi(idrekomendasi),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(
-            backgroundColor: Colors.white,
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return const Shimmerisirekomendasi();
         } else if (!snapshot.hasData) {
           return const Center(
             child: Text('Tidak ada detail Rekomendasi'),
