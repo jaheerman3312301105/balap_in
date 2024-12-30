@@ -25,7 +25,7 @@ class ApiServiceRekomendasi {
 
   Future<List<Rekomendasi>> fetchRekomendasi(order) async {
     try {
-      Response response = await _dio.get('http://10.0.2.2:8000/rekomendasi/$order');
+      Response response = await _dio.get('$host/rekomendasi/$order');
 
       if (response.statusCode == 200) {
         final data = response.data as List;
@@ -41,7 +41,7 @@ class ApiServiceRekomendasi {
   Future<Rekomendasi> fetchDetailRekomendasi(int idrekomendasi) async {
   Dio dio = Dio();
   try {
-    Response response = await dio.get('http://10.0.2.2:8000/rekomendasi/$idrekomendasi');
+    Response response = await dio.get('$host/rekomendasi/$idrekomendasi');
     if (response.statusCode == 200) {
       final data = response.data;
       return Rekomendasi.fromJson(data);

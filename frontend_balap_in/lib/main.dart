@@ -48,7 +48,7 @@ void initializeNotifications() {
 
 void connectWebSocket() {
   final WebSocketChannel channel = WebSocketChannel.connect(
-    Uri.parse('ws://10.0.2.2:8000/ws/notifications/'), 
+    Uri.parse('wss://0724-180-252-51-6.ngrok-free.app/ws/notifications/'), 
   );
 
     channel.stream.listen((message) {

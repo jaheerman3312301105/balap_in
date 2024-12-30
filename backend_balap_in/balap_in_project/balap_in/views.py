@@ -69,7 +69,7 @@ def getLaporan(request):
         status_filter = request.query_params.get('status', None)
         search_query = request.query_params.get('search', '')
 
-        laporan = Laporan.objects.all().select_related('id_peta')
+        laporan = Laporan.objects.all().select_related('id_peta').order_by('-tgl_lapor')
 
         current_time = now()
         if period == 'last_week':

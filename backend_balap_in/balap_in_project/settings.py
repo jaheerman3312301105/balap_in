@@ -71,7 +71,7 @@ CORS_ALLOWED_ORIGINS = [
     "localhost",
     "http://192.168.1.5:8000",
     "http://127.0.0.1:8000",
-    "https://eb49-180-252-51-6.ngrok-free.app", 
+    "https://0724-180-252-51-6.ngrok-free.app", 
 ]
 
 ROOT_URLCONF = 'balap_in_project.urls'
