@@ -33,7 +33,7 @@ class Laporan(models.Model):
     )
     status = models.CharField(
         max_length=40,
-        choices=[('selesai', 'Selesai'), ('draft', 'Draft')],
+        choices=[('selesai', 'Selesai'), ('ditangani', 'Ditangani')],
         null=True, blank=True
     )
     tgl_lapor = models.DateTimeField(default=now)
@@ -78,7 +78,7 @@ class Rekomendasi(models.Model):
     id_peta = models.ForeignKey(Peta, on_delete=models.CASCADE)
     status_urgent = models.CharField(
         max_length=10,
-        choices=[('tinggi', 'Tinggi'), ('sedang', 'Sedang'), ('rendah', 'Rendah'), ('belum', 'Belum')],
+        choices=[('tinggi', 'Tinggi'), ('sedang', 'Sedang'), ('rendah', 'Rendah')],
         null=True, blank=True
     )
     tingkat_urgent = models.FloatField(
@@ -97,26 +97,6 @@ class Rekomendasi(models.Model):
     def __str__(self):
         return f"Laporan ID: {self.id_laporan_id}, Peta ID: {self.id_peta_id}"
 
-class Analisis(models.Model):
-    id_analisis = models.AutoField(primary_key=True)
-    id_rekomendasi = models.ForeignKey(Rekomendasi, on_delete=models.CASCADE)
-    tgl_analisis = models.DateTimeField(
-        default=now
-    )
-    jumlah_urgen = models.IntegerField(
-        null=True, blank=True
-    )
-    jumlah_laporan = models.IntegerField(
-        null=True, blank=True
-    )
-    jenis_infrastruktur = models.CharField(
-        max_length=40,
-        choices=[('jalan', 'Jalan'), ('lampu_jalan', 'Lampu Jalan'), ('jembatan', 'Jembatan')],
-        null=True, blank=True
-    )
-
-    class Meta:
-        db_table = 'analisis'
 
 class Notifikasi(models.Model):
     id_notifikasi = models.AutoField(primary_key=True)

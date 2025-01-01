@@ -3,7 +3,6 @@ from .models import Pengguna
 from .models import Laporan
 from .models import Peta
 from .models import Rekomendasi
-from .models import Analisis
 from .models import Notifikasi
 
 class PenggunaSerializer(serializers.ModelSerializer):
@@ -30,11 +29,6 @@ class RekomendasiSerializer(serializers.ModelSerializer):
         model = Rekomendasi
         fields = '__all__'
         depth = 1
-
-class AnalisisSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Analisis
-        fields = '__all__'
 
 class NotifikasiSerializer(serializers.ModelSerializer):
     class Meta:

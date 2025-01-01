@@ -5,13 +5,11 @@ from rest_framework.decorators import api_view
 from .serializers import LaporanSerializer
 from .serializers import PenggunaSerializer
 from .serializers import RekomendasiSerializer
-from .serializers import AnalisisSerializer
 from .serializers import NotifikasiSerializer
 from .models import Laporan 
 from .models import Peta
 from .models import Pengguna
 from .models import Rekomendasi
-from .models import Analisis
 from .models import Notifikasi
 import uuid
 from rest_framework import status
