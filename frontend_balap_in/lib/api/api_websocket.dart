@@ -5,7 +5,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 class WebSocketApi {
   static void connectWebSocket() {
     final WebSocketChannel channel = WebSocketChannel.connect(
-      Uri.parse('ws://10.0.2.2:8000/ws/notifications/'),
+      Uri.parse('ws://202.10.36.217:8000/ws/notifications/'),
     );
 
     channel.stream.listen((message) {
