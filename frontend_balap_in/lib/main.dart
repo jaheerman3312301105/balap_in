@@ -1,16 +1,44 @@
-import 'package:balap_in/screens/isilapor.dart';
-import 'package:balap_in/screens/isirekomendasi.dart';
-import 'package:balap_in/screens/notifikasi.dart';
-import 'package:balap_in/screens/splash.dart';
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'api/api_fcm_token.dart';
+import 'api/api_websocket.dart'; 
+import 'screens/splash.dart';
 import 'screens/homepage.dart';
 import 'screens/tutorial.dart';
-import 'screens/lapor.dart'; 
-import 'screens/rekomendasi.dart'; 
+import 'screens/lapor.dart';
+import 'screens/rekomendasi.dart';
+import 'screens/isilapor.dart';
+import 'screens/isirekomendasi.dart';
+import 'screens/notifikasi.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(); 
+
+  ApiFcmToken apiFcmToken = ApiFcmToken();
+
+  // Meminta izin untuk notifikasi dan mendapatkan token
+  await apiFcmToken.requestPermission();
+  await apiFcmToken.subscribeToTopic('global_notifications');
+  
+  String? token = await apiFcmToken.getFcmToken();
+  print("FCM Token: $token");
+
+  // Menangani pesan ketika aplikasi berada di latar depan dan latar belakang
+  apiFcmToken.handleForegroundMessages();
+  apiFcmToken.handleBackgroundMessages();
+
+  // Menampilkan notifikasi saat aplikasi berada di latar depan atau latar belakang
+  initializeNotifications();
+
+  // Mulai WebSocket untuk komunikasi real-time
+  WebSocketApi.connectWebSocket();
+
+  runApp(MyApp());
+}
+
+// Inisialisasi notifikasi
 void initializeNotifications() {
   AwesomeNotifications().initialize(
     'resource://drawable/small_ic_launcher',
@@ -23,16 +51,16 @@ void initializeNotifications() {
         defaultColor: Colors.blue,
         ledColor: Colors.white,
         icon: 'resource://drawable/small_ic_launcher',
-        enableVibration: true
+        enableVibration: true,
       ),
     ],
     channelGroups: [
       NotificationChannelGroup(
         channelGroupKey: 'basic_channel_group',
-        channelGroupName: 'Basic group'
-      )
+        channelGroupName: 'Basic group',
+      ),
     ],
-    debug: true
+    debug: true,
   );
 
   AwesomeNotifications().setListeners(
@@ -40,71 +68,32 @@ void initializeNotifications() {
       MyApp.navigatorKey.currentState?.pushNamedAndRemoveUntil(
         '/rekomendasi',
         (route) => (route.settings.name != '/rekomendasi') || route.isFirst,
-        arguments: receivedAction
+        arguments: receivedAction,
       );
-    }
+    },
   );
-}
-
-void connectWebSocket() {
-  final WebSocketChannel channel = WebSocketChannel.connect(
-    Uri.parse('wss://0724-180-252-51-6.ngrok-free.app/ws/notifications/'), 
-  );
-
-    channel.stream.listen((message) {
-    try {
-      var decodedMessage = jsonDecode(message);
-
-      String messageValue = decodedMessage['message'];
-
-      AwesomeNotifications().createNotification(
-        content: NotificationContent(
-          id: 10,
-          channelKey: 'basic_channel',
-          actionType: ActionType.Default,
-          title: 'Menjadi Sorotan Masyarakat Batam',
-          body: messageValue, 
-          roundedLargeIcon: true,
-          largeIcon: 'resource://drawable/small_ic_launcher',
-        ),
-      );
-    } catch (e) {
-      print("Terjadi error saat parsing JSON: $e");
-    }
-  }, onError: (error) {
-    print("Terjadi error pada WebSocket: $error");
-  }, onDone: () {
-    print("Koneksi WebSocket ditutup");
-  });
-}
-
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  initializeNotifications();
-  connectWebSocket(); 
-  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
-  
+
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: navigatorKey, 
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       title: 'Hallo, Selamat Datang di BALAP-IN',
       home: const SplashScreen(),
       routes: {
-        '/home':(context) => const HomeScreen(),
+        '/home': (context) => const HomeScreen(),
         '/tutorial': (context) => const Tutorial(),
-        '/lapor':(context) => const LaporScreen(),
-        '/isilapor':(context) => const IsilaporScreen(),
-        '/rekomendasi':(context) => const RecommendationsScreen(),
-        '/isirekomendasi':(context) => const IsiRekomendasiScreen(),
-        '/notifikasi':(context) => const NotificationsScreen(),
+        '/lapor': (context) => const LaporScreen(),
+        '/isilapor': (context) => const IsilaporScreen(),
+        '/rekomendasi': (context) => const RecommendationsScreen(),
+        '/isirekomendasi': (context) => const IsiRekomendasiScreen(),
+        '/notifikasi': (context) => const NotificationsScreen(),
       },
     );
   }

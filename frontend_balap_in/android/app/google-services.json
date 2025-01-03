@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "484163795311",
+    "project_id": "balap-in",
+    "storage_bucket": "balap-in.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484163795311:android:d1f62ea867e2201017d09a",
+        "android_client_info": {
+          "package_name": "com.example.balap_in"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2Zq0v1ccw8uvRkx5ZBFz4Mxmk-4XfxVU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

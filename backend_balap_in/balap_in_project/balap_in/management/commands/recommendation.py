@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+from firebase_admin import messaging
 
 def recommendations():
     db_user = 'root'
@@ -233,6 +234,17 @@ def recommendations():
                                         }
                                     )
                                     print("WebSocket notification sent successfully.")
+
+                                    fcm_message = messaging.Message(
+                                    notification=messaging.Notification(
+                                        title="Menjadi Sorotan Masyarakat Batam!",
+                                        body=notification_message
+                                    ),
+                                    topic="global_notifications"
+                                    )
+
+                                    response = messaging.send(fcm_message)
+                                    print(f"FCM notification sent successfully: {response}")
                                 except Exception as ws_error:
                                     print(f"Kesalahan WebSocket: {ws_error}")
                                     

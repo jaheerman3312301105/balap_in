@@ -14,6 +14,8 @@ pymysql.install_as_MySQLdb()
 
 from decouple import config
 from pathlib import Path
+import firebase_admin
+from firebase_admin import credentials
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
-
+cred = credentials.Certificate(config("FIREBASE_CREDENTIALS"))
+firebase_admin.initialize_app(cred)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -34,6 +37,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'django_crontab',
     'channels',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -120,7 +124,9 @@ CHANNEL_LAYERS = {
     },
 }
 
-
+CRONJOBS = [
+    ('*/5 * * * *', 'balap_in_project.balap_in.management.commands.cron.Command')
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
