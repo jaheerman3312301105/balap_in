@@ -1,3 +1,8 @@
+// Nama File: api_service_mappicker.dart
+// Deskripsi: File ini berfungsi untuk menangani layanan konversi latitude dan longitude menjadi alamat dan lainnya (geocode)
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal: Nov 10, 2024
+
 import 'package:dio/dio.dart';
 
 class ApiServiceMappicker {

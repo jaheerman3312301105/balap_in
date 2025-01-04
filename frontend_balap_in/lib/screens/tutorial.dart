@@ -1,3 +1,9 @@
+// Nama File: tutorial.dart
+// Deskripsi: File ini berfungsi untuk menampilkan tutorial bagi pengguna untuk menggunakan aplikasi
+// Dibuat oleh: Yulia Pipka Ziliwu - NIM: 3312301035
+// Tanggal: Dec 10, 2024
+
+
 import 'package:flutter/material.dart';
 
 class Tutorial extends StatelessWidget {

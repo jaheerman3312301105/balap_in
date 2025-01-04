@@ -1,3 +1,8 @@
+#  Nama File: urls.py
+#  Deskripsi: File ini berfungsi untuk menangani routing pada logic views yang telah dibuat untuk dikirim ke API
+#  Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+#  Tanggal: Oct 31, 2024
+
 from .balap_in import views
 """
 URL configuration for balap_in_project project.

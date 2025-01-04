@@ -1,3 +1,8 @@
+#  Nama File: serializers.py
+#  Deskripsi: File ini berfungsi untuk menangani struktur pemodelan menjadi dalam bentuk format json
+#  Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+#  Tanggal: Oct 31, 2024
+
 from rest_framework import serializers
 from .models import Pengguna
 from .models import Laporan

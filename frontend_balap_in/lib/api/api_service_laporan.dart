@@ -1,4 +1,7 @@
-
+// Nama File: api_service_laporan.dart
+// Deskripsi: File ini berfungsi untuk menangani layanan data laporan
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal: Nov 10, 2024
 
 import 'package:balap_in/api/api_service_mappicker.dart';
 import 'package:balap_in/api/host.dart';
@@ -9,11 +12,13 @@ import '../models/model_laporan.dart';
 class ApiServiceLaporan {
   final dio = Dio();
 
+  // Fungsi untuk mendapatkan token pengguna
   Future<String?> getToken() async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('user_token');
   }
 
+  // fungsi untuk mendapatkan data laporan 
   Future<LaporanResponse> fetchLaporan(selectedChipAnalisisIndex, searchController) async {
      String period;
 
@@ -47,6 +52,7 @@ class ApiServiceLaporan {
     }
   }
 
+  // fungsi untuk membuat laporan yang valuenya diambil dari halaman lapor
   Future<void> buatLaporan(String judul, jenis, deskripsi, status, persentase, cuaca, gambarBlob, pickedLocation) async {
     String? token = await getToken();
     
@@ -109,6 +115,7 @@ class ApiServiceLaporan {
     }
   }
 
+  // fungsi untuk mendapatkan data laporan sesuai dengan cluster nya untuk di halaman isi rekomendasi
   Future<List<Laporan>> getClusterLaporan(cluster) async{
 
     try{

@@ -1,3 +1,8 @@
+// Nama File: controller_ambildraft.dart
+// Deskripsi: File ini berfungsi untuk menangani logika mengambil draft apabila ada disimpan
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal: Dec 20, 2024
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,6 +11,7 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 class ControllerAmbildraft {
   final Completer<bool> completer = Completer<bool>();
 
+  // fungsi untuk menangani dialog pengambilan draft
   Future showambildraftdialog(BuildContext context) async {
     showDialog(
       barrierDismissible: false,
@@ -36,6 +42,7 @@ class ControllerAmbildraft {
     return completer.future;
   }
 
+  // fungsi untuk logika dalam mengambil data draft
   Future<Map<String, dynamic>> ambilDraft(context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     

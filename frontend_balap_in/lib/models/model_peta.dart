@@ -1,3 +1,8 @@
+// Nama File: model_peta.dart
+// Deskripsi: File ini berfungsi untuk menampilkan marker lokasi dan menampilkan detail lokasi dan menyimpan data lokasi
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal:  Dec 22, 2024
+
 class Peta {
 
   final int idpeta;

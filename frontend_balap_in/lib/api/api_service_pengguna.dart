@@ -1,3 +1,8 @@
+// Nama File: api_service_pengguna.dart
+// Deskripsi: File ini berfungsi untuk menangani layanan pembuatan dan autentikasi pengguna
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal: Dec 5, 2024
+
 import 'package:balap_in/api/host.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -5,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ApiServicePengguna {
   final dio = Dio();
 
+  // fungsi untuk menginisialisasi kerja yang tugasnya mengambil token pengguna dari cache yang telah disimpan pengguna
   Future<void> initToken() async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -21,6 +27,7 @@ class ApiServicePengguna {
     }
   }
 
+  // fungsi untuk mengautentikasi token pengguna 
   Future<void> authPengguna(String token) async{
     try {
       Response response = await dio.post('$host/authpengguna',
@@ -41,6 +48,7 @@ class ApiServicePengguna {
     }
   }
 
+  // fungsi untuk membuat token pengguna jika pada cache pengguna tidak memilikinya
   Future<void> buatPengguna() async {
     try {
       Response response = await dio.post('$host/buatpengguna');

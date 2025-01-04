@@ -1,3 +1,8 @@
+#  Nama File: consumer.py
+#  Deskripsi: File ini berfungsi untuk menangani channel notifikasi websocket maupun fcm 
+#  Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+#  Tanggal: Dec 20, 2024
+
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 

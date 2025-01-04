@@ -1,3 +1,8 @@
+// Nama File: homewidget.dart
+// Deskripsi: File ini berfungsi untuk tampilan widget laporan yang ada di halaman utama
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal: Oct 31, 2024
+
 import 'dart:convert';
 import 'dart:typed_data';
 

@@ -1,3 +1,8 @@
+// Nama File: homepage.dart
+// Deskripsi: File ini berfungsi untuk menampilkan halaman utama kepada pengguna
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal: Oct 31, 2024
+
 import 'package:balap_in/api/api_service_laporan.dart';
 import 'package:balap_in/shimmer/shimmerhomepage.dart';
 import 'package:balap_in/widgets/dynamicmap.dart';
@@ -23,11 +28,20 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController searchController = TextEditingController();
   
+  // fungsi membersihkan input pencarian ketika widget tidak terpakai
   @override
   void dispose() {
     searchController.dispose();// TODO: implement dispose
     super.dispose();
   }
+
+  // fungsi untuk menangani query pencarian 
+  void _performSearch(String query) {
+  setState(() {
+    searchController.text = query;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -154,6 +168,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: TextField(
+                              onSubmitted: (value) {
+                                _performSearch(value);
+                              },
                               controller: searchController,
                               style: const TextStyle(
                                 fontFamily: 'Poppins',
@@ -178,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 suffixIcon: GestureDetector(
                                   onTap: () {
                                     setState((){
-                                      searchController;
+                                      _performSearch(searchController.text);
                                     });
                                   },
                                   child: const Icon(
@@ -245,7 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  Navigator.pushNamed(context, '/lapor');
+                                  Navigator.pushReplacementNamed(context, '/lapor');
                                 },
                                 child: Container(
                                   margin: const EdgeInsets.only(left: 20),

@@ -1,3 +1,9 @@
+// Nama File: shimmerhomewidget.dart
+// Deskripsi: File ini berfungsi untuk menampilkan efek loading pada halaman laporan atau halaman utama
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal: Dec 29, 2024
+
+
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 

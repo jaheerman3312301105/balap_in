@@ -1,3 +1,8 @@
+#  Nama File: clustering.py
+#  Deskripsi: File ini berfungsi untuk menangani cluster atau pengelompokkan titik lokasi peta yang sama atau berdekatan
+#  Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+#  Tanggal: Dec 4, 2024
+
 import pandas as pd
 from sklearn.cluster import DBSCAN
 from geopy.distance import geodesic

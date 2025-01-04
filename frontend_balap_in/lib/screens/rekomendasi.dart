@@ -1,3 +1,8 @@
+// Nama File: rekomendasi.dart
+// Deskripsi: File ini berfungsi untuk menampilkan halaman rekomendasi 
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal: Nov 3, 2024
+
 import 'package:balap_in/widgets/rekomendasiwidget.dart';
 import 'package:flutter/material.dart';
 

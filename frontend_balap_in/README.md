@@ -34,3 +34,4 @@ pip install channels-redis
 pip install daphne
 pip install python-decouple
 pip install firebase-admin
+pip install django-crontab

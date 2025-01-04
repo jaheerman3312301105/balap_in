@@ -1,3 +1,8 @@
+// Nama File: main.dart
+// Deskripsi: File ini bertujuan sebagai awal inisialisasi dari aplikasi serta routing halaman frontend
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal: Oct 31, 2024
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'api/api_fcm_token.dart';
@@ -13,9 +18,12 @@ import 'screens/notifikasi.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 
 void main() async {
+  // memastikan widget diinisialisasi
   WidgetsFlutterBinding.ensureInitialized();
+  // inisialisasi firebase
   await Firebase.initializeApp(); 
 
+  // Firebase token
   ApiFcmToken apiFcmToken = ApiFcmToken();
 
   // Meminta izin untuk notifikasi dan mendapatkan token

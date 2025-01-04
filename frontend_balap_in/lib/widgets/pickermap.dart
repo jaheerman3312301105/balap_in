@@ -1,3 +1,8 @@
+// Nama File: pickermap.dart
+// Deskripsi: File ini berfungsi untuk mengambil lokasi secara manual pada peta (menampilkan dan mengambil titik lokasi)
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal: Nov 20, 2024
+
 import 'package:balap_in/api/api_service_mappicker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
@@ -13,13 +18,15 @@ class WidgetMapPicker extends StatefulWidget {
   @override
   WidgetMapPickerState createState() => WidgetMapPickerState();
 }
-
+  
+  // Ambil API untuk mendapatkan alamat atau mereverse latitude dan longitude
   ApiServiceMappicker getGeo = ApiServiceMappicker();
   
 class WidgetMapPickerState extends State<WidgetMapPicker> {
 
   GeoPoint? pickedLocation;
-  
+
+    // Controller untuk pengambilan titik lokasi
     PickerMapController controllerMap = PickerMapController(
       initPosition: GeoPoint(
         latitude: 1.10329, 

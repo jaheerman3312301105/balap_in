@@ -1,3 +1,7 @@
+#  Nama File: asgi.py
+#  Deskripsi: File ini berfungsi untuk menangani logic asinkron untuk menangani websocket 
+#  Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+#  Tanggal: Dec 20, 2024
 """
 ASGI config for balap_in_project project.
 

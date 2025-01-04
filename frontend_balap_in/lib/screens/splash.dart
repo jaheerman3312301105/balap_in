@@ -1,3 +1,8 @@
+// Nama File: splash.dart
+// Deskripsi: File ini berfungsi untuk menampilkan efek splash pada saat ingin membuka aplikasi 
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal: Oct 31, 2024
+
 import 'package:balap_in/api/api_service_pengguna.dart';
 import 'package:flutter/material.dart';
 

@@ -1,3 +1,8 @@
+#  Nama File: views.py
+#  Deskripsi: File ini berfungsi untuk menangani seluruh logic yang akan dikirim ke API
+#  Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+#  Tanggal: Oct 31, 2024
+
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -28,6 +33,7 @@ from .management.commands.recommendation import recommendations
 logger = logging.getLogger(__name__)
 # Create your views here.
 
+# fungsi untuk membuat pengguna
 @api_view(['POST'])
 def createPengguna(request):
     if request.method == 'POST':
@@ -44,7 +50,8 @@ def createPengguna(request):
             return Response({'Gagal mendaftarkan pengguna'}, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({'Error': 'Method tidak diizinkan'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-    
+
+# fungsi untuk mengautentikasi pengguna melalui token
 @api_view(['POST'])
 def authPengguna(request):
     token = request.data.get('token')
@@ -58,6 +65,7 @@ def authPengguna(request):
     else:
         return Response({'message': 'Token tidak diberikan'}, status=status.HTTP_400_BAD_REQUEST)
 
+# fungsi untuk mendapatkan data-data laporan
 @api_view(['GET'])
 def getLaporan(request):
 
@@ -102,6 +110,7 @@ def getLaporan(request):
     else:
         return Response({'Error': 'Method tidak diizinkan'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+# fungsi untuk membuat laporan
 @api_view(['POST'])  
 @parser_classes([MultiPartParser, FormParser])  
 def createLaporan(request):
@@ -146,6 +155,7 @@ def createLaporan(request):
     else:
         return Response({"error": "Gambar tidak ditemukan"}, status=status.HTTP_400_BAD_REQUEST)
 
+# fungsi untuk mengambil data detail laporan atau isi laporan
 @api_view(['GET'])
 def detailLaporan(request, id_laporan):
     try:
@@ -155,6 +165,7 @@ def detailLaporan(request, id_laporan):
     except Laporan.DoesNotExist:
         print("Laporan tidak ditemukan")
 
+# fungsi untuk mengambil data rekomendasi berdasarkan tingkat
 @api_view(['GET'])
 def rekomendasi(request, order):
     try:  
@@ -170,6 +181,7 @@ def rekomendasi(request, order):
     except Laporan.DoesNotExist:
         print("Rekomendasi tidak ditemukan")
 
+# fungsi untuk mendapatkan data rekomendasi
 @api_view(['GET'])
 def rekomendasibiasa(request):
     try:
@@ -179,6 +191,7 @@ def rekomendasibiasa(request):
     except Rekomendasi.DoesNotExist:
         print("Rekomendasi tidak ditemukan")
 
+# fungsi untuk mendapatkan detail atau isi data dari rekomendasi
 @api_view(['GET'])
 def detailrekomendasi(request, id_rekomendasi):
     try:
@@ -188,6 +201,7 @@ def detailrekomendasi(request, id_rekomendasi):
     except Rekomendasi.DoesNotExist:
         print('Tidak ada detail Rekomendasi')
 
+# fungsi untuk mendapatkan laporan berdasarkan cluster
 @api_view(['GET'])
 def getclusteroflaporan(request, cluster):
     try:
@@ -197,6 +211,7 @@ def getclusteroflaporan(request, cluster):
     except Laporan.DoesNotExist:
         print('Tidak ada cluster laporan')
 
+# fungsi untuk mendapatkan data notifikasi
 @api_view(['GET'])
 def getNotifikasi(request):
     try:

@@ -1,3 +1,8 @@
+// Nama File: shimmernotification.dart
+// Deskripsi: File ini berfungsi untuk menampilkan efek loading pada halaman notifikasi
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal: Dec 29, 2024
+
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter/material.dart';
 

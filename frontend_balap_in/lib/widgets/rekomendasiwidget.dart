@@ -1,3 +1,8 @@
+// Nama File: rekomendasiwidget.dart
+// Deskripsi: File ini adalah tampilan untuk widget dari rekomendasi
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal: Oct 31, 2024
+
 import 'package:balap_in/api/api_service_rekomendasi.dart';
 import 'package:balap_in/models/model_rekomendasi.dart';
 import 'package:balap_in/shimmer/shimmerrecommendation.dart';

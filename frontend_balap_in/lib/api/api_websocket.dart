@@ -1,3 +1,8 @@
+// Nama File: api_websocket.dart
+// Deskripsi: File ini berfungsi untuk menangani layanan websocket notifikasi 
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal: Dec 20, 2024
+
 import 'dart:convert';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';

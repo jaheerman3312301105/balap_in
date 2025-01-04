@@ -1,3 +1,8 @@
+#  Nama File: models.py
+#  Deskripsi: File ini berfungsi untuk menangani pemodelan struktur data
+#  Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+#  Tanggal: Oct 31, 2024
+
 from django.db import models
 from django.db.models import Count
 import uuid

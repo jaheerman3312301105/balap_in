@@ -1,3 +1,8 @@
+// Nama File: model_rekomendasi.dart
+// Deskripsi: File ini berfungsi untuk menampilkan marker lokasi dan menampilkan detail lokasi dan menyimpan data lokasi
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal:  Dec 22, 2024
+
 import 'package:balap_in/models/model_peta.dart';
 
 class Rekomendasi {

@@ -1,3 +1,8 @@
+// Nama File: model_laporan.dart
+// Deskripsi: File ini berfungsi untuk menampilkan halaman untuk melapor
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal:  Dec 21, 2024
+
 import 'package:balap_in/models/model_pengguna.dart';
 
 import 'model_peta.dart';

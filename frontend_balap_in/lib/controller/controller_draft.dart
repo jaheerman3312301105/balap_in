@@ -1,3 +1,8 @@
+// Nama File: controller_draft.dart
+// Deskripsi: File ini berfungsi untuk menangani pengguna untuk melakukan draft
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal: Dec 20, 2024
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ControllerDraft {

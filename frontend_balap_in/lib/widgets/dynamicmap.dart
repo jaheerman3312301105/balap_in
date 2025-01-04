@@ -1,3 +1,8 @@
+// Nama File: dynamicmap.dart
+// Deskripsi: File ini berfungsi untuk menampilkan peta yang bisa diinteraksi dan tanda atau marker titik lokasi infrastruktur yang rusak
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal: Nov 20, 2024
+
 import 'package:balap_in/api/api_service_rekomendasi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,6 +28,7 @@ class _DynamicmapState extends State<Dynamicmap> {
     );
   }
 
+  // fungsi menambahkan marker atau tanda pada peta
   Future<void> addInitialMarker() async {
     ApiServiceRekomendasi apiService = ApiServiceRekomendasi();
     
@@ -165,6 +171,7 @@ class _FullDynamicMapState extends State<FullDynamicMap> {
     );
   }
 
+  // fungsi menambahkan marker atau tanda pada peta
   Future<void> addInitialMarker() async {
     ApiServiceRekomendasi apiService = ApiServiceRekomendasi();
     

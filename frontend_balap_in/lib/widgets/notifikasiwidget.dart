@@ -1,3 +1,8 @@
+// Nama File: notifikasiwidget.dart
+// Deskripsi: File ini berfungsi untuk tampilan widget yang ada di halaman notifikasi
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal: Nov 20, 2024
+
 import 'package:balap_in/api/api_service_notifikasi.dart';
 import 'package:balap_in/models/model_notifikasi.dart';
 import 'package:balap_in/shimmer/shimmernotification.dart';

@@ -1,3 +1,8 @@
+// Nama File: model_pengguna.dart
+// Deskripsi: File ini berfungsi untuk menyimpan informasi pengguna yang aktif dan mengelola token autentikasi
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal:  Dec 22, 2024
+
 class Pengguna {
     final int idPengguna;
     final String token;

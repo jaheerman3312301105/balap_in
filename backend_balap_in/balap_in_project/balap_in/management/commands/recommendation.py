@@ -1,3 +1,8 @@
+#  Nama File: recommendation.py
+#  Deskripsi: File ini berfungsi untuk menangani perekomendasian pada laporan
+#  Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+#  Tanggal: Dec 4, 2024
+
 import numpy as np
 import pandas as pd
 from sqlalchemy import create_engine, text

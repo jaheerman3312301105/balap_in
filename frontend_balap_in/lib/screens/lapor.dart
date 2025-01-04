@@ -1,3 +1,8 @@
+// Nama File: lapor.dart
+// Deskripsi: File ini berfungsi untuk menampilkan halaman untuk melapor
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal:  Dec 1, 2024
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -45,6 +50,7 @@ class _LaporScreenState extends State<LaporScreen> {
     _loadDraft();
   }
 
+  // fungsi untuk membersihkan input agar tidak masih dinisialisasi dari halamnan lain
   @override
   void dispose() {
     judulController.dispose();
@@ -56,6 +62,7 @@ class _LaporScreenState extends State<LaporScreen> {
     super.dispose();
   }
 
+// fungsi untuk mengambil draft laporan jika ada draft yang tersimpan
 void _loadDraft() async {
   final draft = await ControllerAmbildraft().ambilDraft(context);
   setState(() {
@@ -90,11 +97,12 @@ void _loadDraft() async {
   });
 }
 
-
+  // fungsi untuk membaca gambar dalam bentuk blob
   Future<Uint8List?> gambarBytes(File file) async {
     return await file.readAsBytes();
   }
 
+  // Fungsi untuk mengambil lokasi secara otomatis jika pengguna mengambil gambar dari kamera
   Future getAutoLoc() async {
     PickerMapController controllerMapAuto = PickerMapController(
       initMapWithUserPosition: const UserTrackingOption(
@@ -173,6 +181,7 @@ void _loadDraft() async {
     );
   }
 
+  // fungsi untuk mendapatkan gambar dari galeri 
   Future getImageGallery() async {
     final pickedGallery = await picker.pickImage(source: ImageSource.gallery);
     if (pickedGallery != null) {
@@ -184,6 +193,7 @@ void _loadDraft() async {
     }
   }
 
+  // fungsi untuk menangani lokasi jika location di ambil secara manual maupun otomatis untuk dikonversi menjadi alamat pada tampilan lapor
   void handleLocationPicked(GeoPoint location) async {
     setState(() {
       pickedLocation = location;
@@ -197,6 +207,7 @@ void _loadDraft() async {
     });
   }
 
+  // fungsi untuk membuka kamera dan mengambil gambar dari kamera pengguna secara langsung
   Future getImageCamera() async {
     final pickedCamera = await picker.pickImage(source: ImageSource.camera);
     if (pickedCamera != null) {
@@ -209,6 +220,7 @@ void _loadDraft() async {
     }
   }
 
+// fungsi untuk menghapus seluruh field draft jika draft atau laporan sudah terkirim
   Future hapusDraftAfterKirim() async {
     SharedPreferences prefs = await SharedPreferences.getInstance(); 
         await prefs.remove('judul');
@@ -221,7 +233,7 @@ void _loadDraft() async {
         await prefs.remove('gambar');
   }
 
-
+  // fungsi untuk menangani value yang diisi pengguna untuk dikirim ke API untuk membuat laporan
   void buatLaporan(String status) async {
     print(status);
     if (status == 'selesai') {
@@ -266,6 +278,7 @@ void _loadDraft() async {
     }
   }
 
+  // fungsi untuk mereset form atau seluruh field setelah laporan dikirim 
   void resetForm() {
     judulController.clear();
     deskripsiController.clear();
@@ -279,6 +292,7 @@ void _loadDraft() async {
     setState(() {}); // Memperbarui UI
   }
 
+  // fungsi untuk menampilkan dialog apakah pengguna ingin menyimpan draftnya
   void _showDraftAlertDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -305,6 +319,7 @@ void _loadDraft() async {
     );
   }
 
+  // fungsi untuk menampilkan dialog sukses ketika laporan berhasil terkirim
   void _showSuccessDialog(BuildContext context, String message) {
     showDialog(
       context: context,
@@ -336,6 +351,7 @@ void _loadDraft() async {
     );
   }
 
+  // fungsi konfirmasi kepada pengguna apakah yakin ingin mengirim laporan
   void _showKirimAlertDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -362,6 +378,7 @@ void _loadDraft() async {
     );
   }
 
+  // fungsi menampilkan dialog error kepada pengguna
   void _showErrorDialog(BuildContext context, String message) {
     showDialog(
       context: context,
@@ -405,7 +422,7 @@ void _loadDraft() async {
         titleSpacing: 0,
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).popUntil((route) => route.isFirst);
+            Navigator.of(context).pushReplacementNamed('/home');
           },
           icon: const Icon(Icons.keyboard_arrow_left),
           color: const Color.fromRGBO(5, 5, 5, 0.612),

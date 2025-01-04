@@ -1,3 +1,8 @@
+// Nama File: api_service_notifikasi.dart
+// Deskripsi: File ini berfungsi untuk menangani layanan mendapatkan data notifikasi
+// Dibuat oleh: Farhan Ramadhan - NIM: 3312301105
+// Tanggal: Dec 5, 2024
+
 import 'package:balap_in/api/host.dart';
 import 'package:dio/dio.dart';
 import 'package:balap_in/models/model_notifikasi.dart';
