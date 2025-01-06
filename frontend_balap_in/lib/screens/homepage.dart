@@ -35,14 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  // fungsi untuk menangani query pencarian 
-  void _performSearch(String query) {
-  setState(() {
-    searchController.text = query;
-    });
-  }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -168,42 +160,43 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: TextField(
-                              onSubmitted: (value) {
-                                _performSearch(value);
-                              },
-                              controller: searchController,
-                              style: const TextStyle(
-                                fontFamily: 'Poppins',
-                                fontSize: 11
-                              ),
-                              cursorColor: Colors.black,
-                              cursorHeight: 20,
-                              decoration: InputDecoration(
-                                fillColor: Colors.white,
-                                filled: true,
-                                border: const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(9)
-                                  ),
-                                borderSide: BorderSide.none
-                                ),
-                                hintText: 'Cari Laporan',
-                                hintStyle: const TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontSize: 11,
-                                ),
-                                suffixIcon: GestureDetector(
-                                  onTap: () {
-                                    setState((){
-                                      _performSearch(searchController.text);
-                                    });
-                                  },
-                                  child: const Icon(
-                                  color: Colors.black,
-                                  Icons.search,
-                                  ),)
-                              ),
+                            textInputAction: TextInputAction.search,
+                            controller: searchController,
+                            onSubmitted: (value) {
+                              setState(() {
+                              });
+                            },
+                            style: const TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 11
                             ),
+                            cursorColor: Colors.black,
+                            cursorHeight: 20,
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              filled: true,
+                              border: const OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(9)
+                                ),
+                                borderSide: BorderSide.none
+                              ),
+                              hintText: 'Cari Laporan',
+                              hintStyle: const TextStyle(
+                                fontFamily: "Poppins",
+                                fontSize: 11,
+                              ),
+                              suffixIcon: IconButton(
+                                icon: const Icon(
+                                  Icons.search,
+                                  color: Colors.black,
+                                ),
+                                onPressed: () {
+                                  setState(() {});
+                                },
+                              )
+                            ),
+                          ),
                           ),
                         ),
                         )
