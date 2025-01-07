@@ -5,7 +5,9 @@
 
 import 'package:balap_in/api/api_service_laporan.dart';
 import 'package:balap_in/shimmer/shimmerhomepage.dart';
+import 'package:balap_in/shimmer/shimmerhomewidget.dart';
 import 'package:balap_in/widgets/dynamicmap.dart';
+import 'package:balap_in/widgets/searchwidget.dart';
 import 'package:flutter/material.dart';
 import 'package:balap_in/widgets/homewidget.dart';
 import 'package:flutter/services.dart';
@@ -26,13 +28,12 @@ class HomeScreen extends StatefulWidget {
 } 
   
 class _HomeScreenState extends State<HomeScreen> {
-  final TextEditingController searchController = TextEditingController();
-  
-  // fungsi membersihkan input pencarian ketika widget tidak terpakai
-  @override
-  void dispose() {
-    searchController.dispose();// TODO: implement dispose
-    super.dispose();
+  String searchQuery = '';
+
+  void handleSearch(String query) {
+    setState(() {
+      searchQuery = query;
+    });
   }
 
   @override
@@ -159,44 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 45,
                           child: Align(
                             alignment: Alignment.centerLeft,
-                            child: TextField(
-                            textInputAction: TextInputAction.search,
-                            controller: searchController,
-                            onSubmitted: (value) {
-                              setState(() {
-                              });
-                            },
-                            style: const TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 11
-                            ),
-                            cursorColor: Colors.black,
-                            cursorHeight: 20,
-                            decoration: InputDecoration(
-                              fillColor: Colors.white,
-                              filled: true,
-                              border: const OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(9)
-                                ),
-                                borderSide: BorderSide.none
-                              ),
-                              hintText: 'Cari Laporan',
-                              hintStyle: const TextStyle(
-                                fontFamily: "Poppins",
-                                fontSize: 11,
-                              ),
-                              suffixIcon: IconButton(
-                                icon: const Icon(
-                                  Icons.search,
-                                  color: Colors.black,
-                                ),
-                                onPressed: () {
-                                  setState(() {});
-                                },
-                              )
-                            ),
-                          ),
+                            child: Searchwidget(onSearch: handleSearch,)
                           ),
                         ),
                         )
@@ -532,112 +496,128 @@ class _HomeScreenState extends State<HomeScreen> {
                       
                       //TAMPILAN ANALISIS
                       FutureBuilder<LaporanResponse>(
-                        future: ApiServiceLaporan().fetchLaporan(selectedChipAnalisisIndex, searchController.text), 
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return const Shimmerhomepage();
-                          } else {
-                          LaporanResponse laporanList = snapshot.data!;
-
+                      future: ApiServiceLaporan().fetchLaporan(selectedChipAnalisisIndex, searchQuery), 
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Column(
+                            children: [
+                              Shimmerhomepage(),
+                              Shimmerhomewidget()
+                            ],
+                          );
+                        } else if (snapshot.hasError) {
+                          return Center(child: Text('Error: ${snapshot.error}'));
+                        } else if (snapshot.connectionState == ConnectionState.done) {
+                          final LaporanResponse = snapshot.data!;
+                          final laporanList = LaporanResponse.laporan!;
                           String? dominant;
 
-                          if (laporanList.dominantjenis == 'jalan') {
+                          if (LaporanResponse.dominantjenis == 'jalan') {
                             dominant = 'Jalan Rusak';
-                          } else if (laporanList.dominantjenis == 'lampu_jalan') {
+                          } else if (LaporanResponse.dominantjenis == 'lampu_jalan') {
                             dominant = 'Lampu Jalan';
-                          } else if (laporanList.dominantjenis == 'jembatan') {
+                          } else if (LaporanResponse.dominantjenis == 'jembatan') {
                             dominant = 'Jembatan Rusak';
                           } else {
                             dominant = 'Tidak ada';
                           }
 
-                          return SizedBox(
-                          height: 50,
-                          width: 250,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          return Column(
                             children: [
+                              // Tampilakan Analisis
                               SizedBox(
-                                width: 120,
-                                height: 40,
-                                child: Column(
+                                height: 50,
+                                width: 250,
+                                child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Text(
-                                      'Jumlah Laporan',
-                                      style: TextStyle(
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 7,
-                                      ),
-                                    ),
-                                    Text(
-                                      laporanList.laporan!.length.toString(),
-                                      style: const TextStyle(
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                                height: 40,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: VerticalDivider(
-                                        color: Colors.black,
-                                        thickness: 1,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                             SizedBox(
-                                width: 120,
-                                height: 40,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      'Keluhan Dominan',
-                                      style: TextStyle(
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 7,
+                                    SizedBox(
+                                      width: 120,
+                                      height: 40,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          const Text(
+                                            'Jumlah Laporan',
+                                            style: TextStyle(
+                                              fontFamily: "Poppins",
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 7,
+                                            ),
+                                          ),
+                                          Text(
+                                            LaporanResponse.laporan!.length.toString(),
+                                            style: const TextStyle(
+                                              fontFamily: "Poppins",
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                     const SizedBox(
-                                      height: 3,
-                                    ),
-                                    Text(
-                                      dominant,
-                                      style: const TextStyle(
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10,
+                                      width: 10,
+                                      height: 40,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: VerticalDivider(
+                                              color: Colors.black,
+                                              thickness: 1,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 3,
+                                    SizedBox(
+                                      width: 120,
+                                      height: 40,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          const Text(
+                                            'Keluhan Dominan',
+                                            style: TextStyle(
+                                              fontFamily: "Poppins",
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 7,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 3,
+                                          ),
+                                          Text(
+                                            dominant,
+                                            style: const TextStyle(
+                                              fontFamily: "Poppins",
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 3,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
+                              // Tampilkan HomeWidget
+                              laporanList.isEmpty ? const Center(
+                                child: Text('Tidak ada laporan'),
+                              ) : HomeWidget(
+                                laporanList: laporanList, // Kirimkan laporanList ke HomeWidget
+                              ) 
                             ],
-                          ),
-                        );
+                          );
+                        } else {
+                          return const Center(child: Text('Tidak ada laporan'));
                         }
-                      }
-                      ),
-                      
-                      //LIST LAPORAN PALING BAWAH
-                      HomeWidget(selectedChipAnalisisIndex: selectedChipAnalisisIndex, searchController: searchController.text)
-        
+                      },
+                    ),                  
                     ],
                   ),
                 ),

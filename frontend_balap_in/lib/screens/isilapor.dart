@@ -59,27 +59,24 @@ class IsilaporScreen extends StatelessWidget {
                   color: const Color.fromRGBO(5, 5, 5, 0.612),
                   iconSize: 40,),
                   title: SizedBox(
-                    child: Row(
-                      children: [
-                        Text.rich(
-                          TextSpan(
-                            text: laporan.judul,
-                            style: const TextStyle(
-                              color: Color.fromRGBO(5, 5, 5, 0.612),
-                              fontFamily: "Poppins",
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              shadows: [Shadow(
-                                offset: Offset(1.0, 6.0),
-                                blurRadius: 10,
-                                color: Colors.black26,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: FittedBox(
+                      child: Text(
+                        laporan.judul!,
+                        style: const TextStyle(
+                        color: Color.fromRGBO(5, 5, 5, 0.612),
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        shadows: [Shadow(
+                          offset: Offset(1.0, 6.0),
+                          blurRadius: 10,
+                          color: Colors.black26,
                               ),
                               ]
-                            ),
-                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                    )
                   ),
                 ),
                 body: Stack(

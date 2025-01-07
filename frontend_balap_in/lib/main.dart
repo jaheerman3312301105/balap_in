@@ -60,6 +60,7 @@ void initializeNotifications() {
         ledColor: Colors.white,
         icon: 'resource://drawable/small_ic_launcher',
         enableVibration: true,
+        importance: NotificationImportance.High
       ),
     ],
     channelGroups: [

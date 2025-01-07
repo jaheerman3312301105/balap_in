@@ -6,29 +6,15 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:balap_in/shimmer/shimmerhomewidget.dart';
 import 'package:flutter/material.dart';
-import 'package:balap_in/api/api_service_laporan.dart';
 import 'package:balap_in/models/model_laporan.dart';
 
 class HomeWidget extends StatelessWidget {
-  final int selectedChipAnalisisIndex;
-  final String searchController;
-  HomeWidget({Key? key, required this.selectedChipAnalisisIndex, required this.searchController}) : super(key: key);
+  final List<Laporan> laporanList;
+  HomeWidget({Key? key, required this.laporanList}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
-    final apiService = ApiServiceLaporan();
-    return FutureBuilder<LaporanResponse>(
-      future: apiService.fetchLaporan(selectedChipAnalisisIndex, searchController), 
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Shimmerhomewidget();
-        } else if (snapshot.data!.laporan!.length == 0) {
-          return const Center(child: Text('Tidak ada laporan'),);
-        } else {
-          List<Laporan> laporanList = snapshot.data!.laporan!;
-          
           return SizedBox(
             width: 350,
             child: ListView.builder(
@@ -157,6 +143,3 @@ class HomeWidget extends StatelessWidget {
         }
         
       }
-      );
-  }
-} 

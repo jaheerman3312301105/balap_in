@@ -8,8 +8,9 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 
 class ApiFcmToken {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  int uniqueId = DateTime.now().millisecondsSinceEpoch.remainder(100000);
 
-  // Mendapatkan token FCM
+  // Mendapatkan token FCM  
   Future<String?> getFcmToken() async {
     String? token = await messaging.getToken();
     print("FCM Token: $token");
@@ -34,7 +35,7 @@ class ApiFcmToken {
       // Menampilkan notifikasi menggunakan Awesome Notifications
       AwesomeNotifications().createNotification(
         content: NotificationContent(
-          id: 10,
+          id: uniqueId,
           channelKey: 'basic_channel',
           actionType: ActionType.Default,
           title: message.notification?.title ?? 'Tidak Ada Judul',
@@ -42,6 +43,7 @@ class ApiFcmToken {
           roundedLargeIcon: true,
           largeIcon: 'resource://drawable/small_ic_launcher',
           notificationLayout: NotificationLayout.BigText,
+          displayOnForeground: true,
         ),
       );
     });
@@ -65,6 +67,7 @@ class ApiFcmToken {
         roundedLargeIcon: true,
         largeIcon: 'resource://drawable/small_ic_launcher',
         notificationLayout: NotificationLayout.BigText,
+        displayOnBackground: true
       ),
     );
   }
