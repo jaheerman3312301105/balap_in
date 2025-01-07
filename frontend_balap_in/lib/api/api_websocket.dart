@@ -10,7 +10,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 class WebSocketApi {
   static void connectWebSocket() {
     final WebSocketChannel channel = WebSocketChannel.connect(
-      Uri.parse('wss://2d97-180-252-48-10.ngrok-free.app/ws/notifications/'),
+      Uri.parse('wss://flowing-definite-walrus.ngrok-free.app/ws/notifications/'),
     );
 
     channel.stream.listen((message) {
