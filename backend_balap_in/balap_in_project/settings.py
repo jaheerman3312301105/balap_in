@@ -78,6 +78,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://192.168.1.5:8000",
     "http://127.0.0.1:8000",
     "http://202.10.36.217",
+    "http://8.215.4.209:8000",
 ]
 
 ROOT_URLCONF = 'balap_in_project.urls'
