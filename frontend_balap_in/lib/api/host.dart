@@ -7,4 +7,5 @@
 // const host = 'http://202.10.36.217:8000';
 // const host = 'https://flowing-definite-walrus.ngrok-free.app';
 // const host = 'http://8.215.4.209:8000';
-const host = 'http://147.139.241.1:8000';
+// const host = 'http://147.139.241.1:8000';
+const host = 'http://13.215.51.252:8000';
